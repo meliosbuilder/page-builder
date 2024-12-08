@@ -1,0 +1,15 @@
+{
+    "name": "melios/page-builder",
+    "description": "Improvements for the built-in Magento PageBuilder module",
+    "type": "magento2-module",
+    "version": "1.0.0",
+    "license": "GNU GPLv3",
+    "autoload": {
+        "files": [
+            "registration.php"
+        ],
+        "psr-4": {
+            "Melios\\PageBuilder\\": ""
+        }
+    }
+}
