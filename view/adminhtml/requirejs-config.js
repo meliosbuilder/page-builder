@@ -1,6 +1,13 @@
 var config = {
     config: {
         mixins: {
+            'Magento_PageBuilder/js/page-builder': {
+                // Spotlight: Hotkeys, focus-trap
+                'Melios_PageBuilder/js/spotlight/page-builder-mixin': true,
+                // Spotlight: Toggle sidebar panel
+                'Melios_PageBuilder/js/spotlight/page-builder-header-mixin': true,
+            },
+
             'Magento_PageBuilder/js/form/element/wysiwyg': {
                 // Open pagebuilder using Alt+0 hotkey
                 'Melios_PageBuilder/js/open-pagebuilder/wysiwyg-mixin': true,

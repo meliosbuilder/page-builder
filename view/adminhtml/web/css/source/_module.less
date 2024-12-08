@@ -1,0 +1,81 @@
+// Spotlight
+.pagebuilder-header .spotlight-buttons {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    color: #f7f3eb;
+
+    span {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        padding: 12px;
+        cursor: pointer;
+        &:hover {
+            background: #4a4542;
+        }
+        &.active {
+            background: #000;
+        }
+    }
+
+    .panel-hide {
+        opacity: .5;
+    }
+
+    .spotlight-faux-input {
+        cursor: text;
+        color: ~"rgb(255 255 255 / 50%)";
+        padding: 4px 6px 4px 8px;
+        border-radius: 6px;
+        background: #4a4542;
+        user-select: none;
+        .hotkey {
+            pointer-events: none;
+            display: inline-flex;
+            margin-left: 25px;
+            padding: 0px 7px;
+            border: 1px solid ~"rgb(239 233 228 / 20%)";
+            border-radius: 5px;
+            font-size: 12px;
+            background: ~"rgb(255 255 255 / 5%)";
+        }
+    }
+}
+
+.pagebuilder-wysiwyg-snapshot {
+    .pagebuilder-stage-wrapper.hidden-sidebar {
+        .pagebuilder-header {
+            width: 100%;
+            left: 0;
+        }
+        .pagebuilder-panel-wrapper {
+            display: none;
+        }
+        .pagebuilder-stage {
+            width: 100%;
+            margin-left: 0;
+        }
+    }
+}
+
+.mls-focusable {
+    // Override important style in MagentoPageBuilder
+    &.mls-focusable.mls-focusable.mls-focusable.mls-focusable.mls-focusable {
+        display: block !important;
+    }
+    &:focus-visible {
+        transition: none;
+        outline: 2px solid currentColor;
+        outline-offset: 2px;
+    }
+}
+.mls-hide-sortable-placeholder {
+    .pagebuilder-sortable-placeholder {
+        opacity: 0;
+    }
+}
