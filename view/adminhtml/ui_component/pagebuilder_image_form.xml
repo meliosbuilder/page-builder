@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <fieldset name="general">
+        <container name="desktop_image_attributes" sortOrder="1">
+            <container name="image_dimensions" component="Magento_Ui/js/form/components/group">
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="breakLine" xsi:type="boolean">false</item>
+                    </item>
+                </argument>
+                <field name="width" formElement="input">
+                    <settings>
+                        <dataType>number</dataType>
+                        <dataScope>width</dataScope>
+                        <label translate="true">Width, Height</label>
+                        <additionalClasses>
+                            <class name="admin__field-small">true</class>
+                        </additionalClasses>
+                        <addAfter translate="true">px</addAfter>
+                        <validation>
+                            <rule name="validate-number" xsi:type="boolean">true</rule>
+                        </validation>
+                    </settings>
+                </field>
+                <field name="height" formElement="input">
+                    <settings>
+                        <dataType>number</dataType>
+                        <dataScope>height</dataScope>
+                        <additionalClasses>
+                            <class name="admin__field-small">true</class>
+                        </additionalClasses>
+                        <addAfter translate="true">px</addAfter>
+                        <validation>
+                            <rule name="validate-number" xsi:type="boolean">true</rule>
+                        </validation>
+                    </settings>
+                </field>
+            </container>
+            <field name="loading_mode" formElement="select">
+                <settings>
+                    <dataType>text</dataType>
+                    <dataScope>loading_mode</dataScope>
+                    <label translate="true">Loading Mode</label>
+                </settings>
+                <formElements>
+                    <select>
+                        <settings>
+                            <options>
+                                <option name="0" xsi:type="array">
+                                    <item name="value" xsi:type="string">lazy</item>
+                                    <item name="label" xsi:type="string" translate="true">Lazy, fetchpriority="low"</item>
+                                </option>
+                                <option name="1" xsi:type="array">
+                                    <item name="value" xsi:type="string">auto</item>
+                                    <item name="label" xsi:type="string" translate="true">Default</item>
+                                </option>
+                                <option name="2" xsi:type="array">
+                                    <item name="value" xsi:type="string">low</item>
+                                    <item name="label" xsi:type="string" translate="true">Default, fetchpriority="low"</item>
+                                </option>
+                                <option name="3" xsi:type="array">
+                                    <item name="value" xsi:type="string">high</item>
+                                    <item name="label" xsi:type="string" translate="true">Default, fetchpriority="high"</item>
+                                </option>
+                                <option name="4" xsi:type="array">
+                                    <item name="value" xsi:type="string">preload</item>
+                                    <item name="disabled" xsi:type="boolean">true</item>
+                                    <item name="label" xsi:type="string" translate="true">Preload (Melios Builder Pro is required)</item>
+                                </option>
+                            </options>
+                        </settings>
+                    </select>
+                </formElements>
+            </field>
+        </container>
+        <container name="mobile_image_attributes" sortOrder="3">
+            <container name="mobile_image_dimensions" component="Magento_Ui/js/form/components/group">
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="breakLine" xsi:type="boolean">false</item>
+                    </item>
+                </argument>
+                <field name="use_mobile_dimensions" formElement="checkbox">
+                    <argument name="data" xsi:type="array">
+                        <item name="config" xsi:type="array">
+                            <item name="default" xsi:type="string">false</item>
+                            <item name="additionalClasses" xsi:type="string">mls-hide-labels</item>
+                        </item>
+                    </argument>
+                    <settings>
+                        <dataType>boolean</dataType>
+                        <label translate="true">Mobile Width, Height</label>
+                    </settings>
+                    <formElements>
+                        <checkbox>
+                            <settings>
+                                <valueMap>
+                                    <map name="false" xsi:type="string">false</map>
+                                    <map name="true" xsi:type="string">true</map>
+                                </valueMap>
+                                <prefer>toggle</prefer>
+                            </settings>
+                        </checkbox>
+                    </formElements>
+                </field>
+                <field name="mobile_width" formElement="input" component="Melios_PageBuilder/js/image/form/inherited-input">
+                    <settings>
+                        <dataType>number</dataType>
+                        <dataScope>mobile_width</dataScope>
+                        <additionalClasses>
+                            <class name="admin__field-small">true</class>
+                        </additionalClasses>
+                        <addAfter translate="true">px</addAfter>
+                        <validation>
+                            <rule name="validate-number" xsi:type="boolean">true</rule>
+                        </validation>
+                        <imports>
+                            <link name="disabled">!ns = ${ $.ns }, index = use_mobile_dimensions:checked</link>
+                            <link name="inheritedValue">ns = ${ $.ns }, index = width:value</link>
+                        </imports>
+                    </settings>
+                </field>
+                <field name="mobile_height" formElement="input" component="Melios_PageBuilder/js/image/form/inherited-input">
+                    <settings>
+                        <dataType>number</dataType>
+                        <dataScope>mobile_height</dataScope>
+                        <additionalClasses>
+                            <class name="admin__field-small">true</class>
+                        </additionalClasses>
+                        <addAfter translate="true">px</addAfter>
+                        <validation>
+                            <rule name="validate-number" xsi:type="boolean">true</rule>
+                        </validation>
+                        <imports>
+                            <link name="disabled">!ns = ${ $.ns }, index = use_mobile_dimensions:checked</link>
+                            <link name="inheritedValue">ns = ${ $.ns }, index = height:value</link>
+                        </imports>
+                    </settings>
+                </field>
+            </container>
+            <container name="mobile_loading_mode_group" component="Magento_Ui/js/form/components/group">
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="breakLine" xsi:type="boolean">false</item>
+                    </item>
+                </argument>
+                <field name="use_mobile_loading_mode" formElement="checkbox">
+                    <argument name="data" xsi:type="array">
+                        <item name="config" xsi:type="array">
+                            <item name="default" xsi:type="string">false</item>
+                            <item name="additionalClasses" xsi:type="string">mls-hide-labels</item>
+                        </item>
+                    </argument>
+                    <settings>
+                        <dataType>boolean</dataType>
+                        <label translate="true">Mobile Loading Mode</label>
+                    </settings>
+                    <formElements>
+                        <checkbox>
+                            <settings>
+                                <valueMap>
+                                    <map name="false" xsi:type="string">false</map>
+                                    <map name="true" xsi:type="string">true</map>
+                                </valueMap>
+                                <prefer>toggle</prefer>
+                            </settings>
+                        </checkbox>
+                    </formElements>
+                </field>
+                <field name="mobile_loading_mode" formElement="select" component="Melios_PageBuilder/js/image/form/inherited-select">
+                    <settings>
+                        <dataType>text</dataType>
+                        <dataScope>mobile_loading_mode</dataScope>
+                        <imports>
+                            <link name="disabled">!ns = ${ $.ns }, index = use_mobile_loading_mode:checked</link>
+                            <link name="inheritedValue">ns = ${ $.ns }, index = loading_mode:value</link>
+                        </imports>
+                    </settings>
+                    <formElements>
+                        <select>
+                            <settings>
+                                <options>
+                                    <option name="0" xsi:type="array">
+                                        <item name="value" xsi:type="string">lazy</item>
+                                        <item name="label" xsi:type="string" translate="true">Lazy, fetchpriority="low"</item>
+                                    </option>
+                                    <option name="1" xsi:type="array">
+                                        <item name="value" xsi:type="string">auto</item>
+                                        <item name="label" xsi:type="string" translate="true">Default</item>
+                                    </option>
+                                    <option name="2" xsi:type="array">
+                                        <item name="value" xsi:type="string">low</item>
+                                        <item name="label" xsi:type="string" translate="true">Default, fetchpriority="low"</item>
+                                    </option>
+                                    <option name="3" xsi:type="array">
+                                        <item name="value" xsi:type="string">high</item>
+                                        <item name="label" xsi:type="string" translate="true">Default, fetchpriority="high"</item>
+                                    </option>
+                                    <option name="4" xsi:type="array">
+                                        <item name="value" xsi:type="string">preload</item>
+                                        <item name="disabled" xsi:type="boolean">true</item>
+                                        <item name="label" xsi:type="string" translate="true">Preload (Melios Builder Pro is required)</item>
+                                    </option>
+                                </options>
+                            </settings>
+                        </select>
+                    </formElements>
+                </field>
+            </container>
+        </container>
+    </fieldset>
+</form>
