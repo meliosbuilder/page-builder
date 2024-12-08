@@ -22,4 +22,7 @@ var config = {
             },
         }
     },
+    deps: [
+        'Melios_PageBuilder/js/hotkeys/hotkeys',
+    ]
 };
