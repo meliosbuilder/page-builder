@@ -1,0 +1,7 @@
+& when (@media-common = true) {
+    // add gap between column-lines
+    :where(.pagebuilder-column-group:has(> .pagebuilder-column-line)) {
+        display: flex;
+        flex-direction: column;
+    }
+}

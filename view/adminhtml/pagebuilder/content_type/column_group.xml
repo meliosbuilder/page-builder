@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_PageBuilder:etc/content_type.xsd">
+    <type name="column-group">
+        <breakpoints>
+            <breakpoint name="mobile">
+                <form>pagebuilder_column_group_mobile_form</form>
+            </breakpoint>
+        </breakpoints>
+        <appearances>
+            <appearance name="default">
+                <elements>
+                    <element name="main">
+                        <style name="gap" source="gap" converter="Magento_PageBuilder/js/converter/style/remove-px"/>
+                    </element>
+                    <element name="columnLine">
+                        <style name="gap" source="gap" converter="Magento_PageBuilder/js/converter/style/remove-px"/>
+                    </element>
+                </elements>
+            </appearance>
+        </appearances>
+    </type>
+</config>
