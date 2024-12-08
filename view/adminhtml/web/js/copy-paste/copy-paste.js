@@ -3,8 +3,7 @@ define([
     'knockout',
     'Melios_PageBuilder/js/copy-paste/serializer',
     'Melios_PageBuilder/js/copy-paste/toast',
-    'Melios_PageBuilder/js/utils/can-use-hotkeys',
-    'jquery/ui'
+    'Melios_PageBuilder/js/utils/can-use-hotkeys'
 ], function ($, ko, serializer, toast, canUseHotkeys) {
     'use strict';
 
