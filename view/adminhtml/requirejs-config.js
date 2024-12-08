@@ -6,12 +6,16 @@ var config = {
                 'Melios_PageBuilder/js/open-pagebuilder/wysiwyg-mixin': true,
             },
 
-            // Enable menubar
             'mage/adminhtml/wysiwyg/tiny_mce/tinymce5Adapter': {
+                // Do not paste raw data from copy-paste buffer
+                'Melios_PageBuilder/js/copy-paste/tinymceAdapter-mixin': true,
+                // Enable menubar
                 'Melios_PageBuilder/js/wysiwyg/tinymceAdapter-mixin': true
             },
-            // Enable menubar
             'mage/adminhtml/wysiwyg/tiny_mce/tinymceAdapter': {
+                // Do not paste raw data from copy-paste buffer
+                'Melios_PageBuilder/js/copy-paste/tinymceAdapter-mixin': true,
+                // Enable menubar
                 'Melios_PageBuilder/js/wysiwyg/tinymceAdapter-mixin': true
             },
 
@@ -23,6 +27,7 @@ var config = {
         }
     },
     deps: [
+        'Melios_PageBuilder/js/copy-paste/copy-paste',
         'Melios_PageBuilder/js/hotkeys/hotkeys',
     ]
 };
