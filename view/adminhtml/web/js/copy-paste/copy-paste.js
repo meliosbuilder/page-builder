@@ -35,6 +35,10 @@ define([
             // Prevent inserting serialized data into inputs or contenteditable areas
             // because it's not useful and will confuse non-technical users
             e.preventDefault();
+
+            if (!require.defined('Melios_PageBuilderPro/js/copy-paste/copy-paste')) {
+                toast.show('Melios Page Builder Pro version is required to paste copied section.');
+            }
         }
     });
 });
