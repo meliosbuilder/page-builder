@@ -49,11 +49,17 @@ define([
                     }
 
                     this.pageBuilder.stage.afterRenderDeferred.promise.then(() => {
+                        var ran = false;
                         $(document.activeElement).blur();
                         $.async({
                             component: this,
                             selector: this.overlaySelector
-                        }, el => $(el).click());
+                        }, el => {
+                            if (!ran) {
+                                $(el).click();
+                                ran = true;
+                            }
+                        });
                         // this.pageBuilderEditButtonClick(this, e);
                     });
 
