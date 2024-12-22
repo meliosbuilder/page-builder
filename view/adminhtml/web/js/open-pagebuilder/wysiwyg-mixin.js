@@ -20,7 +20,7 @@ define([
                         return;
                     }
 
-                    if (!canUseHotkeys(e)) {
+                    if (!canUseHotkeys(e, 'select, :radio, :checkbox')) {
                         return;
                     }
 
