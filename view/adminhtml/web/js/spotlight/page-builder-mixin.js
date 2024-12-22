@@ -4,8 +4,9 @@ define([
     'mage/utils/wrapper',
     'Magento_PageBuilder/js/events',
     'Melios_PageBuilder/js/spotlight/spotlight',
-    'Melios_PageBuilder/js/utils/can-use-hotkeys'
-], function ($, ko, wrapper, events, spotlight, canUseHotkeys) {
+    'Melios_PageBuilder/js/utils/can-use-hotkeys',
+    'Melios_PageBuilder/js/utils/get-topmost-modal'
+], function ($, ko, wrapper, events, spotlight, canUseHotkeys, getTopmostModal) {
     'use strict';
 
     var mouseCoords = {
@@ -345,12 +346,13 @@ define([
                         return true;
                     },
                     canOpen: (e) => {
-                        var topmostModal = $('.modals-wrapper > ._show').last();
+                        if (!this.isFullScreen() || !canUseHotkeys(e) || $('.ui-draggable-dragging').length) {
+                            return false;
+                        }
 
-                        return this.isFullScreen()
-                            && canUseHotkeys(e)
-                            && !$('.ui-draggable-dragging').length
-                            && !topmostModal.length || topmostModal.has('#' + this.id).length;
+                        var topmostModal = getTopmostModal();
+
+                        return !topmostModal || $(topmostModal).has('#' + this.id).length;
                     }
                 });
         };
