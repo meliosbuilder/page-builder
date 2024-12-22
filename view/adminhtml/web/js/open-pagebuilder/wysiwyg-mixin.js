@@ -12,6 +12,18 @@ define([
         }
     }
 
+    function isAllParentsVisible(cmp) {
+        if (cmp.visible === false || cmp.visible?.() === false) {
+            return false;
+        }
+
+        if (cmp.containers?.[0]) {
+            return isAllParentsVisible(cmp.containers[0]);
+        }
+
+        return true;
+    }
+
     return function (target) {
         return target.extend({
             initialize: function () {
@@ -26,6 +38,14 @@ define([
 
                     if (this.pageBuilder.isFullScreen()) {
                         return $('.pagebuilder-stage-wrapper.stage-full-screen .icon-pagebuilder-fullscreen-exit').click();
+                    }
+
+                    if (!isAllParentsVisible(this)) {
+                        return;
+                    }
+
+                    if (this.modal && !this.modal.parent().hasClass('_show')) {
+                        return;
                     }
 
                     this.pageBuilder.stage.afterRenderDeferred.promise.then(() => {
