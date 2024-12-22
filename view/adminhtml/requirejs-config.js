@@ -31,6 +31,10 @@ var config = {
             'Magento_PageBuilder/js/content-type/column-group/preview': {
                 'Melios_PageBuilder/js/bugfixes/column-group-preview-mixin': true
             },
+            // Do not close modal on Escape, if nested pagebuilder is opened
+            'Magento_Ui/js/modal/modal': {
+                'Melios_PageBuilder/js/bugfixes/modal-mixin': true
+            },
         }
     },
     deps: [
