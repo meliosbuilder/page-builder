@@ -185,6 +185,9 @@ define([
                 }
             });
             $(document).on('click', '.mls-body .item', (e) => {
+                if (!this.opened()) {
+                    return;
+                }
                 this.run($(e.target).data('id'), e);
             });
         },
