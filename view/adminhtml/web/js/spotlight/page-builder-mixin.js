@@ -4,9 +4,8 @@ define([
     'mage/utils/wrapper',
     'Magento_PageBuilder/js/events',
     'Melios_PageBuilder/js/spotlight/spotlight',
-    'Melios_PageBuilder/js/utils/can-use-hotkeys',
-    'Melios_PageBuilder/js/utils/get-topmost-modal'
-], function ($, ko, wrapper, events, spotlight, canUseHotkeys, getTopmostModal) {
+    'Melios_PageBuilder/js/utils/can-use-hotkeys'
+], function ($, ko, wrapper, events, spotlight, canUseHotkeys) {
     'use strict';
 
     var mouseCoords = {
@@ -350,7 +349,9 @@ define([
                             return false;
                         }
 
-                        var topmostModal = getTopmostModal();
+                        var topmostModal = $('.modals-wrapper > ._show').sort((a, b) => {
+                            return b.style.zIndex - a.style.zIndex;;
+                        }).get(0);
 
                         return !topmostModal || $(topmostModal).has('#' + this.id).length;
                     }
