@@ -20,11 +20,13 @@ bin/magento module:enable Melios_PageBuilder
  -  <kbd>Ctrl+C</kbd>, <kbd>Cmd+C</kbd> — copy hovered element into the clipboard.
  -  <kbd>Ctrl+V</kbd>, <kbd>Cmd+V</kbd> — **Pro version only** paste previously copied element at the bottom or after the hovered element.
  -  <kbd>Ctrl+Shift+V</kbd>, <kbd>Cmd+Shift+V</kbd> — **Pro version only** paste previously copied element at the top or before the hovered element.
+ -  <kbd>Ctrl+S</kbd>, <kbd>Cmd+S</kbd> — **Pro version only** save the content without leaving the editor.
  -  <kbd>Ctrl+Enter</kbd>, <kbd>Cmd+Enter</kbd>, <kbd>/</kbd> — open Spotlight to insert new content.
 
 ### UX Improvements
 
  -  **Pro version only** Copy-paste content between different editors and different Magento instances.
+ -  **Pro version only** Quick save without leaving the editor.
  -  Add new content using a faster Spotlight popup.
  -  Edit element with an intuitive double-click.
 
