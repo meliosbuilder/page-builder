@@ -4,7 +4,7 @@ define([
 ], function ($, canUseHotkeys) {
     'use strict';
 
-    $(document).on('dblclick', '.pagebuilder-content-type-active', (e) => {
+    $(document).on('dblclick', (e) => {
         var el = $('.pagebuilder-content-type-active .pagebuilder-options-visible:visible');
 
         if (!el.length || $('.mls-popup:visible').length) {
