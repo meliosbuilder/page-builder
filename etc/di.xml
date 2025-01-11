@@ -5,4 +5,21 @@
     <type name="Magento\Framework\File\Uploader">
         <plugin name="melios_page_builder" type="Melios\PageBuilder\Plugin\FileUploader" />
     </type>
+    <type name="Magento\Framework\Image\Adapter\Gd2">
+        <plugin name="melios_page_builder" type="Melios\PageBuilder\Plugin\ImageGd2" />
+    </type>
+    <type name="Magento\Cms\Model\Wysiwyg\Images\Storage">
+        <arguments>
+            <argument name="extensions" xsi:type="array">
+                <item name="allowed" xsi:type="array">
+                    <item name="avif" xsi:type="string">image/avif</item>
+                    <item name="webp" xsi:type="string">image/webp</item>
+                </item>
+                <item name="image_allowed" xsi:type="array">
+                    <item name="avif" xsi:type="string">image/avif</item>
+                    <item name="webp" xsi:type="string">image/webp</item>
+                </item>
+            </argument>
+        </arguments>
+    </type>
 </config>

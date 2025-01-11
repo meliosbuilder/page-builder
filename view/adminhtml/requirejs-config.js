@@ -30,6 +30,9 @@ var config = {
             'Magento_Ui/js/form/element/image-uploader': {
                 'Melios_PageBuilder/js/image-upload/image-uploader-mixin': true,
             },
+            'Magento_Backend/js/media-uploader': {
+                'Melios_PageBuilder/js/image-upload/media-uploader-mixin': true,
+            },
 
             // BUGFIXES
             // Fixed incorrectly added 'no-column-line' class when pagebuilder is slowly rendered
