@@ -26,6 +26,11 @@ var config = {
                 'Melios_PageBuilder/js/wysiwyg/tinymceAdapter-mixin': true
             },
 
+            // Allow modern images upload
+            'Magento_Ui/js/form/element/image-uploader': {
+                'Melios_PageBuilder/js/image-upload/image-uploader-mixin': true,
+            },
+
             // BUGFIXES
             // Fixed incorrectly added 'no-column-line' class when pagebuilder is slowly rendered
             'Magento_PageBuilder/js/content-type/column-group/preview': {
