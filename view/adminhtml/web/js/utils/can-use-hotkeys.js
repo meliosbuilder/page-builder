@@ -9,7 +9,7 @@ define([
         }
 
         if ($(event.target).is('input, select, textarea') && $(event.target).css('clip') === 'auto') {
-            if (allowedInputs && !$(event.target).is(allowedInputs)) {
+            if (!allowedInputs || allowedInputs && !$(event.target).is(allowedInputs)) {
                 return false
             }
         }
