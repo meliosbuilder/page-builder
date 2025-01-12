@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceContainer name="before.body.end">
+            <block class="Magento\Framework\View\Element\Text" name="melios.lazy-backgrounds">
+                <arguments>
+                    <argument name="text" xsi:type="string"><![CDATA[
+<script type="text/x-magento-init">
+    {
+        "*": {
+            "Melios_PageBuilder/js/lazy-backgrounds": {}
+        }
+    }
+</script>
+]]></argument>
+                </arguments>
+            </block>
+        </referenceContainer>
+    </body>
+</page>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <fieldset name="background">
+        <field name="loading_mode" sortOrder="31" formElement="select">
+            <settings>
+                <visible>false</visible>
+                <imports>
+                    <link name="visible">${$.parentName}.background_type:imageVisible</link>
+                </imports>
+            </settings>
+        </field>
+        <container name="mobile_loading_mode_group" sortOrder="41" component="Magento_Ui/js/form/components/group">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="visible" xsi:type="boolean">false</item>
+                    <item name="imports" xsi:type="array">
+                        <item name="visible" xsi:type="string">${$.parentName}.background_type:imageVisible</item>
+                    </item>
+                </item>
+            </argument>
+        </container>
+    </fieldset>
+</form>

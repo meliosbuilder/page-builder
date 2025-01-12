@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <fieldset name="background">
+        <field name="loading_mode" sortOrder="21" formElement="select">
+            <settings>
+                <dataType>text</dataType>
+                <dataScope>loading_mode</dataScope>
+                <label translate="true">Loading Mode</label>
+            </settings>
+            <formElements>
+                <select>
+                    <settings>
+                        <options>
+                            <option name="0" xsi:type="array">
+                                <item name="value" xsi:type="string">lazy</item>
+                                <item name="label" xsi:type="string" translate="true">Lazy</item>
+                            </option>
+                            <option name="1" xsi:type="array">
+                                <item name="value" xsi:type="string">auto</item>
+                                <item name="label" xsi:type="string" translate="true">Default</item>
+                            </option>
+                            <option name="2" xsi:type="array">
+                                <item name="value" xsi:type="string">preload</item>
+                                <item name="disabled" xsi:type="boolean">true</item>
+                                <item name="label" xsi:type="string" translate="true">Preload (Melios Builder Pro is required)</item>
+                            </option>
+                        </options>
+                    </settings>
+                </select>
+            </formElements>
+        </field>
+        <container name="mobile_loading_mode_group" sortOrder="31" component="Magento_Ui/js/form/components/group">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="breakLine" xsi:type="boolean">false</item>
+                </item>
+            </argument>
+            <field name="use_mobile_loading_mode" formElement="checkbox">
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="default" xsi:type="string">false</item>
+                        <item name="additionalClasses" xsi:type="string">mls-hide-labels</item>
+                    </item>
+                </argument>
+                <settings>
+                    <dataType>boolean</dataType>
+                    <label translate="true">Mobile Loading Mode</label>
+                </settings>
+                <formElements>
+                    <checkbox>
+                        <settings>
+                            <valueMap>
+                                <map name="false" xsi:type="string">false</map>
+                                <map name="true" xsi:type="string">true</map>
+                            </valueMap>
+                            <prefer>toggle</prefer>
+                        </settings>
+                    </checkbox>
+                </formElements>
+            </field>
+            <field name="mobile_loading_mode" formElement="select" component="Melios_PageBuilder/js/image/form/inherited-select">
+                <settings>
+                    <dataType>text</dataType>
+                    <dataScope>mobile_loading_mode</dataScope>
+                    <imports>
+                        <link name="disabled">!ns = ${ $.ns }, index = use_mobile_loading_mode:checked</link>
+                        <link name="inheritedValue">ns = ${ $.ns }, index = loading_mode:value</link>
+                    </imports>
+                </settings>
+                <formElements>
+                    <select>
+                        <settings>
+                            <options>
+                                <option name="0" xsi:type="array">
+                                    <item name="value" xsi:type="string">lazy</item>
+                                    <item name="label" xsi:type="string" translate="true">Lazy</item>
+                                </option>
+                                <option name="1" xsi:type="array">
+                                    <item name="value" xsi:type="string">auto</item>
+                                    <item name="label" xsi:type="string" translate="true">Default</item>
+                                </option>
+                                <option name="2" xsi:type="array">
+                                    <item name="value" xsi:type="string">preload</item>
+                                    <item name="disabled" xsi:type="boolean">true</item>
+                                    <item name="label" xsi:type="string" translate="true">Preload (Melios Builder Pro is required)</item>
+                                </option>
+                            </options>
+                        </settings>
+                    </select>
+                </formElements>
+            </field>
+        </container>
+    </fieldset>
+</form>
