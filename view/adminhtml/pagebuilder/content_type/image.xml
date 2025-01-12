@@ -28,10 +28,10 @@
                             persistence_mode="write"/>
                     </element>
                     <element name="mobile_image">
-                        <attribute name="use_mobile_dimensions" source="data-mls-dimensions"/>
+                        <attribute name="use_mobile_dimensions" source="data-mls-use-sm-dimensions"/>
                         <attribute name="mobile_width" source="width"/>
                         <attribute name="mobile_height" source="height"/>
-                        <attribute name="use_mobile_loading_mode" source="data-mls-loading"/>
+                        <attribute name="use_mobile_loading_mode" source="data-mls-use-sm-loading"/>
                         <attribute name="mobile_loading_mode"
                             reader="Melios_PageBuilder/js/image/content-type/loading-mode-reader"
                             persistence_mode="read"/>
