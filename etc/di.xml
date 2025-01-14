@@ -22,4 +22,9 @@
             </argument>
         </arguments>
     </type>
+
+    <!-- Background loading mode for all content types with bg attributes -->
+    <type name="Magento\PageBuilder\Model\Config\ContentType\Reader">
+        <plugin name="melios_page_builder" type="Melios\PageBuilder\Plugin\ContentTypeReader" />
+    </type>
 </config>
