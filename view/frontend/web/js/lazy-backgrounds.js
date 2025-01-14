@@ -3,24 +3,18 @@ define([
 ], function ($) {
     'use strict';
 
-    function onReveal(element, callback, options = {}) {
-        var revealObserver = new IntersectionObserver(entries => {
-            var nodes = entries
-                .filter(entry => entry.isIntersecting)
-                .map(entry => entry.target);
+    var revealObserver = new IntersectionObserver(entries => {
+        var nodes = entries
+            .filter(entry => entry.isIntersecting)
+            .map(entry => entry.target);
 
-            if (nodes.length) {
-                callback($(nodes));
-                nodes.forEach(el => revealObserver.unobserve(el));
-            }
-        }, options);
-
-        $(element).each((i, el) => revealObserver.observe(el));
-
-        return revealObserver;
-    };
+        nodes.forEach(el => {
+            el.classList.add('mls-load');
+            revealObserver.unobserve(el);
+        });
+    });
 
     $.async('[data-mls-loading="lazy"], [data-mls-sm-loading="lazy"]', el => {
-        onReveal(el, revealed => revealed.addClass('mls-load'));
+        revealObserver.observe(el)
     });
 });
