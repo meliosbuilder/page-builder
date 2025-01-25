@@ -11,6 +11,10 @@ define([
             return;
         }
 
+        if ($(e.target).hasClass('magento-widget')) {
+            return;
+        }
+
         $(el).find('.edit-content-type').click();
     });
 
