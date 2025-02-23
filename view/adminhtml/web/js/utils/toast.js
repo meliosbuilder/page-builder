@@ -18,21 +18,42 @@ define([
 
     document.head.appendChild(document.createElement('style')).innerHTML = css;
 
-    return {
-        show: function (params) {
-            params = typeof params === 'object' ? params : {
-                text: params,
-            };
+    function delayedToast(params, delay) {
+        var toast,
+            timerId = setTimeout(() => {
+                toast = show(params);
+            }, delay);
 
-            var toast = Toastify(_.extend({}, defaults, {
-                onClick: function () {
-                    if (toast) {
-                        toast.hideToast();
-                    }
-                },
-            }, params)).showToast();
-
-            return toast;
+        return {
+            hideToast: function () {
+                clearTimeout(timerId);
+                toast?.hideToast();
+            }
         }
+    }
+
+    function show(params) {
+        params = typeof params === 'object' ? params : {
+            text: params,
+        };
+
+        var toast = Toastify(_.extend({}, defaults, {
+            onClick: function () {
+                if (toast) {
+                    toast.hideToast();
+                }
+            },
+        }, params)).showToast();
+
+        return toast;
+    }
+
+    function showLater(params, delay = 150) {
+        return new delayedToast(params, delay);
+    }
+
+    return {
+        show: show,
+        showLater: showLater
     }
 });
