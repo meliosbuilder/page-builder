@@ -31,6 +31,8 @@ define([
                     }
                 },
             }, params)).showToast();
+
+            return toast;
         }
     }
 });
