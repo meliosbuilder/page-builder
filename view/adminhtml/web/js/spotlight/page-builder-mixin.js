@@ -4,8 +4,9 @@ define([
     'mage/utils/wrapper',
     'Magento_PageBuilder/js/events',
     'Melios_PageBuilder/js/spotlight/spotlight',
-    'Melios_PageBuilder/js/utils/can-use-hotkeys'
-], function ($, ko, wrapper, events, spotlight, canUseHotkeys) {
+    'Melios_PageBuilder/js/utils/can-use-hotkeys',
+    'Melios_PageBuilder/js/utils/is-in-viewport'
+], function ($, ko, wrapper, events, spotlight, canUseHotkeys, isInViewport) {
     'use strict';
 
     var mouseCoords = {
@@ -205,6 +206,20 @@ define([
                 target.last().focus();
                 break;
             }
+        }
+
+        if (!focused) {
+            var rootMargin = {
+                top: Math.ceil($('.pagebuilder-header').outerHeight()),
+            };
+
+            $(elements)
+                .filter((i, el) => isInViewport(el, { rootMargin }))
+                .each((i, el) => {
+                    $(el).focus();
+                    focused = true;
+                    return false;
+                });
         }
 
         if (!focused) {
