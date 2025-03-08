@@ -5,13 +5,17 @@ define([
     'use strict';
 
     $(document).on('dblclick', (e) => {
-        var el = $('.pagebuilder-content-type-active .pagebuilder-options-visible:visible');
+        var target = $(e.target),
+            el = $('.pagebuilder-content-type-active .pagebuilder-options-visible:visible');
 
         if (!el.length || $('.mls-popup:visible').length) {
             return;
         }
 
-        if ($(e.target).hasClass('magento-widget')) {
+        if (target.hasClass('magento-widget') ||
+            target.closest('.inline-wysiwyg').length ||
+            target.closest('a').length
+        ) {
             return;
         }
 
