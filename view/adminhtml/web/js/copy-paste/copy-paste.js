@@ -50,7 +50,7 @@ define([
     }
 
     $(document).on('copy', async e => {
-        if (!canUseHotkeys(e)) {
+        if (!canUseHotkeys(e) || window.getSelection().toString().length) {
             return;
         }
 
@@ -70,7 +70,7 @@ define([
     });
 
     $(document).on('cut', async e => {
-        if (!canUseHotkeys(e)) {
+        if (!canUseHotkeys(e) || window.getSelection().toString().length) {
             return;
         }
 
