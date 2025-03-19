@@ -6,6 +6,7 @@ define([
 
     function openAllParents(cmp) {
         cmp.opened?.(true);
+        cmp.activate?.();
 
         if (cmp.containers?.[0]) {
             openAllParents(cmp.containers[0]);
