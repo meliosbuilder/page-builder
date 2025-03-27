@@ -14,5 +14,6 @@ define([
                 o(e);
             }
         );
+        return Modal;
     };
 });
