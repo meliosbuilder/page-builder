@@ -22,4 +22,4 @@ bin/magento module:enable Melios_PageBuilder
  -  Ability to preload the image or background image.
  -  <kbd>Ctr+C</kbd>, <kbd>Ctrl+V</kbd> to copy/paste selected pagebuilder elements.
  -  <kbd>Ctr+S</kbd> to save contents without leaving the editor.
- -  View more examples at <a href="https://meliosbuilder.com" target="_blank" rel="noopener">https://meliosbuilder.com</a>
+ -  View more examples at <a href="https://meliosbuilder.com" target="_blank" rel="noopener">meliosbuilder.com</a>
