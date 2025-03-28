@@ -93,6 +93,10 @@ define([
     });
 
     $(document).on('paste', e => {
+        if (!canUseHotkeys(e)) {
+            return;
+        }
+
         var text = e.originalEvent.clipboardData.getData('text'),
             data = serializer.unserialize(text);
 
