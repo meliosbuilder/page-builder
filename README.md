@@ -11,11 +11,13 @@ bin/magento module:enable Melios_PageBuilder
 
 ## Highlights
 
+ -  <kbd>Alt+0</kbd> to activate pagebuilder immediately.
  -  Added image dimensions and fetchpriority attributes.
  -  Added ability to lazy load the image or background image.
  -  Allow uploading `webp` images.
  -  <kbd>Ctr+C</kbd>, <kbd>Ctrl+V</kbd> to copy/paste whole pagebuilder content.
  -  Added the `Gap` field for columns component.
+ -  Double click to edit hovered element.
 
 ## Pro features
 
