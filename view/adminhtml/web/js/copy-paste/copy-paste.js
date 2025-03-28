@@ -112,6 +112,10 @@ define([
             return $(document).trigger('melios:paste', { json: data });
         }
 
+        if ($('.pagebuilder-content-type-active').length) {
+            return;
+        }
+
         var el = $('.pagebuilder-wysiwyg-overlay._hover').add(
                 $('.pagebuilder-stage-wrapper.stage-full-screen').parent()
             ),
