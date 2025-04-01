@@ -368,7 +368,17 @@ define([
                             return b.style.zIndex - a.style.zIndex;;
                         }).get(0);
 
-                        return !topmostModal || $(topmostModal).has('#' + this.id).length;
+                        if (topmostModal && !$(topmostModal).has('#' + this.id).length) {
+                            return false
+                        }
+
+                        var data = {
+                            canOpen: true
+                        };
+
+                        $(document).trigger('melios:spotlight:beforeOpen', data);
+
+                        return data.canOpen;
                     }
                 });
         };
