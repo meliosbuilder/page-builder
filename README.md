@@ -6,7 +6,7 @@ Must-have improvements for the built-in Magento PageBuilder module.
 
 ```bash
 composer require melios/page-builder
-bin/magento module:enable Melios_PageBuilder
+bin/magento module:enable Melios_PageBuilder --clear-static-content
 ```
 
 ## Highlights
