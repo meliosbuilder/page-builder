@@ -9,6 +9,7 @@ define([
             var settings = o();
 
             settings.menubar = true;
+            settings.promotion = false;
 
             return settings;
         });
