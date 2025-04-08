@@ -2,13 +2,14 @@ define([
     'jquery',
     'knockout',
     'Melios_PageBuilder/js/copy-paste/serializer',
+    'Melios_PageBuilder/js/utils/clipboard',
     'Melios_PageBuilder/js/utils/toast',
     'Melios_PageBuilder/js/utils/can-use-hotkeys',
     'Melios_PageBuilder/js/utils/release-pagebuilder-locks',
     'Magento_PageBuilder/js/master-format/validator',
     'Magento_PageBuilder/js/stage-builder',
     'Magento_Ui/js/modal/confirm',
-], function ($, ko, serializer, toast, canUseHotkeys, releasePagebuilderLocks, isValidHtml, buildStage, confirm) {
+], function ($, ko, serializer, clipboard, toast, canUseHotkeys, releasePagebuilderLocks, isValidHtml, buildStage, confirm) {
     'use strict';
 
     async function getElementAndTextToCopy(e) {
@@ -64,9 +65,12 @@ define([
         }
 
         e.preventDefault();
-        await navigator.permissions.query({ name: 'clipboard-write' });
-        await navigator.clipboard.writeText(text);
-        toast.show('Copied!');
+
+        clipboard.writeText(text).then(() => {
+            toast.show('Copied!');
+        }).catch(e => {
+            toast.error(e.message);
+        });
     });
 
     $(document).on('cut', async e => {
