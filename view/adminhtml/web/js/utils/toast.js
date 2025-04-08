@@ -52,8 +52,21 @@ define([
         return new delayedToast(params, delay);
     }
 
+    function showError(params) {
+        params = typeof params === 'object' ? params : {
+            text: params,
+        };
+
+        params.style = {
+            background: '#c00'
+        };
+
+        return show(params);
+    }
+
     return {
         show: show,
+        error: showError,
         showLater: showLater
     }
 });
