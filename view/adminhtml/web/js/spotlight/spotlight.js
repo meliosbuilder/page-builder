@@ -86,9 +86,6 @@ define([
                     align-items: center;
                     gap: 6px;
 
-                    &:hover {
-                        background: rgba(0,0,0,.035);
-                    }
                     &:focus {
                         box-shadow: none;
                     }
@@ -97,6 +94,9 @@ define([
                     }
                 }
             }
+        }
+        .mls-mouse .melios-spotlight .mls-body .item:hover {
+            background: rgba(0,0,0,.035);
         }
     `;
 
@@ -136,7 +136,13 @@ define([
             `,
         },
         _create: function () {
+            $(document).on('mousemove', (e) => {
+                $('html').addClass('mls-mouse');
+            });
+
             $(document).on('keydown', (e) => {
+                $('html').removeClass('mls-mouse');
+
                 if (e.code === 'Escape' && this.opened()) {
                     return this.input.val() ? this.clear().focus() : this.close();
                 }
