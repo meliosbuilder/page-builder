@@ -44,6 +44,10 @@ define([
             return;
         }
 
+        if ($(document.activeElement).parents('body').length) {
+            return;
+        }
+
         var el = $('.pagebuilder-content-type-active .pagebuilder-options-visible:visible');
 
         if (!el.length || $('.mls-popup:visible').length) {
