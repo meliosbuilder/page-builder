@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <!-- Additional fields for each breakpoint (Margin/padding) -->
+    <type name="Magento\PageBuilder\Model\ConfigInterface">
+        <!-- Send "render/*_mobile_form" request for all components -->
+        <plugin name="melios_page_builder" type="Melios\PageBuilder\Plugin\PageBuilderConfig" />
+    </type>
+    <type name="Magento\Ui\Config\Reader\FileResolver">
+        <!-- Add additional fields dynamically -->
+        <plugin name="melios_page_builder" type="Melios\PageBuilder\Plugin\UiFileResolver" />
+    </type>
+    <type name="Magento\Framework\View\Model\Layout\Merge">
+        <!-- Add <uiComponent name="*_mobile_form"> dynamically -->
+        <plugin name="melios_page_builder" type="Melios\PageBuilder\Plugin\ViewLayoutMerge" />
+    </type>
+    <!-- <type name="Magento\PageBuilder\Model\Stage\Config\UiComponentConfig">
+        <plugin name="melios_page_builder" type="Melios\PageBuilder\Plugin\ComponentConfig" />
+    </type> -->
+</config>

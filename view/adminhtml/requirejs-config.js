@@ -39,6 +39,10 @@ var config = {
             'Magento_PageBuilder/js/content-type/column-group/preview': {
                 'Melios_PageBuilder/js/bugfixes/column-group-preview-mixin': true
             },
+            // Fixed error when min height is empty, but other mobile values are not
+            'Magento_PageBuilder/js/converter/style/min-height': {
+                'Melios_PageBuilder/js/bugfixes/converter-style-min-height-mixin': true
+            },
             // Do not close modal on Escape, if nested pagebuilder is opened
             'Magento_Ui/js/modal/modal': {
                 'Melios_PageBuilder/js/bugfixes/modal-mixin': true
