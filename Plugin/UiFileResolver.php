@@ -19,20 +19,22 @@ class UiFileResolver
             $result = ["melios/{$filename}" => $this->getMobileFormXml($componentName)];
         }
 
-        $addMarginAndPadding = true;
-        foreach ($result as $content) {
-            if (str_contains($content, '<field name="margins_and_padding">')) {
-                $addMarginAndPadding = false;
-                break;
-            }
-        }
-
-        if ($addMarginAndPadding) {
+        if (!$this->contains($result, '<field name="margins_and_padding">')) {
             $result["melios/margins_and_padding/{$filename}"] =
                 $this->getMobileMarginAndPaddingXml();
         }
 
         return $result;
+    }
+
+    private function contains(array $haystack, string $needle): bool
+    {
+        foreach ($haystack as $string) {
+            if (str_contains($string, $needle)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private function getMobileFormXml($componentName): string
