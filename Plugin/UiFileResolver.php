@@ -22,6 +22,8 @@ class UiFileResolver
         $resultStr = implode("\n", $result);
         $fields = [
             'margins_and_padding',
+            'border_width',
+            'border_radius',
         ];
 
         foreach ($fields as $field) {
