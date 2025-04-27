@@ -19,22 +19,18 @@ class UiFileResolver
             $result = ["melios/{$filename}" => $this->getMobileFormXml($componentName)];
         }
 
-        if (!$this->contains($result, '<field name="margins_and_padding">')) {
-            $result["melios/margins_and_padding/{$filename}"] =
-                $this->getMobileMarginAndPaddingXml();
+        $resultStr = implode("\n", $result);
+        $fields = [
+            'margins_and_padding',
+        ];
+
+        foreach ($fields as $field) {
+            if (!str_contains($resultStr, '<field name="' . $field . '">')) {
+                $result["melios/{$field}/{$filename}"] = $this->getMobileFieldXml($field);
+            }
         }
 
         return $result;
-    }
-
-    private function contains(array $haystack, string $needle): bool
-    {
-        foreach ($haystack as $string) {
-            if (str_contains($string, $needle)) {
-                return true;
-            }
-        }
-        return false;
     }
 
     private function getMobileFormXml($componentName): string
@@ -74,14 +70,14 @@ class UiFileResolver
         XML;
     }
 
-    private function getMobileMarginAndPaddingXml(): string
+    private function getMobileFieldXml($fieldName): string
     {
         return <<<XML
         <?xml version="1.0" encoding="UTF-8"?>
         <form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
               xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
             <fieldset name="advanced">
-                <field name="margins_and_padding">
+                <field name="{$fieldName}">
                     <argument name="data" xsi:type="array">
                         <item name="config" xsi:type="array">
                             <item name="breakpoints" xsi:type="array">
