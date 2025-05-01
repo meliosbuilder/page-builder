@@ -3,12 +3,7 @@
       xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
     <fieldset name="general">
         <container name="desktop_image_attributes" sortOrder="1">
-            <container name="image_dimensions" component="Magento_Ui/js/form/components/group">
-                <argument name="data" xsi:type="array">
-                    <item name="config" xsi:type="array">
-                        <item name="breakLine" xsi:type="boolean">false</item>
-                    </item>
-                </argument>
+            <container name="image_dimensions" component="Melios_PageBuilder/js/image/form/dimensions">
                 <field name="width" formElement="input">
                     <settings>
                         <dataType>number</dataType>
@@ -22,6 +17,32 @@
                             <rule name="validate-number" xsi:type="boolean">true</rule>
                         </validation>
                     </settings>
+                </field>
+                <field name="preserve_aspect_ratio" formElement="checkbox">
+                    <argument name="data" xsi:type="array">
+                        <item name="config" xsi:type="array">
+                            <item name="default" xsi:type="string">true</item>
+                            <item name="elementTmpl" xsi:type="string">Melios_PageBuilder/image/aspect-ratio</item>
+                        </item>
+                    </argument>
+                    <settings>
+                        <dataType>boolean</dataType>
+                        <label translate="true">Preserve aspect ratio</label>
+                        <additionalClasses>
+                            <class name="admin__field-small">true</class>
+                            <class name="mls-aspect-ratio">true</class>
+                        </additionalClasses>
+                    </settings>
+                    <formElements>
+                        <checkbox>
+                            <settings>
+                                <valueMap>
+                                    <map name="false" xsi:type="string">false</map>
+                                    <map name="true" xsi:type="string">true</map>
+                                </valueMap>
+                            </settings>
+                        </checkbox>
+                    </formElements>
                 </field>
                 <field name="height" formElement="input">
                     <settings>

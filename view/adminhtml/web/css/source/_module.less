@@ -94,6 +94,26 @@
         content: '' !important;
     }
 }
+.mls-aspect-ratio {
+    width: 20px;
+    &,
+    + div {
+        padding-left: 7px !important;
+    }
+    .admin__field-control {
+        width: auto !important;
+    }
+    .admin__field-option {
+        position: relative;
+        &:has(:focus-visible) {
+            &:extend(._keyfocus *:focus);
+        }
+    }
+    input[type="checkbox"] {
+        inset: 0;
+        margin: 0 !important;
+    }
+}
 
 // Mobile breakpoint notice
 .admin__field-mobile-breakpoint-notice {
