@@ -21,7 +21,7 @@
                 <field name="preserve_aspect_ratio" formElement="checkbox">
                     <argument name="data" xsi:type="array">
                         <item name="config" xsi:type="array">
-                            <item name="default" xsi:type="string">true</item>
+                            <item name="default" xsi:type="number">1</item>
                             <item name="elementTmpl" xsi:type="string">Melios_PageBuilder/image/aspect-ratio</item>
                         </item>
                     </argument>
@@ -37,8 +37,8 @@
                         <checkbox>
                             <settings>
                                 <valueMap>
-                                    <map name="false" xsi:type="string">false</map>
-                                    <map name="true" xsi:type="string">true</map>
+                                    <map name="false" xsi:type="number">0</map>
+                                    <map name="true" xsi:type="number">1</map>
                                 </valueMap>
                             </settings>
                         </checkbox>
