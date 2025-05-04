@@ -53,14 +53,32 @@ define([
 
         onImageChange: function (image) {
             ko.getObservable(image[0], 'previewWidth')?.subscribe(width => {
-                this.ignoreAspectRatio = true;
-                this.width(width);
-                this.ignoreAspectRatio = false;
+                setTimeout(() => {
+                    var newRatio = Math.round(image[0].previewWidth / (image[0].previewHeight || 1)),
+                        oldRatio = Math.round(this.width() / (this.height() || 1));
+
+                    if (newRatio === oldRatio) {
+                        return;
+                    }
+
+                    this.ignoreAspectRatio = true;
+                    this.width(width);
+                    this.ignoreAspectRatio = false;
+                });
             });
             ko.getObservable(image[0], 'previewHeight')?.subscribe(height => {
-                this.ignoreAspectRatio = true;
-                this.height(height);
-                this.ignoreAspectRatio = false;
+                setTimeout(() => {
+                    var newRatio = Math.round(image[0].previewWidth / (image[0].previewHeight || 1)),
+                        oldRatio = Math.round(this.width() / (this.height() || 1));
+
+                    if (newRatio === oldRatio) {
+                        return;
+                    }
+
+                    this.ignoreAspectRatio = true;
+                    this.height(height);
+                    this.ignoreAspectRatio = false;
+                });
             });
         },
 
