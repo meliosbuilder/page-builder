@@ -173,7 +173,10 @@ define([
     }, 20));
 
     function activateFocusTrap(elements) {
-        var focused = false;
+        var focused = false,
+            rootMargin = {
+                top: Math.ceil($('.pagebuilder-header').outerHeight()),
+            };
 
         $('[tabindex], button, input, select, textarea, a, audio, video, summary, details, [contenteditable]').each((i, el) => {
             $(el)
@@ -193,7 +196,7 @@ define([
 
             // try to focus inside dropped element
             target = $('.mls-focusable', scope);
-            if (target.length) {
+            if (target.length && isInViewport(target[0], { rootMargin })) {
                 focused = true;
                 target.first().focus();
                 break;
@@ -201,7 +204,7 @@ define([
 
             // try to focus after dropped element
             target = $('.mls-focusable', scope.parent());
-            if (target.length) {
+            if (target.length && isInViewport(target.last()[0], { rootMargin })) {
                 focused = true;
                 target.last().focus();
                 break;
@@ -209,10 +212,6 @@ define([
         }
 
         if (!focused) {
-            var rootMargin = {
-                top: Math.ceil($('.pagebuilder-header').outerHeight()),
-            };
-
             $(elements)
                 .filter((i, el) => isInViewport(el, { rootMargin }))
                 .each((i, el) => {
