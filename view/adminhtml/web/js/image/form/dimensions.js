@@ -79,7 +79,7 @@ define([
                         return;
                     }
 
-                    this.updateSizeIgnoringAspectRatio('width', width);
+                    this.updateSizeIgnoringAspectRatio('width', width / 2);
                 });
             });
             ko.getObservable(image[0], 'previewHeight')?.subscribe(height => {
@@ -92,7 +92,7 @@ define([
                         return;
                     }
 
-                    this.updateSizeIgnoringAspectRatio('height', height);
+                    this.updateSizeIgnoringAspectRatio('height', height / 2);
                 });
             });
         },
