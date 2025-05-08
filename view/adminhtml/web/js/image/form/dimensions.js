@@ -11,11 +11,6 @@ define([
             breakLine: false,
             aspectRatio: 0,
             ignoreAspectRatio: false,
-            links: {
-                width: '${ $.provider }:data.width',
-                height: '${ $.provider }:data.height',
-                preserveAspectRatio: '${ $.provider }:data.preserve_aspect_ratio',
-            },
         },
 
         initObservable: function () {
@@ -52,7 +47,7 @@ define([
                 }
             });
 
-            uiRegistry.get(`${this.ns}.${this.ns}.general.image`, image => {
+            uiRegistry.get(this.paths['image'], image => {
                 setTimeout(() => {
                     if (!this.width() || !this.height()) {
                         this.onImageChange(image.value());
@@ -61,7 +56,7 @@ define([
                 image.value.subscribe(this.onImageChange.bind(this));
             });
 
-            uiRegistry.get(`${this.name}.preserve_aspect_ratio`, checkbox => {
+            uiRegistry.get(this.paths['preserveAspectRatio'], checkbox => {
                 checkbox.checked(true);
             });
 

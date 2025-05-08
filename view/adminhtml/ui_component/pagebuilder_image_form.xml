@@ -4,6 +4,19 @@
     <fieldset name="general">
         <container name="desktop_image_attributes" sortOrder="1">
             <container name="image_dimensions" component="Melios_PageBuilder/js/image/form/dimensions">
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="paths" xsi:type="array">
+                            <item name="image" xsi:type="string">${ $.ns }.${ $.ns }.general.image</item>
+                            <item name="preserveAspectRatio" xsi:type="string">${ $.name }.preserve_aspect_ratio</item>
+                        </item>
+                        <item name="links" xsi:type="array">
+                            <item name="width" xsi:type="string">${ $.provider }:data.width</item>
+                            <item name="height" xsi:type="string">${ $.provider }:data.height</item>
+                            <item name="preserveAspectRatio" xsi:type="string">${ $.provider }:data.preserve_aspect_ratio</item>
+                        </item>
+                    </item>
+                </argument>
                 <field name="width" formElement="input">
                     <settings>
                         <dataType>number</dataType>
@@ -97,6 +110,19 @@
         </container>
         <container name="mobile_image_attributes" sortOrder="3">
             <container name="mobile_image_dimensions" component="Melios_PageBuilder/js/image/form/dimensions">
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="paths" xsi:type="array">
+                            <item name="image" xsi:type="string">${ $.ns }.${ $.ns }.general.mobile_image</item>
+                            <item name="preserveAspectRatio" xsi:type="string">${ $.name }.mobile_preserve_aspect_ratio</item>
+                        </item>
+                        <item name="links" xsi:type="array">
+                            <item name="width" xsi:type="string">${ $.provider }:data.mobile_width</item>
+                            <item name="height" xsi:type="string">${ $.provider }:data.mobile_height</item>
+                            <item name="preserveAspectRatio" xsi:type="string">${ $.provider }:data.mobile_preserve_aspect_ratio</item>
+                        </item>
+                    </item>
+                </argument>
                 <field name="use_mobile_dimensions" formElement="checkbox">
                     <argument name="data" xsi:type="array">
                         <item name="config" xsi:type="array">
