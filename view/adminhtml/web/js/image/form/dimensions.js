@@ -9,8 +9,7 @@ define([
     return Component.extend({
         defaults: {
             breakLine: false,
-            oldWidth: 0,
-            oldHeight: 0,
+            aspectRatio: 0,
             ignoreAspectRatio: false,
             links: {
                 width: '${ $.provider }:data.width',
@@ -26,23 +25,33 @@ define([
                 .observe(['width', 'height']);
 
             this.width.subscribe(newWidth => {
-                if (this.canPreserveAspectRatio() && newWidth) {
+                if (isNaN(newWidth) || !newWidth) {
+                    return;
+                }
+
+                if (this.canPreserveAspectRatio()) {
                     this.updateSizeIgnoringAspectRatio(
                         'height',
-                        Math.round(newWidth / (this.oldWidth / this.oldHeight))
+                        Math.round(newWidth / this.aspectRatio)
                     );
+                } else if (!+this.preserveAspectRatio) {
+                    this.aspectRatio = newWidth / this.height();
                 }
-                this.oldWidth = newWidth;
             });
 
             this.height.subscribe(newHeight => {
-                if (this.canPreserveAspectRatio() && newHeight) {
+                if (isNaN(newHeight) || !newHeight) {
+                    return;
+                }
+
+                if (this.canPreserveAspectRatio()) {
                     this.updateSizeIgnoringAspectRatio(
                         'width',
-                        Math.round(newHeight * (this.oldWidth / this.oldHeight))
+                        Math.round(newHeight * this.aspectRatio)
                     );
+                } else if (!+this.preserveAspectRatio) {
+                    this.aspectRatio = this.width() / newHeight;
                 }
-                this.oldHeight = newHeight;
             });
 
             uiRegistry.get(`${this.ns}.${this.ns}.general.image`, image => {
@@ -59,6 +68,7 @@ define([
                     var newRatio = Math.round(image[0].previewWidth / (image[0].previewHeight || 1)),
                         oldRatio = Math.round(this.width() / (this.height() || 1));
 
+                    this.aspectRatio = newRatio;
                     if (newRatio === oldRatio) {
                         return;
                     }
@@ -71,6 +81,7 @@ define([
                     var newRatio = Math.round(image[0].previewWidth / (image[0].previewHeight || 1)),
                         oldRatio = Math.round(this.width() / (this.height() || 1));
 
+                    this.aspectRatio = newRatio;
                     if (newRatio === oldRatio) {
                         return;
                     }
@@ -81,10 +92,7 @@ define([
         },
 
         canPreserveAspectRatio: function () {
-            return !this.ignoreAspectRatio
-                && +this.preserveAspectRatio
-                && this.oldWidth
-                && this.oldHeight;
+            return this.aspectRatio && !this.ignoreAspectRatio && +this.preserveAspectRatio;
         },
 
         updateSizeIgnoringAspectRatio: function (side, value) {
