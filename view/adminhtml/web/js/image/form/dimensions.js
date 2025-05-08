@@ -14,15 +14,13 @@ define([
             links: {
                 width: '${ $.provider }:data.width',
                 height: '${ $.provider }:data.height',
-            },
-            imports: {
                 preserveAspectRatio: '${ $.provider }:data.preserve_aspect_ratio',
             },
         },
 
         initObservable: function () {
             this._super()
-                .observe(['width', 'height']);
+                .observe(['width', 'height', 'preserveAspectRatio']);
 
             this.width.subscribe(newWidth => {
                 if (isNaN(newWidth) || !newWidth) {
@@ -34,7 +32,7 @@ define([
                         'height',
                         Math.round(newWidth / this.aspectRatio)
                     );
-                } else if (!+this.preserveAspectRatio) {
+                } else if (!+this.preserveAspectRatio() && this.height()) {
                     this.aspectRatio = newWidth / this.height();
                 }
             });
@@ -49,14 +47,22 @@ define([
                         'width',
                         Math.round(newHeight * this.aspectRatio)
                     );
-                } else if (!+this.preserveAspectRatio) {
+                } else if (!+this.preserveAspectRatio() && this.width()) {
                     this.aspectRatio = this.width() / newHeight;
                 }
             });
 
             uiRegistry.get(`${this.ns}.${this.ns}.general.image`, image => {
-                this.onImageChange(image.value());
+                setTimeout(() => {
+                    if (!this.width() || !this.height()) {
+                        this.onImageChange(image.value());
+                    }
+                });
                 image.value.subscribe(this.onImageChange.bind(this));
+            });
+
+            uiRegistry.get(`${this.name}.preserve_aspect_ratio`, checkbox => {
+                checkbox.checked(true);
             });
 
             return this;
@@ -65,8 +71,8 @@ define([
         onImageChange: function (image) {
             ko.getObservable(image[0], 'previewWidth')?.subscribe(width => {
                 setTimeout(() => {
-                    var newRatio = Math.round(image[0].previewWidth / (image[0].previewHeight || 1)),
-                        oldRatio = Math.round(this.width() / (this.height() || 1));
+                    var newRatio = image[0].previewWidth / (image[0].previewHeight || 1),
+                        oldRatio = this.width() / (this.height() || 1);
 
                     this.aspectRatio = newRatio;
                     if (newRatio === oldRatio) {
@@ -78,8 +84,8 @@ define([
             });
             ko.getObservable(image[0], 'previewHeight')?.subscribe(height => {
                 setTimeout(() => {
-                    var newRatio = Math.round(image[0].previewWidth / (image[0].previewHeight || 1)),
-                        oldRatio = Math.round(this.width() / (this.height() || 1));
+                    var newRatio = image[0].previewWidth / (image[0].previewHeight || 1),
+                        oldRatio = this.width() / (this.height() || 1);
 
                     this.aspectRatio = newRatio;
                     if (newRatio === oldRatio) {
@@ -92,7 +98,7 @@ define([
         },
 
         canPreserveAspectRatio: function () {
-            return this.aspectRatio && !this.ignoreAspectRatio && +this.preserveAspectRatio;
+            return this.aspectRatio && !this.ignoreAspectRatio && +this.preserveAspectRatio();
         },
 
         updateSizeIgnoringAspectRatio: function (side, value) {

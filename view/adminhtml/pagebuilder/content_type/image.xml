@@ -8,7 +8,6 @@
                     <element name="desktop_image">
                         <attribute name="width" source="width"/>
                         <attribute name="height" source="height"/>
-                        <attribute name="preserve_aspect_ratio" source="preserve_aspect_ratio"/>
                         <attribute name="loading_mode"
                             reader="Melios_PageBuilder/js/image/content-type/loading-mode-reader"
                             persistence_mode="read"/>
@@ -32,7 +31,6 @@
                         <attribute name="use_mobile_dimensions" source="data-mls-use-sm-dimensions"/>
                         <attribute name="mobile_width" source="width"/>
                         <attribute name="mobile_height" source="height"/>
-                        <attribute name="mobile_preserve_aspect_ratio" source="mobile_preserve_aspect_ratio"/>
                         <attribute name="use_mobile_loading_mode" source="data-mls-use-sm-loading"/>
                         <attribute name="mobile_loading_mode"
                             reader="Melios_PageBuilder/js/image/content-type/loading-mode-reader"
