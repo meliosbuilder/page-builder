@@ -58,11 +58,24 @@ define([
 
             uiRegistry.get(this.paths['preserveAspectRatio'], checkbox => {
                 checkbox.checked(true);
+                checkbox.on('disabled', flag => {
+                    if (!flag) {
+                        checkbox.checked(true);
+                    }
+                });
             });
 
             uiRegistry.get(this.paths['width'], input => {
-                input.on('disabled', () => {
-                    this.aspectRatio = 0;
+                input.on('disabled', flag => {
+                    if (flag) {
+                        this.aspectRatio = 0;
+                    } else {
+                        setTimeout(() => {
+                            if (this.width() && this.height()) {
+                                this.aspectRatio = this.width() / this.height();
+                            }
+                        });
+                    }
                 });
             });
 
