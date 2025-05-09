@@ -22,14 +22,20 @@ define([
                     return;
                 }
 
-                if (this.canPreserveAspectRatio()) {
-                    this.updateSizeIgnoringAspectRatio(
-                        'height',
-                        Math.round(newWidth / this.aspectRatio)
-                    );
-                } else if (!+this.preserveAspectRatio() && this.height()) {
-                    this.aspectRatio = newWidth / this.height();
-                }
+                uiRegistry.get(this.paths['width'], input => {
+                    if (input.disabled()) {
+                        return;
+                    }
+
+                    if (this.canPreserveAspectRatio()) {
+                        this.updateSizeIgnoringAspectRatio(
+                            'height',
+                            Math.round(newWidth / this.aspectRatio)
+                        );
+                    } else if (!+this.preserveAspectRatio() && this.height()) {
+                        this.aspectRatio = newWidth / this.height();
+                    }
+                });
             });
 
             this.height.subscribe(newHeight => {
@@ -37,14 +43,20 @@ define([
                     return;
                 }
 
-                if (this.canPreserveAspectRatio()) {
-                    this.updateSizeIgnoringAspectRatio(
-                        'width',
-                        Math.round(newHeight * this.aspectRatio)
-                    );
-                } else if (!+this.preserveAspectRatio() && this.width()) {
-                    this.aspectRatio = this.width() / newHeight;
-                }
+                uiRegistry.get(this.paths['height'], input => {
+                    if (input.disabled()) {
+                        return;
+                    }
+
+                    if (this.canPreserveAspectRatio()) {
+                        this.updateSizeIgnoringAspectRatio(
+                            'width',
+                            Math.round(newHeight * this.aspectRatio)
+                        );
+                    } else if (!+this.preserveAspectRatio() && this.width()) {
+                        this.aspectRatio = this.width() / newHeight;
+                    }
+                });
             });
 
             uiRegistry.get(this.paths['image'], image => {
@@ -56,6 +68,7 @@ define([
                 image.value.subscribe(this.onImageChange.bind(this));
             });
 
+            // preserve aspect ratio is not saved actually - check it when enabling
             uiRegistry.get(this.paths['preserveAspectRatio'], checkbox => {
                 checkbox.checked(true);
                 checkbox.on('disabled', flag => {
@@ -83,6 +96,14 @@ define([
         },
 
         onImageChange: function (image) {
+            if (!image[0]) {
+                this.updateSizeIgnoringAspectRatio('width', '');
+                this.updateSizeIgnoringAspectRatio('height', '');
+                uiRegistry.get(`${this.name}.use_mobile_dimensions`)?.checked(false);
+
+                return;
+            }
+
             ko.getObservable(image[0], 'previewWidth')?.subscribe(width => {
                 uiRegistry.get(this.paths['width'], input => {
                     setTimeout(() => {
