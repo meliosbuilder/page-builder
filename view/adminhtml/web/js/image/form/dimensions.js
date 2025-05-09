@@ -110,12 +110,11 @@ define([
                         var newRatio = image[0].previewWidth / (image[0].previewHeight || 1),
                             oldRatio = this.width() / (this.height() || 1);
 
-                        if (input.disabled() && newRatio !== oldRatio) {
-                            uiRegistry.get(`${this.name}.use_mobile_dimensions`).checked(true);
-                        }
-
                         this.aspectRatio = newRatio;
-                        if (newRatio === oldRatio) {
+
+                        if (input.disabled()) {
+                            uiRegistry.get(`${this.name}.use_mobile_dimensions`).checked(true);
+                        } else if (newRatio === oldRatio) {
                             return;
                         }
 
@@ -129,12 +128,11 @@ define([
                         var newRatio = image[0].previewWidth / (image[0].previewHeight || 1),
                             oldRatio = this.width() / (this.height() || 1);
 
-                        if (input.disabled() && newRatio !== oldRatio) {
-                            uiRegistry.get(`${this.name}.use_mobile_dimensions`).checked(true);
-                        }
-
                         this.aspectRatio = newRatio;
-                        if (newRatio === oldRatio) {
+
+                        if (input.disabled()) {
+                            uiRegistry.get(`${this.name}.use_mobile_dimensions`).checked(true);
+                        } else if (newRatio === oldRatio) {
                             return;
                         }
 
