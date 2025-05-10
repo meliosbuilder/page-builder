@@ -2,8 +2,9 @@ define([
     'jquery',
     'ko',
     'uiRegistry',
+    'mage/translate',
     'Magento_Ui/js/form/components/group'
-], function ($, ko, uiRegistry, Component) {
+], function ($, ko, uiRegistry, $t, Component) {
     'use strict';
 
     return Component.extend({
@@ -15,7 +16,22 @@ define([
 
         initObservable: function () {
             this._super()
-                .observe(['width', 'height', 'preserveAspectRatio']);
+                .observe([
+                    'width',
+                    'height',
+                    'aspectRatio',
+                    'preserveAspectRatio',
+                ]);
+
+            this.aspectRatio.subscribe(ratio => {
+                uiRegistry.get(this.paths['preserveAspectRatio'], checkbox => {
+                    var fraction = this.toReducedFraction(this.width(), this.height());
+                    $('#' + checkbox.uid).parent().attr(
+                        'title',
+                        $t('Preserve {ratio} aspect ratio').replace('{ratio}', fraction.join(':'))
+                    );
+                });
+            });
 
             this.width.subscribe(newWidth => {
                 if (isNaN(newWidth) || !newWidth) {
@@ -30,10 +46,10 @@ define([
                     if (this.canPreserveAspectRatio()) {
                         this.updateSizeIgnoringAspectRatio(
                             'height',
-                            Math.round(newWidth / this.aspectRatio)
+                            newWidth / this.aspectRatio()
                         );
-                    } else if (!+this.preserveAspectRatio() && this.height()) {
-                        this.aspectRatio = newWidth / this.height();
+                    } else if ((!+this.preserveAspectRatio() || !this.aspectRatio()) && this.height()) {
+                        this.aspectRatio(newWidth / this.height());
                     }
                 });
             });
@@ -51,10 +67,10 @@ define([
                     if (this.canPreserveAspectRatio()) {
                         this.updateSizeIgnoringAspectRatio(
                             'width',
-                            Math.round(newHeight * this.aspectRatio)
+                            newHeight * this.aspectRatio()
                         );
-                    } else if (!+this.preserveAspectRatio() && this.width()) {
-                        this.aspectRatio = this.width() / newHeight;
+                    } else if ((!+this.preserveAspectRatio() || !this.aspectRatio()) && this.width()) {
+                        this.aspectRatio(this.width() / newHeight);
                     }
                 });
             });
@@ -81,11 +97,11 @@ define([
             uiRegistry.get(this.paths['width'], input => {
                 input.on('disabled', flag => {
                     if (flag) {
-                        this.aspectRatio = 0;
+                        this.aspectRatio(0);
                     } else {
                         setTimeout(() => {
                             if (this.width() && this.height()) {
-                                this.aspectRatio = this.width() / this.height();
+                                this.aspectRatio(this.width() / this.height());
                             }
                         });
                     }
@@ -110,7 +126,7 @@ define([
                         var newRatio = image[0].previewWidth / (image[0].previewHeight || 1),
                             oldRatio = this.width() / (this.height() || 1);
 
-                        this.aspectRatio = newRatio;
+                        this.aspectRatio(newRatio);
 
                         if (input.disabled()) {
                             uiRegistry.get(`${this.name}.use_mobile_dimensions`).checked(true);
@@ -128,7 +144,7 @@ define([
                         var newRatio = image[0].previewWidth / (image[0].previewHeight || 1),
                             oldRatio = this.width() / (this.height() || 1);
 
-                        this.aspectRatio = newRatio;
+                        this.aspectRatio(newRatio);
 
                         if (input.disabled()) {
                             uiRegistry.get(`${this.name}.use_mobile_dimensions`).checked(true);
@@ -143,13 +159,24 @@ define([
         },
 
         canPreserveAspectRatio: function () {
-            return this.aspectRatio && !this.ignoreAspectRatio && +this.preserveAspectRatio();
+            return this.aspectRatio() && !this.ignoreAspectRatio && +this.preserveAspectRatio();
         },
 
         updateSizeIgnoringAspectRatio: function (side, value) {
+            if (value !== '') {
+                value = value % 1 === 0 ? value : value.toFixed(1);
+            }
+
             this.ignoreAspectRatio = true;
             this[side](value);
             this.ignoreAspectRatio = false;
+        },
+
+        toReducedFraction: function (width, height) {
+            const gcd = (a, b) => b === 0 ? a : gcd(b, a % b);
+            const divisor = gcd(width, height);
+
+            return [width / divisor, height / divisor];
         }
     })
 });
