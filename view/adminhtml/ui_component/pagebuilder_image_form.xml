@@ -3,10 +3,20 @@
       xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
     <fieldset name="general">
         <container name="desktop_image_attributes" sortOrder="1">
-            <container name="image_dimensions" component="Magento_Ui/js/form/components/group">
+            <container name="image_dimensions" component="Melios_PageBuilder/js/image/form/dimensions">
                 <argument name="data" xsi:type="array">
                     <item name="config" xsi:type="array">
-                        <item name="breakLine" xsi:type="boolean">false</item>
+                        <item name="paths" xsi:type="array">
+                            <item name="image" xsi:type="string">${ $.ns }.${ $.ns }.general.image</item>
+                            <item name="width" xsi:type="string">${ $.name }.width</item>
+                            <item name="height" xsi:type="string">${ $.name }.height</item>
+                            <item name="preserveAspectRatio" xsi:type="string">${ $.name }.preserve_aspect_ratio</item>
+                        </item>
+                        <item name="links" xsi:type="array">
+                            <item name="width" xsi:type="string">${ $.provider }:data.width</item>
+                            <item name="height" xsi:type="string">${ $.provider }:data.height</item>
+                            <item name="preserveAspectRatio" xsi:type="string">${ $.provider }:data.preserve_aspect_ratio</item>
+                        </item>
                     </item>
                 </argument>
                 <field name="width" formElement="input">
@@ -22,6 +32,32 @@
                             <rule name="validate-number" xsi:type="boolean">true</rule>
                         </validation>
                     </settings>
+                </field>
+                <field name="preserve_aspect_ratio" formElement="checkbox">
+                    <argument name="data" xsi:type="array">
+                        <item name="config" xsi:type="array">
+                            <item name="default" xsi:type="number">1</item>
+                            <item name="elementTmpl" xsi:type="string">Melios_PageBuilder/image/aspect-ratio</item>
+                        </item>
+                    </argument>
+                    <settings>
+                        <dataType>boolean</dataType>
+                        <label translate="true">Preserve aspect ratio</label>
+                        <additionalClasses>
+                            <class name="admin__field-small">true</class>
+                            <class name="mls-aspect-ratio">true</class>
+                        </additionalClasses>
+                    </settings>
+                    <formElements>
+                        <checkbox>
+                            <settings>
+                                <valueMap>
+                                    <map name="false" xsi:type="number">0</map>
+                                    <map name="true" xsi:type="number">1</map>
+                                </valueMap>
+                            </settings>
+                        </checkbox>
+                    </formElements>
                 </field>
                 <field name="height" formElement="input">
                     <settings>
@@ -75,10 +111,20 @@
             </field>
         </container>
         <container name="mobile_image_attributes" sortOrder="3">
-            <container name="mobile_image_dimensions" component="Magento_Ui/js/form/components/group">
+            <container name="mobile_image_dimensions" component="Melios_PageBuilder/js/image/form/dimensions">
                 <argument name="data" xsi:type="array">
                     <item name="config" xsi:type="array">
-                        <item name="breakLine" xsi:type="boolean">false</item>
+                        <item name="paths" xsi:type="array">
+                            <item name="image" xsi:type="string">${ $.ns }.${ $.ns }.general.mobile_image</item>
+                            <item name="width" xsi:type="string">${ $.name }.mobile_width</item>
+                            <item name="height" xsi:type="string">${ $.name }.mobile_height</item>
+                            <item name="preserveAspectRatio" xsi:type="string">${ $.name }.mobile_preserve_aspect_ratio</item>
+                        </item>
+                        <item name="links" xsi:type="array">
+                            <item name="width" xsi:type="string">${ $.provider }:data.mobile_width</item>
+                            <item name="height" xsi:type="string">${ $.provider }:data.mobile_height</item>
+                            <item name="preserveAspectRatio" xsi:type="string">${ $.provider }:data.mobile_preserve_aspect_ratio</item>
+                        </item>
                     </item>
                 </argument>
                 <field name="use_mobile_dimensions" formElement="checkbox">
@@ -120,6 +166,36 @@
                             <link name="inheritedValue">ns = ${ $.ns }, index = width:value</link>
                         </imports>
                     </settings>
+                </field>
+                <field name="mobile_preserve_aspect_ratio" formElement="checkbox" component="Melios_PageBuilder/js/image/form/inherited-single-checkbox">
+                    <argument name="data" xsi:type="array">
+                        <item name="config" xsi:type="array">
+                            <item name="default" xsi:type="number">1</item>
+                            <item name="elementTmpl" xsi:type="string">Melios_PageBuilder/image/aspect-ratio</item>
+                        </item>
+                    </argument>
+                    <settings>
+                        <dataType>boolean</dataType>
+                        <label translate="true">Preserve aspect ratio</label>
+                        <additionalClasses>
+                            <class name="admin__field-small">true</class>
+                            <class name="mls-aspect-ratio">true</class>
+                        </additionalClasses>
+                        <imports>
+                            <link name="disabled">!ns = ${ $.ns }, index = use_mobile_dimensions:checked</link>
+                            <link name="inheritedValue">ns = ${ $.ns }, index = preserve_aspect_ratio:checked</link>
+                        </imports>
+                    </settings>
+                    <formElements>
+                        <checkbox>
+                            <settings>
+                                <valueMap>
+                                    <map name="false" xsi:type="number">0</map>
+                                    <map name="true" xsi:type="number">1</map>
+                                </valueMap>
+                            </settings>
+                        </checkbox>
+                    </formElements>
                 </field>
                 <field name="mobile_height" formElement="input" component="Melios_PageBuilder/js/image/form/inherited-input">
                     <settings>

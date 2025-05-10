@@ -10,12 +10,16 @@ define([], function () {
         },
 
         onDisabledUpdate: function (flag) {
-            this.value(flag ? this.inheritedValue : this.initialValue);
+            var key = this.checked ? 'checked' : 'value';
+
+            this[key](flag ? this.inheritedValue : this.initialValue);
         },
 
         onInheritedValueUpdate: function (value) {
+            var key = this.checked ? 'checked' : 'value';
+
             if (this.disabled()) {
-                this.value(value);
+                this[key](value);
             }
         }
     };
