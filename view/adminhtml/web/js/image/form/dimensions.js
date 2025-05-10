@@ -44,6 +44,14 @@ define([
             });
 
             this.width.subscribe(newWidth => {
+                if (newWidth?.includes?.('x')) {
+                    return setTimeout(() => {
+                        var [width, height] = newWidth.split('x');
+                        this.aspectRatio(width / height);
+                        this.width(width);
+                    });
+                }
+
                 if (isNaN(newWidth) || !newWidth) {
                     return;
                 }
