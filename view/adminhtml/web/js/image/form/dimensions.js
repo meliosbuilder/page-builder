@@ -14,6 +14,14 @@ define([
             ignoreAspectRatio: false,
         },
 
+        initialize: function () {
+            this._super();
+
+            this.additionalClasses['mls-dimensions'] = true;
+
+            return this;
+        },
+
         initObservable: function () {
             this._super()
                 .observe([
@@ -164,7 +172,7 @@ define([
 
         updateSizeIgnoringAspectRatio: function (side, value) {
             if (value !== '') {
-                value = value % 1 === 0 ? value : value.toFixed(1);
+                value = value % 1 === 0 ? value : parseFloat(value.toFixed(1));
             }
 
             this.ignoreAspectRatio = true;
