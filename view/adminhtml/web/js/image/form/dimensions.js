@@ -32,12 +32,14 @@ define([
                 ]);
 
             this.aspectRatio.subscribe(ratio => {
-                uiRegistry.get(this.paths['preserveAspectRatio'], checkbox => {
-                    var fraction = this.toReducedFraction(this.width(), this.height());
-                    $('#' + checkbox.uid).parent().attr(
-                        'title',
-                        $t('Preserve {ratio} aspect ratio').replace('{ratio}', fraction.join(':'))
-                    );
+                setTimeout(() => { // wait until width and height will be updated
+                    uiRegistry.get(this.paths['preserveAspectRatio'], checkbox => {
+                        var fraction = this.toReducedFraction(this.width(), this.height());
+                        $('#' + checkbox.uid).parent().attr(
+                            'title',
+                            $t('Preserve {ratio} aspect ratio').replace('{ratio}', fraction.join(':'))
+                        );
+                    });
                 });
             });
 
