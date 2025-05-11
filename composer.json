@@ -4,6 +4,9 @@
     "type": "magento2-module",
     "version": "1.4.0",
     "license": "GPL-3.0-or-later",
+    "require": {
+        "swissup/module-codemirror": "^1.1.17"
+    },
     "autoload": {
         "files": [
             "registration.php"
