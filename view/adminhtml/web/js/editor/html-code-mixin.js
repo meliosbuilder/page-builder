@@ -15,7 +15,17 @@ define([
                         {
                             re: /<svg[\s\S]*?<\/svg>/,
                             placeholder: function (match) {
-                                return '<span class="mls mls-svg">svg</span>';
+                                var icon = match[0];
+
+                                if (!icon.includes('height=')) {
+                                    icon = icon.replace('<svg ', '<svg height="20" ');
+                                }
+
+                                if (!icon.includes('width=')) {
+                                    icon = icon.replace('<svg ', '<svg width="20" ');
+                                }
+
+                                return `<span class="mls-transparent">${icon}</span>`;
                             }
                         },
                     ],
