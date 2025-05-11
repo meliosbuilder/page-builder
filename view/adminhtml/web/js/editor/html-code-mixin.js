@@ -11,6 +11,14 @@ define([
                 editorConfig: {
                     mode: 'htmlmixed',
                     lineWrapping: true,
+                    directives: [
+                        {
+                            re: /<svg[\s\S]*?<\/svg>/,
+                            placeholder: function (match) {
+                                return '<span class="mls mls-svg">svg</span>';
+                            }
+                        },
+                    ],
                 },
             },
 
