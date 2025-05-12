@@ -18,6 +18,10 @@ define([
                             placeholder: function (match) {
                                 var icon = match[0];
 
+                                // todo: parse viewBox to keep proper ratio
+                                // and to use bigger size if svg is not an
+                                // icon (> ~50px)
+
                                 if (!icon.includes('height=')) {
                                     icon = icon.replace('<svg ', '<svg height="20" ');
                                 }
