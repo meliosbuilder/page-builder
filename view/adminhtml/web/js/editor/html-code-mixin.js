@@ -1,7 +1,8 @@
 define([
     'Magento_Ui/js/lib/view/utils/async',
     'Swissup_Codemirror/js/form/element/codemirror-strategy',
-    'Swissup_Codemirror/js/pagebuilder/html-code-fixes'
+    'Swissup_Codemirror/js/pagebuilder/html-code-fixes',
+    './keymap'
 ], function ($, strategy) {
     'use strict';
 
@@ -29,6 +30,7 @@ define([
                             }
                         },
                     ],
+                    keyMap: 'sublimeMini'
                 },
             },
 
