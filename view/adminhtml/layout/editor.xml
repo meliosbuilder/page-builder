@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <css src="Melios_PageBuilder::js/lib/codemirror/lib/codemirror.css"/>
+        <css src="Melios_PageBuilder::js/lib/codemirror/addon/dialog/dialog.css"/>
+        <css src="Melios_PageBuilder::js/lib/codemirror/addon/display/fullscreen.css"/>
+        <css src="Melios_PageBuilder::js/lib/codemirror/addon/lint/lint.css"/>
+        <css src="Melios_PageBuilder::js/lib/codemirror/addon/search/matchesonscrollbar.css"/>
+        <css src="Melios_PageBuilder::js/lib/codemirror/addon/scroll/simplescrollbars.css"/>
+        <css src="Melios_PageBuilder::js/lib/codemirror/theme/ayu-mirage.css"/>
+        <css src="Melios_PageBuilder::js/lib/codemirror/theme/dracula.css"/>
+        <css src="Melios_PageBuilder::js/lib/codemirror/theme/material-darker.css"/>
+        <css src="Melios_PageBuilder::js/lib/codemirror/theme/material.css"/>
+        <css src="Melios_PageBuilder::js/lib/codemirror/theme/monokai.css"/>
+    </head>
+</page>

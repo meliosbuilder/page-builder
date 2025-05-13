@@ -1,8 +1,8 @@
 define([
-  'Swissup_Codemirror/js/codemirror/lib/codemirror',
-  'Swissup_Codemirror/js/codemirror/addon/search/searchcursor',
-  'Swissup_Codemirror/js/codemirror/addon/edit/matchbrackets',
-  'Swissup_Codemirror/js/codemirror/addon/comment/comment',
+  'Melios_PageBuilder/js/lib/codemirror/lib/codemirror',
+  'Melios_PageBuilder/js/lib/codemirror/addon/search/searchcursor',
+  'Melios_PageBuilder/js/lib/codemirror/addon/edit/matchbrackets',
+  'Melios_PageBuilder/js/lib/codemirror/addon/comment/comment',
 ], function (CodeMirror) {
   'use strict';
 
@@ -277,7 +277,7 @@ define([
     "Cmd-K Cmd-L": "downcaseAtCursor",
     "Ctrl-Shift-Up": "addCursorToPrevLine",
     "Ctrl-Shift-Down": "addCursorToNextLine",
-    // "Cmd-Ctrl-F": "toggleFullscreen",
+    "Cmd-Ctrl-F": "toggleFullscreen",
     "fallthrough": "macDefault"
   };
   CodeMirror.normalizeKeyMap(keyMap.macMelios);
@@ -303,7 +303,7 @@ define([
     "Ctrl-K Ctrl-L": "downcaseAtCursor",
     "Ctrl-Alt-Up": "addCursorToPrevLine",
     "Ctrl-Alt-Down": "addCursorToNextLine",
-    // "F11": "toggleFullscreen",
+    "F11": "toggleFullscreen",
     "fallthrough": "pcDefault"
   };
   CodeMirror.normalizeKeyMap(keyMap.pcMelios);

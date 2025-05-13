@@ -1,4 +1,9 @@
 var config = {
+    map: {
+        '*': {
+            'htmlhint': 'Melios_PageBuilder/js/lib/htmlhint',
+        },
+    },
     config: {
         mixins: {
             'Magento_PageBuilder/js/page-builder': {
