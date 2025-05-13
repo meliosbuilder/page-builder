@@ -155,13 +155,54 @@
 }
 
 // Code Editor
-.CodeMirror .CodeMirror-widget:has(.mls-transparent) {
-    opacity: 1;
-    background: transparent;
-    border: 0;
+.modal-slide:has(.CodeMirror-fullscreen) {
+    left: 0;
+    right: 0;
+}
+.CodeMirror {
+    border: 1px solid #adadad;
 
     &:hover {
+        border-color: #878787;
+    }
+
+    &-fullscreen {
+        border: 0;
+    }
+
+    .ui-resizable-s,
+    .ui-resizable-se {
+        position: absolute;
+        left: auto;
+        bottom: 1px;
+        right: 1px;
+        width: 15px;
+        height: 15px;
+        overflow: hidden;
+
+        &:before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            width: 150%;
+            height: 1px;
+            transform: rotate(-45deg);
+            opacity: .5;
+            background: #000;
+            box-shadow: 0 3px #000,
+                        0 6px #000;
+        }
+    }
+
+    .CodeMirror-widget:has(.mls-transparent) {
         opacity: 1;
         background: transparent;
+        border: 0;
+
+        &:hover {
+            opacity: 1;
+            background: transparent;
+        }
     }
 }

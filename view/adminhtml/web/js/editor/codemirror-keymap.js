@@ -254,6 +254,16 @@ define([
   cmds.toggleFullscreen = function(cm) {
     cm.setOption("fullScreen", !cm.getOption("fullScreen"));
   };
+  cmds.exitFullscreen = function(cm) {
+    cm.setOption("fullScreen", false);
+  };
+
+  cmds.onEscape = function(cm) {
+    if (cm.listSelections().length <= 1) {
+      cmds.exitFullscreen(cm);
+    }
+    cmds.singleSelectionTop(cm);
+  };
 
   var keyMap = CodeMirror.keyMap;
   keyMap.macMelios = {
@@ -263,8 +273,9 @@ define([
     "Ctrl-Alt-Down": "scrollLineDown",
     "Cmd-L": "selectLine",
     "Shift-Cmd-L": "splitSelectionByLine",
-    "Esc": "singleSelectionTop",
+    "Esc": "onEscape",
     "Cmd-Enter": "insertLineAfter",
+    "Shift-Enter": "insertLineAfter",
     "Shift-Cmd-Enter": "insertLineBefore",
     "Cmd-D": "selectNextOccurrence",
     "Cmd-Ctrl-Up": "swapLineUp",
@@ -289,8 +300,9 @@ define([
     "Ctrl-Down": "scrollLineDown",
     "Ctrl-L": "selectLine",
     "Shift-Ctrl-L": "splitSelectionByLine",
-    "Esc": "singleSelectionTop",
+    "Esc": "onEscape",
     "Ctrl-Enter": "insertLineAfter",
+    "Shift-Enter": "insertLineAfter",
     "Shift-Ctrl-Enter": "insertLineBefore",
     "Ctrl-D": "selectNextOccurrence",
     "Shift-Ctrl-Up": "swapLineUp",
