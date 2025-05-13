@@ -9,7 +9,8 @@ define([], function () {
                 require([
                     'Magento_Ui/js/lib/view/utils/async',
                     'Melios_PageBuilder/js/lib/codemirror/lib/codemirror',
-                    'Melios_PageBuilder/js/editor/codemirror-config'
+                    'Melios_PageBuilder/js/editor/codemirror-config',
+                    'Melios_PageBuilder/js/editor/codemirror-fixes'
                 ], ($, CodeMirror, config) => {
                     $.async('#' + this.uid, textarea => {
                         this.cm = CodeMirror.fromTextArea(textarea, config);
