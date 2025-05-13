@@ -256,7 +256,7 @@ define([
   };
 
   var keyMap = CodeMirror.keyMap;
-  keyMap.macSublimeMini = {
+  keyMap.macMelios = {
     "Shift-Tab": "indentLess",
     "Shift-Ctrl-K": "deleteLine",
     "Ctrl-Alt-Up": "scrollLineUp",
@@ -280,9 +280,9 @@ define([
     // "Cmd-Ctrl-F": "toggleFullscreen",
     "fallthrough": "macDefault"
   };
-  CodeMirror.normalizeKeyMap(keyMap.macSublimeMini);
+  CodeMirror.normalizeKeyMap(keyMap.macMelios);
 
-  keyMap.pcSublimeMini = {
+  keyMap.pcMelios = {
     "Shift-Tab": "indentLess",
     "Shift-Ctrl-K": "deleteLine",
     "Ctrl-Up": "scrollLineUp",
@@ -306,8 +306,8 @@ define([
     // "F11": "toggleFullscreen",
     "fallthrough": "pcDefault"
   };
-  CodeMirror.normalizeKeyMap(keyMap.pcSublimeMini);
+  CodeMirror.normalizeKeyMap(keyMap.pcMelios);
 
   var mac = keyMap.default == keyMap.macDefault;
-  keyMap.sublimeMini = mac ? keyMap.macSublimeMini : keyMap.pcSublimeMini;
+  keyMap.melios = mac ? keyMap.macMelios : keyMap.pcMelios;
 });
