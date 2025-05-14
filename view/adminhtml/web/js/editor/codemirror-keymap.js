@@ -252,6 +252,14 @@ define([
     modifyWordOrSelection(cm, function(str) { return str.toLowerCase(); });
   };
 
+  cmds.toggleTheme = function(cm) {
+    var theme = cm.getOption('theme') === 'default'
+      ? cm.getOption('darkTheme')
+      : 'default';
+
+    cm.setOption('theme', theme);
+  };
+
   var state = {};
   cmds.toggleFullscreen = function(cm) {
     if (cm.getOption('fullScreen')) {

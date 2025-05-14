@@ -203,4 +203,47 @@
             background: transparent;
         }
     }
+
+    &.cm-s-material-darker {
+        .CodeMirror-activeline-background {
+            background: ~"rgb(255 255 255 / 5%)";
+        }
+        .CodeMirror-matchingtag {
+            background: ~"rgb(71 107 85 / 67%)";
+        }
+        .CodeMirror-overlayscroll-horizontal div,
+        .CodeMirror-overlayscroll-vertical div {
+            background: #666;
+        }
+        .cm-searching {
+            background: ~"rgb(255 255 0 / 20%)";
+        }
+        &.CodeMirror-focused div.CodeMirror-selected,
+        div.CodeMirror-selected {
+            background: ~"rgb(114 146 5 / 63%)";
+        }
+    }
+}
+.mls-cm-controls {
+    position: absolute;
+    top: 8px;
+    right: 14px;
+
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-radius: 999px;
+    background: #eee;
+    padding: 10px 15px;
+
+    button {
+        border: 0;
+        background: none;
+        padding: 0;
+        margin: 0;
+
+        display: inline-flex;
+        align-items: center;
+        gap: 2px;
+    }
 }

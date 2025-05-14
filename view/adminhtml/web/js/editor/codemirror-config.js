@@ -35,12 +35,8 @@ define([
         mode: 'htmlmixed',
         scrollbarStyle: 'overlay',
         styleActiveLine: true,
-        // theme: 'ayu-mirage',
-        theme: 'default',
-        // theme: 'dracula',
-        // theme: 'material-darker',
-        // theme: 'material',
-        // theme: 'monokai',
+        theme: 'default', // todo: localstorage
+        darkTheme: 'material-darker'
         // directives: [
         //     {
         //         re: /<svg[\s\S]*?<\/svg>/,
