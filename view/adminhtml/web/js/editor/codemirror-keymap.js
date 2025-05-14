@@ -316,6 +316,9 @@ define([
     "Cmd-K Cmd-L": "downcaseAtCursor",
     "Ctrl-Shift-Up": "addCursorToPrevLine",
     "Ctrl-Shift-Down": "addCursorToNextLine",
+    "Cmd-H": "replace",
+    "F3": "findNext",
+    "Shift-F3": "findPrev",
     "Cmd-Ctrl-F": "toggleFullscreen",
     "fallthrough": "macDefault"
   };
@@ -343,6 +346,9 @@ define([
     "Ctrl-K Ctrl-L": "downcaseAtCursor",
     "Ctrl-Alt-Up": "addCursorToPrevLine",
     "Ctrl-Alt-Down": "addCursorToNextLine",
+    "Ctrl-H": "replace",
+    "F3": "findNext",
+    "Shift-F3": "findPrev",
     "F11": "toggleFullscreen",
     "fallthrough": "pcDefault"
   };
