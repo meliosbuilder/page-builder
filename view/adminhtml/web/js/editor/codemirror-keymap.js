@@ -258,6 +258,8 @@ define([
       : 'default';
 
     cm.setOption('theme', theme);
+
+    // todo: save in localStorage
   };
 
   var state = {};

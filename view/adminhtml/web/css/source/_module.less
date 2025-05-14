@@ -246,4 +246,29 @@
         align-items: center;
         gap: 2px;
     }
+
+    [data-action="toggleFullscreen"] {
+        &[data-value="true"] {
+            svg:nth-child(1) {
+                display: none;
+            }
+        }
+        &[data-value="false"] {
+            svg:nth-child(2) {
+                display: none;
+            }
+        }
+    }
+    [data-action="toggleTheme"] {
+        &[data-value="default"] {
+            svg:nth-child(1) {
+                display: none;
+            }
+        }
+        &:not([data-value="default"]) {
+            svg:nth-child(2) {
+                display: none;
+            }
+        }
+    }
 }
