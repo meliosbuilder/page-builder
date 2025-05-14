@@ -1,4 +1,5 @@
 define([
+    'Melios_PageBuilder/js/utils/storage',
     'Melios_PageBuilder/js/lib/codemirror/addon/display/fullscreen',
     'Melios_PageBuilder/js/lib/codemirror/addon/edit/closetag',
     'Melios_PageBuilder/js/lib/codemirror/addon/edit/closebrackets',
@@ -15,7 +16,7 @@ define([
     'Melios_PageBuilder/js/lib/codemirror/addon/selection/active-line',
     'Melios_PageBuilder/js/lib/codemirror/mode/htmlmixed/htmlmixed',
     './codemirror-keymap'
-], function () {
+], function (storage) {
     'use strict';
 
     return {
@@ -35,7 +36,7 @@ define([
         mode: 'htmlmixed',
         scrollbarStyle: 'overlay',
         styleActiveLine: true,
-        theme: 'default', // todo: localstorage
+        theme: storage.get('editor.theme', 'default'),
         lightTheme: 'default',
         darkTheme: 'material-darker'
         // directives: [

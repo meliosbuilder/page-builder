@@ -1,10 +1,11 @@
 define([
   'jquery',
+  'Melios_PageBuilder/js/utils/storage',
   'Melios_PageBuilder/js/lib/codemirror/lib/codemirror',
   'Melios_PageBuilder/js/lib/codemirror/addon/search/searchcursor',
   'Melios_PageBuilder/js/lib/codemirror/addon/edit/matchbrackets',
   'Melios_PageBuilder/js/lib/codemirror/addon/comment/comment',
-], function ($, CodeMirror) {
+], function ($, storage, CodeMirror) {
   'use strict';
 
   var cmds = CodeMirror.commands;
@@ -258,8 +259,7 @@ define([
       : cm.getOption('lightTheme');
 
     cm.setOption('theme', theme);
-
-    // todo: save in localStorage
+    storage.set('editor.theme', theme);
   };
 
   var state = {};
