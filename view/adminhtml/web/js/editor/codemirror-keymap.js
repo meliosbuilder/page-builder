@@ -1,9 +1,10 @@
 define([
+  'jquery',
   'Melios_PageBuilder/js/lib/codemirror/lib/codemirror',
   'Melios_PageBuilder/js/lib/codemirror/addon/search/searchcursor',
   'Melios_PageBuilder/js/lib/codemirror/addon/edit/matchbrackets',
   'Melios_PageBuilder/js/lib/codemirror/addon/comment/comment',
-], function (CodeMirror) {
+], function ($, CodeMirror) {
   'use strict';
 
   var cmds = CodeMirror.commands;
@@ -251,11 +252,38 @@ define([
     modifyWordOrSelection(cm, function(str) { return str.toLowerCase(); });
   };
 
+  var state = {};
   cmds.toggleFullscreen = function(cm) {
-    cm.setOption("fullScreen", !cm.getOption("fullScreen"));
+    if (cm.getOption('fullScreen')) {
+      cmds.exitFullscreen(cm);
+    } else {
+      var wrapper = $(cm.getWrapperElement());
+
+      wrapper.closest('.modal-slide').css({
+        left: 0,
+        right: 0,
+      });
+
+      state.scrollTop = wrapper.closest('.modal-inner-wrap')
+        .css('overflow', 'hidden')
+        .prop('scrollTop');
+
+      cm.setOption('fullScreen', true);
+
+      wrapper.closest('.modal-inner-wrap').prop('scrollTop', 0);
+    }
   };
   cmds.exitFullscreen = function(cm) {
-    cm.setOption("fullScreen", false);
+    $(cm.getWrapperElement()).closest('.modal-slide').css({
+      left: '',
+      right: '',
+    });
+
+    $(cm.getWrapperElement()).closest('.modal-inner-wrap')
+      .css('overflow', '')
+      .prop('scrollTop', state.scrollTop || 0);
+
+    cm.setOption('fullScreen', false);
   };
 
   cmds.onEscape = function(cm) {

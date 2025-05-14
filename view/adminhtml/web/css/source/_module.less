@@ -155,10 +155,6 @@
 }
 
 // Code Editor
-.modal-slide:has(.CodeMirror-fullscreen) {
-    left: 0;
-    right: 0;
-}
 .CodeMirror {
     border: 1px solid #adadad;
 
@@ -168,6 +164,10 @@
 
     &-fullscreen {
         border: 0;
+        .ui-resizable-s,
+        .ui-resizable-se {
+            display: none;
+        }
     }
 
     .ui-resizable-s,
