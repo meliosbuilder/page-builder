@@ -253,9 +253,9 @@ define([
   };
 
   cmds.toggleTheme = function(cm) {
-    var theme = cm.getOption('theme') === 'default'
+    var theme = cm.getOption('theme') === cm.getOption('lightTheme')
       ? cm.getOption('darkTheme')
-      : 'default';
+      : cm.getOption('lightTheme');
 
     cm.setOption('theme', theme);
 

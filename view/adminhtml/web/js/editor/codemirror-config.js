@@ -36,6 +36,7 @@ define([
         scrollbarStyle: 'overlay',
         styleActiveLine: true,
         theme: 'default', // todo: localstorage
+        lightTheme: 'default',
         darkTheme: 'material-darker'
         // directives: [
         //     {
