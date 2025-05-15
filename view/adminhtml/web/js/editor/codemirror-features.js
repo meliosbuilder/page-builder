@@ -31,7 +31,7 @@ define([
             var value = cm.getOption(option);
 
             if (option === 'theme') {
-                value = value === cm.getOption('lightTheme') ? 'light' : 'dark';
+                value = value === cm.getOption('themeLight') ? 'light' : 'dark';
             }
 
             $(cm.getWrapperElement()).find(`[data-option="${option}"]`)
@@ -43,7 +43,7 @@ define([
                 value = cm.getOption(option);
 
             if (option === 'theme') {
-                value = value === cm.getOption('lightTheme') ? 'light' : 'dark';
+                value = value === cm.getOption('themeLight') ? 'light' : 'dark';
             }
 
             $(button).attr('data-value', value);

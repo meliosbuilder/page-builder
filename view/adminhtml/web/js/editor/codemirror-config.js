@@ -37,8 +37,8 @@ define([
         scrollbarStyle: 'overlay',
         styleActiveLine: true,
         theme: storage.get('editor.theme', 'default'),
-        lightTheme: 'default',
-        darkTheme: 'material-darker'
+        themeDark: 'material-darker'
+        themeLight: 'default',
         // directives: [
         //     {
         //         re: /<svg[\s\S]*?<\/svg>/,

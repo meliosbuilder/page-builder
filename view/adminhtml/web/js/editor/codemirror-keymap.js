@@ -254,9 +254,9 @@ define([
   };
 
   cmds.toggleTheme = function(cm) {
-    var theme = cm.getOption('theme') === cm.getOption('lightTheme')
-      ? cm.getOption('darkTheme')
-      : cm.getOption('lightTheme');
+    var theme = cm.getOption('theme') === cm.getOption('themeLight')
+      ? cm.getOption('themeDark')
+      : cm.getOption('themeLight');
 
     cm.setOption('theme', theme);
     storage.set('editor.theme', theme);
