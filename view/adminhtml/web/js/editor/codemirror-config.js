@@ -37,7 +37,7 @@ define([
         scrollbarStyle: 'overlay',
         styleActiveLine: true,
         theme: storage.get('editor.theme', 'default'),
-        themeDark: 'material-darker'
+        themeDark: 'material-darker',
         themeLight: 'default',
         // directives: [
         //     {

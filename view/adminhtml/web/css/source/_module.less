@@ -205,6 +205,11 @@
     }
 
     &.cm-s-material-darker {
+        .ui-resizable-s::before {
+            background: #fff;
+            box-shadow: 0 3px #fff,
+                        0 6px #fff;
+        }
         .CodeMirror-activeline-background {
             background: ~"rgb(255 255 255 / 5%)";
         }
@@ -235,6 +240,13 @@
     border-radius: 999px;
     background: #eee;
     padding: 10px 15px;
+
+    .cm-s-material-darker & {
+        background: #000;
+        button {
+            color: #b6b6b6;
+        }
+    }
 
     button {
         border: 0;
