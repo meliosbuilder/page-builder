@@ -1,6 +1,4 @@
-define([
-    'Melios_PageBuilder/js/utils/storage',
-], function (storage) {
+define([], function () {
     'use strict';
 
     return function (target) {
@@ -10,11 +8,12 @@ define([
 
                 require([
                     'Magento_Ui/js/lib/view/utils/async',
+                    'Melios_PageBuilder/js/utils/storage',
                     'Melios_PageBuilder/js/lib/codemirror/lib/codemirror',
                     'Melios_PageBuilder/js/editor/codemirror-config',
                     'Melios_PageBuilder/js/editor/codemirror-features',
                     'Melios_PageBuilder/js/editor/codemirror-fixes'
-                ], ($, CodeMirror, config, features) => {
+                ], ($, storage, CodeMirror, config, features) => {
                     $.async('#' + this.uid, textarea => {
                         config.theme = storage.get('editor.theme', 'default');
                         this.cm = CodeMirror.fromTextArea(textarea, config);

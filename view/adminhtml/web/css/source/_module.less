@@ -155,7 +155,19 @@
 }
 
 // Code Editor
-.CodeMirror {
+// reset .tox :not(svg):not(rect) styles
+.tox {
+    @import (less) "Melios_PageBuilder::js/lib/codemirror/lib/codemirror.css";
+    @import (less) "Melios_PageBuilder::js/lib/codemirror/addon/dialog/dialog.css";
+    @import (less) "Melios_PageBuilder::js/lib/codemirror/addon/display/fullscreen.css";
+    @import (less) "Melios_PageBuilder::js/lib/codemirror/addon/lint/lint.css";
+    @import (less) "Melios_PageBuilder::js/lib/codemirror/addon/search/matchesonscrollbar.css";
+    @import (less) "Melios_PageBuilder::js/lib/codemirror/addon/scroll/simplescrollbars.css";
+    @import (less) "Melios_PageBuilder::js/lib/codemirror/theme/material-darker.css";
+}
+
+.CodeMirror,
+.tox .CodeMirror {
     border: 1px solid #adadad;
 
     &:hover {
@@ -229,7 +241,8 @@
         }
     }
 }
-.mls-cm-controls {
+.mls-cm-controls,
+.tox .mls-cm-controls {
     position: absolute;
     top: 8px;
     right: 14px;

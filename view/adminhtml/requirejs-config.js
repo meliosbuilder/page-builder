@@ -27,13 +27,17 @@ var config = {
                 // Do not paste raw data from copy-paste buffer
                 'Melios_PageBuilder/js/copy-paste/tinymceAdapter-mixin': true,
                 // Enable menubar
-                'Melios_PageBuilder/js/wysiwyg/tinymceAdapter-mixin': true
+                'Melios_PageBuilder/js/wysiwyg/tinymceAdapter-mixin': true,
+                // Codemirror
+                'Melios_PageBuilder/js/editor/tinymceAdapter-mixin': true,
             },
             'mage/adminhtml/wysiwyg/tiny_mce/tinymceAdapter': {
                 // Do not paste raw data from copy-paste buffer
                 'Melios_PageBuilder/js/copy-paste/tinymceAdapter-mixin': true,
                 // Enable menubar
-                'Melios_PageBuilder/js/wysiwyg/tinymceAdapter-mixin': true
+                'Melios_PageBuilder/js/wysiwyg/tinymceAdapter-mixin': true,
+                // Codemirror
+                'Melios_PageBuilder/js/editor/tinymceAdapter-mixin': true,
             },
 
             // Allow modern images upload
