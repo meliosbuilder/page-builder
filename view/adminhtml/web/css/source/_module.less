@@ -154,173 +154,26 @@
     }
 }
 
-// Code Editor
-// reset .tox :not(svg):not(rect) styles
+@import (multiple) '_codemirror.less';
 .tox {
-    @import (less) "Melios_PageBuilder::js/lib/codemirror/lib/codemirror.css";
-    @import (less) "Melios_PageBuilder::js/lib/codemirror/addon/dialog/dialog.css";
-    @import (less) "Melios_PageBuilder::js/lib/codemirror/addon/display/fullscreen.css";
-    @import (less) "Melios_PageBuilder::js/lib/codemirror/addon/lint/lint.css";
-    @import (less) "Melios_PageBuilder::js/lib/codemirror/addon/search/matchesonscrollbar.css";
-    @import (less) "Melios_PageBuilder::js/lib/codemirror/addon/scroll/simplescrollbars.css";
-    @import (less) "Melios_PageBuilder::js/lib/codemirror/theme/material-darker.css";
-}
+    // reset .tox :not(svg):not(rect) styles
+    @import (multiple) '_codemirror.less';
 
-.CodeMirror,
-.tox .CodeMirror {
-    border: 1px solid #adadad;
-
-    &:hover {
-        border-color: #878787;
+    &:has(.CodeMirror) {
+        .tox-form {
+            height: 100%;
+        }
+        .tox-form__group--stretched {
+            height: 100%;
+            margin: 0;
+        }
+        .tox-dialog__body-content {
+            max-height: ~"min(650px,calc(100vh - 130px))";
+        }
     }
 
-    &-fullscreen {
+    .CodeMirror {
         border: 0;
-        .ui-resizable-s {
-            display: none;
-        }
-    }
-
-    .ui-resizable-s {
-        position: absolute;
-        left: auto;
-        bottom: 1px;
-        right: 1px;
-        width: 15px;
-        height: 15px;
-        overflow: hidden;
-
-        &:before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 0;
-            width: 150%;
-            height: 1px;
-            transform: rotate(-45deg);
-            opacity: .5;
-            background: #000;
-            box-shadow: 0 3px #000,
-                        0 6px #000;
-        }
-    }
-
-    .CodeMirror-widget:has(.mls-transparent) {
-        opacity: 1;
-        background: transparent;
-        border: 0;
-
-        &:hover {
-            opacity: 1;
-            background: transparent;
-        }
-    }
-
-    &.cm-s-material-darker {
-        .ui-resizable-s::before {
-            background: #fff;
-            box-shadow: 0 3px #fff,
-                        0 6px #fff;
-        }
-        .CodeMirror-activeline-background {
-            background: ~"rgb(255 255 255 / 5%)";
-        }
-        .CodeMirror-matchingtag {
-            background: ~"rgb(71 107 85 / 50%)";
-        }
-        .CodeMirror-overlayscroll-horizontal div,
-        .CodeMirror-overlayscroll-vertical div {
-            background: #666;
-        }
-        .cm-searching {
-            background: ~"rgb(255 255 0 / 20%)";
-        }
-        &.CodeMirror-focused div.CodeMirror-selected,
-        div.CodeMirror-selected {
-            background: ~"rgb(255 255 255 / 20%)";
-        }
-    }
-}
-.mls-cm-controls,
-.tox .mls-cm-controls {
-    position: absolute;
-    top: 8px;
-    right: 14px;
-
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    border-radius: 999px;
-    background: #eee;
-    padding: 10px 15px;
-
-    .cm-s-material-darker & {
-        background: #101010;
-        button {
-            color: #b6b6b6;
-        }
-    }
-
-    button {
-        border: 0;
-        background: none;
-        padding: 0;
-        margin: 0;
-
-        &,
-        > span {
-            display: inline-flex;
-            align-items: center;
-            gap: 2px;
-        }
-
-        width: 24px;
-        height: 24px;
-        overflow: hidden;
-
-        svg {
-            flex-shrink: 0;
-        }
-    }
-
-    [data-action="toggleFullscreen"] {
-        &[data-value="true"] {
-            svg:nth-child(1) {
-                display: none;
-            }
-        }
-        &[data-value="false"] {
-            svg:nth-child(2) {
-                display: none;
-            }
-        }
-    }
-    [data-action="toggleTheme"] {
-        mask-image: ~"radial-gradient(rgb(0 0 0 / 100%) 9px, transparent 13px)";
-        border-radius: 999px;
-        span,
-        svg {
-            transition-property: transform, opacity;
-            transition-duration: 500ms, 420ms;
-            transintion-timing-function: cubic-bezier(0, 0, 0.2, 1);
-        }
-        &[data-value="light"] {
-            span {
-                transform: translateX(-20px);
-            }
-            svg:nth-child(1) { // moon
-                opacity: 0;
-                transform: scale(.4);
-            }
-        }
-        &[data-value="dark"] {
-            span {
-                transform: translateX(2px);
-            }
-            svg:nth-child(2) { // sun
-                opacity: 0;
-                transform: scale(.4);
-            }
-        }
+        height: auto;
     }
 }
