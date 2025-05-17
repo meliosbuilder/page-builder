@@ -4,21 +4,28 @@ define([
     'use strict';
 
     var marks = [{
-        re: /<svg [^<>]*?(?:viewBox=\"(?<viewBox>\b[^"]*)\")?>([\s\S]*?)<\/svg>/,
-        placeholder: (match) => {
+        regexp: /<svg [^<>]*?(?:viewBox=\"(?<viewBox>\b[^"]*)\")?>([\s\S]*?)<\/svg>/,
+        render: (match) => {
             var result = match[0],
                 svgLowercase = result.toLowerCase(),
-                svgDoc = (new DOMParser()).parseFromString(result, 'image/svg+xml'),
+                forbidden = [
+                    'javascript', 'script',
+                    'foreignobject', 'object', 'embed', 'iframe',
+                    'file:', 'href=', 'src=',
+                ];
+
+            if (forbidden.some(str => svgLowercase.includes(str))) {
+                return false;
+            }
+
+            var svgDoc = (new DOMParser()).parseFromString(result, 'image/svg+xml'),
                 parserError = svgDoc.querySelector('parsererror');
 
             if (parserError || !svgDoc.documentElement.children.length) {
                 return false;
             }
 
-            if (svgLowercase.includes('javascript') ||
-                svgLowercase.includes('href=') ||
-                svgLowercase.includes('src=') ||
-                svgDoc.querySelector('script') ||
+            if (svgDoc.querySelector('script') ||
                 svgDoc.querySelector('foreignObject') ||
                 [...svgDoc.querySelectorAll('*')].some(el =>
                     [...el.attributes].some(attr => attr.name.startsWith('on'))
@@ -53,12 +60,12 @@ define([
     function render(cm) {
         var value = cm.getValue(),
             cursor = cm.getCursor(),
-            match, from, to, placeholder, el;
+            match, from, to, html, el;
 
         cm.doc.getAllMarks().forEach(mark => mark.clear());
 
         _.each(marks, function (mark) {
-            var re = new RegExp(mark.re, 'g');
+            var re = new RegExp(mark.regexp, 'g');
 
             while ((match = re.exec(value)) !== null) {
                 from = cm.doc.posFromIndex(match.index);
@@ -74,25 +81,15 @@ define([
                     continue; // cursor is inside mark
                 }
 
-                placeholder = mark.placeholder;
-
-                if (typeof placeholder === 'function') {
-                    placeholder = placeholder(match);
-                }
-
-                if (!placeholder) {
+                if (!(html = mark.render(match))) {
                     continue;
                 }
 
-                if (typeof placeholder === 'string') {
-                    el = $('<span class="mls-cm-textmark">')
-                        .append(placeholder)
-                        .attr('title', match[0])
-                        .get(0);
-                }
-
                 cm.doc.markText(from, to, {
-                    replacedWith: el,
+                    replacedWith: $('<span class="mls-cm-textmark">')
+                        .append(html)
+                        .attr('title', match[0])
+                        .get(0),
                     handleMouseEvents: true
                 });
             }
