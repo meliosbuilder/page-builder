@@ -69,7 +69,7 @@ define([
 
         cm.doc.getAllMarks().forEach(mark => mark.clear());
 
-        _.each(marks, function (mark) {
+        marks.forEach(function (mark) {
             var re = new RegExp(mark.regexp, 'g');
 
             while ((match = re.exec(value)) !== null) {
@@ -102,14 +102,11 @@ define([
     }
 
     function findTextMark(cm, event) {
-        var marks = cm.doc.findMarksAt(cm.coordsChar({
+        return cm.doc.findMarksAt(cm.coordsChar({
                 left: event.pageX,
                 top: event.pageY
-            }));
-
-        return _.find(marks, function (item) {
-            return item.widgetNode;
-        });
+            }))
+            .find(item => item.widgetNode);
     }
 
     return function (cm) {
