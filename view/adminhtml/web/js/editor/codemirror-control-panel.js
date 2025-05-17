@@ -7,6 +7,7 @@ define([
 
     var editors = [];
 
+    // todo: rewrite to add public API to add button and callback
     return function (cm) {
         editors.push(cm);
 
