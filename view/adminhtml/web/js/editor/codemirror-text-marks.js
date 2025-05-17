@@ -27,11 +27,23 @@ define([
                 return false;
             }
 
+            var width = 20,
+                height = 20,
+                viewBox = match.groups.viewBox?.split(' ');
+
+            if (viewBox?.length === 4 &&
+                !result.includes('height=') &&
+                !result.includes('width=')
+            ) {
+                width = 100;
+                height = Math.round(width / (viewBox[2] / viewBox[3]));
+            }
+
             if (!result.includes('height=')) {
-                result = result.replace('<svg ', '<svg height="20" ');
+                result = result.replace('<svg ', `<svg height="${width}" `);
             }
             if (!result.includes('width=')) {
-                result = result.replace('<svg ', '<svg width="20" ');
+                result = result.replace('<svg ', `<svg width="${height}" `);
             }
 
             return result;
