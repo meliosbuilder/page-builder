@@ -55,6 +55,8 @@ define([
             cursor = cm.getCursor(),
             match, from, to, placeholder, el;
 
+        cm.doc.getAllMarks().forEach(mark => mark.clear());
+
         _.each(marks, function (mark) {
             var re = new RegExp(mark.re, 'g');
 
