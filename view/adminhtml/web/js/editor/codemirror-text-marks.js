@@ -7,36 +7,13 @@ define([
         regexp: /<svg [^<>]*?(?:viewBox=\"(?<viewBox>\b[^"]*)\")?>([\s\S]*?)<\/svg>/,
         render: (match) => {
             var result = match[0],
-                svgLowercase = result.toLowerCase(),
-                forbidden = [
-                    'javascript', 'script',
-                    'foreignobject', 'object', 'embed', 'iframe',
-                    'file:', 'href=', 'src=',
-                ];
-
-            if (forbidden.some(str => svgLowercase.includes(str))) {
-                return false;
-            }
-
-            var svgDoc = (new DOMParser()).parseFromString(result, 'image/svg+xml'),
-                parserError = svgDoc.querySelector('parsererror');
-
-            if (parserError || !svgDoc.documentElement.children.length) {
-                return false;
-            }
-
-            if (svgDoc.querySelector('script') ||
-                svgDoc.querySelector('foreignObject') ||
-                [...svgDoc.querySelectorAll('*')].some(el =>
-                    [...el.attributes].some(attr => attr.name.startsWith('on'))
-                )
-            ) {
-                return false;
-            }
-
-            var width = 20,
+                width = 20,
                 height = 20,
                 viewBox = match.groups.viewBox?.split(' ');
+
+            if (!isValidSvg(result)) {
+                return false;
+            }
 
             if (viewBox?.length === 4 &&
                 !result.includes('height=') &&
@@ -55,7 +32,35 @@ define([
 
             return result;
         }
-    }]
+    }];
+
+    function isValidSvg(svg) {
+        var svgLower = svg.toLowerCase(),
+            forbidden = [
+                'javascript', 'script',
+                'foreignobject', 'object', 'embed', 'iframe',
+                'file:', 'href=', 'src=',
+            ];
+
+        if (forbidden.some(str => svgLower.includes(str))) {
+            return false;
+        }
+
+        var svgDoc = new DOMParser().parseFromString(svg, 'image/svg+xml'),
+            parserError = svgDoc.querySelector('parsererror');
+
+        if (parserError || !svgDoc.documentElement.children.length) {
+            return false;
+        }
+
+        if ([...svgDoc.querySelectorAll('*')].some(el =>
+            [...el.attributes].some(attr => attr.name.startsWith('on'))
+        )) {
+            return false;
+        }
+
+        return true;
+    }
 
     function render(cm) {
         var value = cm.getValue(),
