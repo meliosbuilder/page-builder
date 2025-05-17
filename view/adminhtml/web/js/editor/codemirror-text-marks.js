@@ -7,11 +7,23 @@ define([
         re: /<svg [^<>]*?(?:viewBox=\"(?<viewBox>\b[^"]*)\")?>([\s\S]*?)<\/svg>/,
         placeholder: (match) => {
             var result = match[0],
-                parser = new DOMParser(),
-                doc = parser.parseFromString(result, 'image/svg+xml'),
-                parserError = doc.querySelector('parsererror');
+                svgLowercase = result.toLowerCase(),
+                svgDoc = (new DOMParser()).parseFromString(result, 'image/svg+xml'),
+                parserError = svgDoc.querySelector('parsererror');
 
-            if (parserError || !doc.documentElement.children.length) {
+            if (parserError || !svgDoc.documentElement.children.length) {
+                return false;
+            }
+
+            if (svgLowercase.includes('javascript') ||
+                svgLowercase.includes('href=') ||
+                svgLowercase.includes('src=') ||
+                svgDoc.querySelector('script') ||
+                svgDoc.querySelector('foreignObject') ||
+                [...svgDoc.querySelectorAll('*')].some(el =>
+                    [...el.attributes].some(attr => attr.name.startsWith('on'))
+                )
+            ) {
                 return false;
             }
 
