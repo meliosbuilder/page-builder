@@ -115,6 +115,7 @@
         overflow: hidden;
         display: inline-flex;
         align-items: center;
+        justify-content: center;
 
         > span {
             display: inline-flex;
@@ -151,7 +152,7 @@
         }
         &[data-value="light"] {
             span {
-                transform: translateX(-20px);
+                transform: translateX(-11px);
             }
             svg:nth-child(1) { // moon
                 opacity: 0;
@@ -160,7 +161,7 @@
         }
         &[data-value="dark"] {
             span {
-                transform: translateX(2px);
+                transform: translateX(11px);
             }
             svg:nth-child(2) { // sun
                 opacity: 0;
