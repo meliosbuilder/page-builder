@@ -153,3 +153,27 @@
         }
     }
 }
+
+@import (multiple) '_codemirror.less';
+.tox {
+    // reset .tox :not(svg):not(rect) styles
+    @import (multiple) '_codemirror.less';
+
+    &:has(.CodeMirror) {
+        .tox-form {
+            height: 100%;
+        }
+        .tox-form__group--stretched {
+            height: 100%;
+            margin: 0;
+        }
+        .tox-dialog__body-content {
+            max-height: ~"min(650px,calc(100vh - 130px))";
+        }
+    }
+
+    .CodeMirror {
+        border: 0;
+        height: auto;
+    }
+}
