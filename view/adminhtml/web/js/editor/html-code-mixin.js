@@ -13,8 +13,9 @@ define([], function () {
                     'Melios_PageBuilder/js/editor/codemirror-config',
                     'Melios_PageBuilder/js/editor/codemirror-resizable',
                     'Melios_PageBuilder/js/editor/codemirror-control-panel',
+                    'Melios_PageBuilder/js/editor/codemirror-text-marks',
                     'Melios_PageBuilder/js/editor/codemirror-fixes'
-                ], ($, storage, CodeMirror, config, resizable, controlPanel) => {
+                ], ($, storage, CodeMirror, config, resizable, textMarks, controlPanel) => {
                     $.async('#' + this.uid, textarea => {
                         config.theme = storage.get('editor.theme', 'default');
                         this.cm = CodeMirror.fromTextArea(textarea, config);
@@ -28,6 +29,7 @@ define([], function () {
                         });
 
                         resizable(this.cm);
+                        textMarks(this.cm);
                         controlPanel(this.cm);
                     });
                 });

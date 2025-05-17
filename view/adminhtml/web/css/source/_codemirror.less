@@ -56,11 +56,23 @@
         }
     }
 
+    .mls-cm-textmark {
+        vertical-align: middle;
+    }
+
     &.cm-s-material-darker {
+        .mls-cm-textmark {
+            svg {
+                filter: invert(.9);
+            }
+        }
         .ui-resizable-s::before {
             background: #fff;
             box-shadow: 0 3px #fff,
                         0 6px #fff;
+        }
+        .CodeMirror-gutters {
+            border-right: 1px solid #2d2d2d; // fixed theme 1px jumping bug.
         }
         .CodeMirror-activeline-background {
             background: ~"rgb(255 255 255 / 5%)";
