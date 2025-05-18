@@ -1,4 +1,9 @@
 var config = {
+    map: {
+        '*': {
+            'htmlhint': 'Melios_PageBuilder/js/lib/htmlhint',
+        },
+    },
     config: {
         mixins: {
             'Magento_PageBuilder/js/page-builder': {
@@ -6,6 +11,11 @@ var config = {
                 'Melios_PageBuilder/js/spotlight/page-builder-mixin': true,
                 // Spotlight: Toggle sidebar panel
                 'Melios_PageBuilder/js/spotlight/page-builder-header-mixin': true,
+            },
+
+            'Magento_PageBuilder/js/form/element/html-code': {
+                // Html Editor
+                'Melios_PageBuilder/js/editor/html-code-mixin': true,
             },
 
             'Magento_PageBuilder/js/form/element/wysiwyg': {
@@ -17,13 +27,17 @@ var config = {
                 // Do not paste raw data from copy-paste buffer
                 'Melios_PageBuilder/js/copy-paste/tinymceAdapter-mixin': true,
                 // Enable menubar
-                'Melios_PageBuilder/js/wysiwyg/tinymceAdapter-mixin': true
+                'Melios_PageBuilder/js/wysiwyg/tinymceAdapter-mixin': true,
+                // Codemirror
+                'Melios_PageBuilder/js/editor/tinymceAdapter-mixin': true,
             },
             'mage/adminhtml/wysiwyg/tiny_mce/tinymceAdapter': {
                 // Do not paste raw data from copy-paste buffer
                 'Melios_PageBuilder/js/copy-paste/tinymceAdapter-mixin': true,
                 // Enable menubar
-                'Melios_PageBuilder/js/wysiwyg/tinymceAdapter-mixin': true
+                'Melios_PageBuilder/js/wysiwyg/tinymceAdapter-mixin': true,
+                // Codemirror
+                'Melios_PageBuilder/js/editor/tinymceAdapter-mixin': true,
             },
 
             // Allow modern images upload
