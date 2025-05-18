@@ -60,6 +60,7 @@ define([
             } else {
                 cm.execCommand($(this).data('action'));
             }
+            cm.focus();
         });
     };
 });
