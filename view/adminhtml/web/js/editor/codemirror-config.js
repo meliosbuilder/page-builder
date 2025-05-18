@@ -19,47 +19,27 @@ define([
 ], function (storage) {
     'use strict';
 
-    return {
-        autoCloseBrackets: true,
-        autoCloseTags: true,
-        indentUnit: 2,
-        keyMap: 'melios',
-        lineNumbers: true,
-        lineWrapping: true,
-        lint: {
-            highlightLines: true,
-        },
-        matchBrackets: true,
-        matchTags: {
-            bothTags: true
-        },
-        mode: 'htmlmixed',
-        scrollbarStyle: 'overlay',
-        styleActiveLine: true,
-        theme: storage.get('editor.theme', 'default'),
-        themeDark: 'material-darker',
-        themeLight: 'default',
-        // directives: [
-        //     {
-        //         re: /<svg[\s\S]*?<\/svg>/,
-        //         placeholder: function (match) {
-        //             var icon = match[0];
-
-        //             // todo: parse viewBox to keep proper ratio
-        //             // and to use bigger size if svg is not an
-        //             // icon (> ~50px)
-
-        //             if (!icon.includes('height=')) {
-        //                 icon = icon.replace('<svg ', '<svg height="20" ');
-        //             }
-
-        //             if (!icon.includes('width=')) {
-        //                 icon = icon.replace('<svg ', '<svg width="20" ');
-        //             }
-
-        //             return `<span class="mls-transparent">${icon}</span>`;
-        //         }
-        //     },
-        // ],
+    return function () {
+        return {
+            autoCloseBrackets: true,
+            autoCloseTags: true,
+            indentUnit: 2,
+            keyMap: 'melios',
+            lineNumbers: true,
+            lineWrapping: true,
+            lint: {
+                highlightLines: true,
+            },
+            matchBrackets: true,
+            matchTags: {
+                bothTags: true
+            },
+            mode: 'htmlmixed',
+            scrollbarStyle: 'overlay',
+            styleActiveLine: true,
+            theme: storage.get('editor.theme') || 'default',
+            themeDark: 'material-darker',
+            themeLight: 'default',
+        }
     };
 });
