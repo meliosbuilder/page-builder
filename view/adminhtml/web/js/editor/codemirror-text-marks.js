@@ -1,6 +1,7 @@
 define([
-    'jquery'
-], function ($) {
+    'jquery',
+    'tinycolor'
+], function ($, tinycolor) {
     'use strict';
 
     var marks = [{
@@ -28,6 +29,13 @@ define([
             }
             if (!result.includes('width=')) {
                 result = result.replace('<svg ', `<svg width="${height}" `);
+            }
+
+            var colors = [...result.matchAll(/(fill|stroke)(="|:)(?<color>(#?)[a-zA-Z0-9]+)/g)]
+                .map(match => tinycolor(match.groups.color));
+
+            if (!colors.length || colors.some(color => color.isValid() && color.isDark())) {
+                result = result.replace('<svg ', '<svg data-mls-dark ');
             }
 
             return result;
