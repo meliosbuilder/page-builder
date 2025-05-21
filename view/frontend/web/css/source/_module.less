@@ -1,19 +1,27 @@
+@critical: unsure;
+
 & when (@media-common = true) {
-    // add gap between column-lines
-    :where(.pagebuilder-column-group:has(> .pagebuilder-column-line)) {
-        display: flex;
-        flex-direction: column;
+    & when (@critical = unsure), (@critical) {
+        // add gap between column-lines
+        :where(.pagebuilder-column-group:has(> .pagebuilder-column-line)) {
+            display: flex;
+            flex-direction: column;
+        }
     }
 }
 
 // Lazy loading backgrounds
 .media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
-    [data-mls-sm-loading="lazy"]:not(.mls-load) {
-        background-image: none;
+    & when (@critical = unsure), (@critical) {
+        [data-mls-sm-loading="lazy"]:not(.mls-load) {
+            background-image: none;
+        }
     }
 }
 .media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
-    [data-mls-loading="lazy"]:not(.mls-load) {
-        background-image: none;
+    & when (@critical = unsure), (@critical) {
+        [data-mls-loading="lazy"]:not(.mls-load) {
+            background-image: none;
+        }
     }
 }
