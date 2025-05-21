@@ -2,6 +2,6 @@
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
     <event name="layout_load_before">
-        <observer name="melios" instance="Melios\PageBuilder\Observer\LayoutLoadBefore"/>
+        <observer name="melios_page_builder" instance="Melios\PageBuilder\Observer\LayoutLoadBefore"/>
     </event>
 </config>
