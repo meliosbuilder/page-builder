@@ -11,8 +11,6 @@ bin/magento module:enable Melios_PageBuilder --clear-static-content
 
 ## Highlights
 
-
-
  -  CodeMirror editor used for HTML content elements.
  -  AI assistant &mdash; **Pro edition only**
  -  Responsive Margin/Padding for all Page Builder components.
