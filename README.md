@@ -11,18 +11,23 @@ bin/magento module:enable Melios_PageBuilder --clear-static-content
 
 ## Highlights
 
- -  <kbd>Alt+0</kbd> to activate pagebuilder immediately.
- -  Added image dimensions with autofill feature.
- -  Added image fetchpriority attribute.
- -  Added ability to lazy load the image or background image.
- -  Allow uploading `webp` images.
- -  <kbd>Ctr+C</kbd>, <kbd>Ctrl+V</kbd> to copy/paste whole pagebuilder content.
- -  Added the `Gap` field for columns component.
+
+
+ -  CodeMirror editor used for HTML content elements.
+ -  AI assistant &mdash; **Pro edition only**
+ -  Responsive Margin/Padding for all Page Builder components.
+ -  Hotkeys
+    - <kbd>Alt+0</kbd> to activate pagebuilder immediately.
+    - <kbd>Ctr+C</kbd>, <kbd>Ctrl+V</kbd> to copy/paste whole pagebuilder content.
+    - <kbd>Ctr+C</kbd>, <kbd>Ctrl+V</kbd> to copy/paste selected pagebuilder elements &mdash; **Pro edition only**
+    - <kbd>Ctr+S</kbd> to save contents without leaving the editor &mdash; **Pro edition only**
+ -  Image enhancements
+    - Added dimensions with autofill feature.
+    - Added fetchpriority attribute.
+    - Added ability to lazy load the image or background image.
+    - Added ability to preload the image or background image &mdash; **Pro edition only**
+    - Allow uploading `WEBP` and `AVIF` images.
+ -  Added ability to use `Gap` property for columns component.
  -  Double click to edit hovered element.
 
-## Pro features
-
- -  Ability to preload the image or background image.
- -  <kbd>Ctr+C</kbd>, <kbd>Ctrl+V</kbd> to copy/paste selected pagebuilder elements.
- -  <kbd>Ctr+S</kbd> to save contents without leaving the editor.
- -  View more examples at <a href="https://meliosbuilder.com" target="_blank" rel="noopener">meliosbuilder.com</a>
+View videos, screenshots, and documentation at [meliosbuilder.com](https://meliosbuilder.com)
