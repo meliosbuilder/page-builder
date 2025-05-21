@@ -315,7 +315,10 @@ define([
                             var el = $('.pagebuilder-draggable-content-type.ui-draggable.ui-draggable-handle')
                                 .filter((i, el) => config.name === ko.dataFor(el)?.config.name)
                                 .first()
-                                .width('150px');
+                                .css({
+                                    minWidth: '150px',
+                                    minHeight: '42px',
+                                });
 
                             var offset = el.offset();
                             var draggable = el.data('uiDraggable');
