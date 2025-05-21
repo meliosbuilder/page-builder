@@ -37,7 +37,7 @@ define([
             mode: 'htmlmixed',
             scrollbarStyle: 'overlay',
             styleActiveLine: true,
-            theme: storage.get('editor.theme') || 'default',
+            theme: storage.isSet('editor.theme') ? storage.get('editor.theme') : 'default',
             themeDark: 'material-darker',
             themeLight: 'default',
         }
