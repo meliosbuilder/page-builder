@@ -2,7 +2,8 @@ define([
     'jquery',
     'ko',
     'mage/utils/wrapper',
-], function ($, ko, wrapper) {
+    'Melios_PageBuilder/js/utils/storage'
+], function ($, ko, wrapper, storage) {
     'use strict';
 
     $(document).on('click', '.spotlight-show', e => {
@@ -35,10 +36,21 @@ define([
         `);
     }
 
-    function syncSidebarState (pagebuilder) {
+    function getSidebarState() {
+        if (storage.isSet('spotlight.sidebar')) {
+            return +storage.get('spotlight.sidebar');
+        }
+
         var state = +localStorage.getItem('melios-spotlight-sidebar');
 
-        if (!state) {
+        storage.set('spotlight.sidebar', state);
+        localStorage.removeItem('melios-spotlight-sidebar');
+
+        return state;
+    }
+
+    function syncSidebarState(pagebuilder) {
+        if (!getSidebarState()) {
             pagebuilder.hideSidebar();
         } else {
             pagebuilder.showSidebar();
@@ -65,9 +77,7 @@ define([
         );
 
         target.prototype.toggleSidebar = function () {
-            var state = +localStorage.getItem('melios-spotlight-sidebar');
-
-            if (!state) {
+            if (!getSidebarState()) {
                 this.showSidebar();
             } else {
                 this.hideSidebar();
@@ -76,12 +86,12 @@ define([
 
         target.prototype.hideSidebar = function () {
             $(this.panel.element).parent('.pagebuilder-stage-wrapper').addClass('hidden-sidebar');
-            localStorage.setItem('melios-spotlight-sidebar', 0);
+            storage.set('spotlight.sidebar', 0);
         };
 
         target.prototype.showSidebar = function () {
             $(this.panel.element).parent('.pagebuilder-stage-wrapper').removeClass('hidden-sidebar');
-            localStorage.setItem('melios-spotlight-sidebar', 1);
+            storage.set('spotlight.sidebar', 1);
         };
 
         return target;
