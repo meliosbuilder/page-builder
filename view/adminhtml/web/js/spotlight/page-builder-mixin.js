@@ -324,7 +324,7 @@ define([
                             var draggable = el.data('uiDraggable');
                             draggable._mouseStart(jQuery.Event('mousedown', {
                                 pageX: offset.left + 75,
-                                pageY: offset.top,
+                                pageY: offset.top + 21,
                             }));
                             draggable._mouseDrag(jQuery.Event('mousemove', {
                                 pageX: mouseCoords.x + $('html').scrollLeft(),
