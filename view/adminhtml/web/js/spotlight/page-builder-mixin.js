@@ -312,19 +312,23 @@ define([
                                 }
                             });
 
-                            var el = $('.pagebuilder-draggable-content-type.ui-draggable.ui-draggable-handle')
-                                .filter((i, el) => config.name === ko.dataFor(el)?.config.name)
-                                .first()
-                                .css({
-                                    minWidth: '150px',
-                                    minHeight: '42px',
-                                });
+                            var handles = $('.pagebuilder-draggable-content-type.ui-draggable.ui-draggable-handle'),
+                                firstVisibleHandle = handles.filter(':visible').first(),
+                                width = firstVisibleHandle.width() || 150,
+                                height = firstVisibleHandle.height() || 40,
+                                el = handles
+                                    .filter((i, el) => config.name === ko.dataFor(el)?.config.name)
+                                    .first()
+                                    .css({
+                                        minWidth: width,
+                                        minHeight: height,
+                                    });
 
                             var offset = el.offset();
                             var draggable = el.data('uiDraggable');
                             draggable._mouseStart(jQuery.Event('mousedown', {
-                                pageX: offset.left + 75,
-                                pageY: offset.top + 21,
+                                pageX: offset.left + width / 2,
+                                pageY: offset.top + height / 2,
                             }));
                             draggable._mouseDrag(jQuery.Event('mousemove', {
                                 pageX: mouseCoords.x + $('html').scrollLeft(),
