@@ -48,6 +48,14 @@ var config = {
                 'Melios_PageBuilder/js/image-upload/media-uploader-mixin': true,
             },
 
+            // Wrap dropppable into RowContentType
+            'Magento_PageBuilder/js/drag-drop/matrix': {
+                'Melios_PageBuilder/js/make-droppable/matrix-mixin': true,
+            },
+            'Magento_PageBuilder/js/content-type-factory': {
+                'Melios_PageBuilder/js/make-droppable/content-type-factory-mixin': true,
+            },
+
             // BUGFIXES
             // Fixed incorrectly added 'no-column-line' class when pagebuilder is slowly rendered
             'Magento_PageBuilder/js/content-type/column-group/preview': {
