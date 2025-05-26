@@ -3,10 +3,11 @@ define([
     'ko',
     'mage/utils/wrapper',
     'Magento_PageBuilder/js/events',
+    'Magento_PageBuilder/js/drag-drop/matrix',
     'Melios_PageBuilder/js/spotlight/spotlight',
     'Melios_PageBuilder/js/utils/can-use-hotkeys',
     'Melios_PageBuilder/js/utils/is-in-viewport'
-], function ($, ko, wrapper, events, spotlight, canUseHotkeys, isInViewport) {
+], function ($, ko, wrapper, events, matrix, spotlight, canUseHotkeys, isInViewport) {
     'use strict';
 
     var mouseCoords = {
@@ -355,7 +356,9 @@ define([
                                                         return false;
                                                     }
 
-                                                    return config.allowed_parents.includes(ko.dataFor(el)?.config.name);
+                                                    return matrix
+                                                        .getContainersFor(config.name)
+                                                        .includes(ko.dataFor(el)?.config.name);
                                                 })
                                         )
                                         .filter((i, el) => $(el).css('visibility') !== 'hidden')
