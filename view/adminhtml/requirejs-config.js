@@ -52,8 +52,8 @@ var config = {
             'Magento_PageBuilder/js/drag-drop/matrix': {
                 'Melios_PageBuilder/js/make-droppable/matrix-mixin': true,
             },
-            'Magento_PageBuilder/js/content-type-factory': {
-                'Melios_PageBuilder/js/make-droppable/content-type-factory-mixin': true,
+            'Magento_PageBuilder/js/drag-drop/sortable': {
+                'Melios_PageBuilder/js/make-droppable/sortable-mixin': true,
             },
 
             // BUGFIXES
