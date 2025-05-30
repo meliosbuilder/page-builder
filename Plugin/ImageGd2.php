@@ -44,7 +44,7 @@ class ImageGd2
         return $result;
     }
 
-    public function beforeResize(Gd2 $subject, $result, $frameWidth = null, $frameHeight = null)
+    public function beforeResize(Gd2 $subject, $frameWidth = null, $frameHeight = null)
     {
         if (!isset($this->callbacks[$this->fileType])) {
             return;
