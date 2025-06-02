@@ -23,13 +23,15 @@ define([
                         events.off('meliosWrapDroppable');
                         registry.setDraggedContentTypeConfig(contentConfig);
 
-                        event.target = $(data.contentType.preview.element)
-                            .find('.content-type-container')
-                            .sortable()
-                            .get(0);
+                        setTimeout(() => {
+                            event.target = $(data.contentType.preview.element)
+                                .find('.content-type-container')
+                                .sortable()
+                                .get(0);
 
-                        getSortableOptions(data.contentType.preview)
-                            .receive.bind(event.target)(...args);
+                            getSortableOptions(data.contentType.preview)
+                                .receive.bind(event.target)(...args);
+                        }, 50);
                     }, 'meliosWrapDroppable');
 
                     // drop row instead of draggable element
