@@ -88,8 +88,14 @@ define([
                     continue; // cursor is inside mark
                 }
 
-                if (cursor.line >= from.line && cursor.ch > from.ch &&
-                    cursor.line <= to.line && cursor.ch < to.ch
+                if (cursor.line === from.line && cursor.ch > from.ch &&
+                    cursor.line === to.line && cursor.ch < to.ch
+                ) {
+                    continue; // cursor is inside mark
+                }
+
+                if (cursor.line === from.line && cursor.ch > from.ch && cursor.line < to.line ||
+                    cursor.line === to.line && cursor.ch < to.ch && cursor.line > from.line
                 ) {
                     continue; // cursor is inside mark
                 }
