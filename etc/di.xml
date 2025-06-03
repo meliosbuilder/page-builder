@@ -22,6 +22,19 @@
             </argument>
         </arguments>
     </type>
+    <!--
+        This part is commented because it requires GenerateRenditions to be compatible too,
+        but GenerateRenditions uses private const for image formats.
+        See MediaGalleryRenditions/Model/GenerateRenditions.php
+    <type name="Magento\MediaGalleryIntegration\Plugin\SaveImageInformation">
+        <arguments>
+            <argument name="imageExtensions" xsi:type="array">
+                <item name="webp" xsi:type="string">webp</item>
+                <item name="avif" xsi:type="string">avif</item>
+            </argument>
+        </arguments>
+    </type>
+    -->
 
     <!-- Background loading mode for all content types with bg attributes -->
     <type name="Magento\PageBuilder\Model\Config\ContentType\Reader">
