@@ -17,4 +17,9 @@
     <!-- <type name="Magento\PageBuilder\Model\Stage\Config\UiComponentConfig">
         <plugin name="melios_page_builder" type="Melios\PageBuilder\Plugin\ComponentConfig" />
     </type> -->
+
+    <!-- Unset image width/height duplicates  -->
+    <type name="Magento\Framework\View\Layout\Generator\Structure">
+        <plugin name="melios_page_builder" type="Melios\PageBuilder\Plugin\UiLayoutGenerator" />
+    </type>
 </config>
