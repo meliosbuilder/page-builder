@@ -19,7 +19,7 @@ define([
             return;
         }
 
-        $(el).find('.edit-content-type').click();
+        $(el).find('.edit-content-type').first().click();
     });
 
     $(document).on('keydown', (e) => {
