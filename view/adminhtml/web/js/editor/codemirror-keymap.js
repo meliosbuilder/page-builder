@@ -322,6 +322,49 @@ define([
     cmds.singleSelectionTop(cm);
   };
 
+  cmds.format = function(cm) {
+    var timer = setTimeout(() => $('body').trigger('processStart'), 150);
+
+    require([
+      'Melios_PageBuilder/js/lib/prettier/standalone',
+      'Melios_PageBuilder/js/lib/prettier/plugins/estree',
+      'Melios_PageBuilder/js/lib/prettier/plugins/babel',
+      'Melios_PageBuilder/js/lib/prettier/plugins/postcss',
+      'Melios_PageBuilder/js/lib/prettier/plugins/html'
+    ], function (prettier, ...plugins) {
+
+      var options = {
+        parser: 'html',
+        singleQuote: true,
+        embeddedLanguageFormatting: 'auto',
+        plugins
+      };
+
+      clearTimeout(timer);
+      $('body').trigger('processStop');
+
+      cm.operation(function() {
+        var oldStrings = cm.listSelections().map(range => {
+          return cm.getRange(range.from(), range.to());
+        }).filter(s => s);
+
+        if (!oldStrings.length) {
+          console.log(cm.getValue());
+          // todo: replace content and preserve cursor
+          return;
+        }
+
+        Promise.all(oldStrings.map(string => prettier.format(string, options)))
+          .then(newStrings => {
+            if (newStrings.some((string, i) => string !== oldStrings[i])) {
+              cm.replaceSelections(newStrings, 'around');
+            }
+          })
+          .catch(e => console.warn(e));
+      });
+    });
+  };
+
   var keyMap = CodeMirror.keyMap;
   keyMap.macMelios = {
     "Shift-Tab": "indentLess",
@@ -334,6 +377,7 @@ define([
     "Cmd-Enter": "insertLineAfter",
     "Shift-Enter": "insertLineAfter",
     "Shift-Cmd-Enter": "insertLineBefore",
+    "Shift-Cmd-F": "format",
     "Cmd-D": "selectNextOccurrence",
     "Cmd-Ctrl-Up": "swapLineUp",
     "Cmd-Ctrl-Down": "swapLineDown",
@@ -364,6 +408,7 @@ define([
     "Ctrl-Enter": "insertLineAfter",
     "Shift-Enter": "insertLineAfter",
     "Shift-Ctrl-Enter": "insertLineBefore",
+    "Shift-Ctrl-F": "format",
     "Ctrl-D": "selectNextOccurrence",
     "Shift-Ctrl-Up": "swapLineUp",
     "Shift-Ctrl-Down": "swapLineDown",
