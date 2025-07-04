@@ -323,16 +323,26 @@ define([
   };
 
   cmds.format = function(cm) {
-    var timer = setTimeout(() => $('body').trigger('processStart'), 150);
+    var timer = setTimeout(() => $('body').trigger('processStart'), 150),
+      value = cm.getValue(),
+      depsMap = {
+        '': [
+          'Melios_PageBuilder/js/lib/prettier/standalone',
+          'Melios_PageBuilder/js/lib/prettier/plugins/html',
+        ],
+        '<style': [
+          'Melios_PageBuilder/js/lib/prettier/plugins/postcss',
+        ],
+        '<script': [
+          'Melios_PageBuilder/js/lib/prettier/plugins/estree',
+          'Melios_PageBuilder/js/lib/prettier/plugins/babel',
+        ],
+      },
+      deps = Object.entries(depsMap)
+        .filter(([str]) => value.includes(str))
+        .flatMap(([, deps]) => deps);
 
-    require([
-      'Melios_PageBuilder/js/lib/prettier/standalone',
-      'Melios_PageBuilder/js/lib/prettier/plugins/estree',
-      'Melios_PageBuilder/js/lib/prettier/plugins/babel',
-      'Melios_PageBuilder/js/lib/prettier/plugins/postcss',
-      'Melios_PageBuilder/js/lib/prettier/plugins/html'
-    ], function (prettier, ...plugins) {
-
+    require(deps, function (prettier, ...plugins) {
       var options = {
         parser: 'html',
         singleQuote: true,
@@ -344,20 +354,28 @@ define([
       $('body').trigger('processStop');
 
       cm.operation(function() {
-        var oldStrings = cm.listSelections().map(range => {
-          return cm.getRange(range.from(), range.to());
-        }).filter(s => s);
+        var oldStrings = cm.listSelections().map(r => cm.getRange(r.from(), r.to()));
 
-        if (!oldStrings.length) {
-          console.log(cm.getValue());
-          // todo: replace content and preserve cursor
-          return;
+        if (!cm.somethingSelected()) {
+          return prettier.formatWithCursor(value, {
+              cursorOffset: cm.indexFromPos(cm.getCursor()),
+              ...options
+            }).then(({formatted, cursorOffset}) => {
+              if (formatted !== value) {
+                cm.replaceRange(formatted, cm.posFromIndex(0), cm.posFromIndex(value.length));
+                cm.setCursor(cm.posFromIndex(cursorOffset));
+              }
+            });
         }
 
-        Promise.all(oldStrings.map(string => prettier.format(string, options)))
+        Promise.all(oldStrings.map(s => prettier.format(s, options)))
           .then(newStrings => {
-            if (newStrings.some((string, i) => string !== oldStrings[i])) {
-              cm.replaceSelections(newStrings, 'around');
+            var trimmedStrings = newStrings.map((s, i) =>
+              s !== oldStrings[i] && s.endsWith('\n') ? s.slice(0, -1) : s
+            );
+
+            if (!trimmedStrings.every((s, i) => s === oldStrings[i])) {
+              cm.replaceSelections(trimmedStrings, 'around');
             }
           })
           .catch(e => console.warn(e));
