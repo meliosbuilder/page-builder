@@ -322,6 +322,67 @@ define([
     cmds.singleSelectionTop(cm);
   };
 
+  cmds.format = function(cm) {
+    var timer = setTimeout(() => $('body').trigger('processStart'), 150),
+      value = cm.getValue(),
+      depsMap = {
+        '': [
+          'Melios_PageBuilder/js/lib/prettier/standalone',
+          'Melios_PageBuilder/js/lib/prettier/plugins/html',
+        ],
+        '<style': [
+          'Melios_PageBuilder/js/lib/prettier/plugins/postcss',
+        ],
+        '<script': [
+          'Melios_PageBuilder/js/lib/prettier/plugins/estree',
+          'Melios_PageBuilder/js/lib/prettier/plugins/babel',
+        ],
+      },
+      deps = Object.entries(depsMap)
+        .filter(([str]) => value.includes(str))
+        .flatMap(([, deps]) => deps);
+
+    require(deps, function (prettier, ...plugins) {
+      var options = {
+        parser: 'html',
+        singleQuote: true,
+        embeddedLanguageFormatting: 'auto',
+        plugins
+      };
+
+      clearTimeout(timer);
+      $('body').trigger('processStop');
+
+      cm.operation(function() {
+        var oldStrings = cm.listSelections().map(r => cm.getRange(r.from(), r.to()));
+
+        if (!cm.somethingSelected()) {
+          return prettier.formatWithCursor(value, {
+              cursorOffset: cm.indexFromPos(cm.getCursor()),
+              ...options
+            }).then(({formatted, cursorOffset}) => {
+              if (formatted !== value) {
+                cm.replaceRange(formatted, cm.posFromIndex(0), cm.posFromIndex(value.length));
+                cm.setCursor(cm.posFromIndex(cursorOffset));
+              }
+            });
+        }
+
+        Promise.all(oldStrings.map(s => prettier.format(s, options)))
+          .then(newStrings => {
+            var trimmedStrings = newStrings.map((s, i) =>
+              s !== oldStrings[i] && s.endsWith('\n') ? s.slice(0, -1) : s
+            );
+
+            if (!trimmedStrings.every((s, i) => s === oldStrings[i])) {
+              cm.replaceSelections(trimmedStrings, 'around');
+            }
+          })
+          .catch(e => console.warn(e));
+      });
+    });
+  };
+
   var keyMap = CodeMirror.keyMap;
   keyMap.macMelios = {
     "Shift-Tab": "indentLess",
@@ -334,6 +395,7 @@ define([
     "Cmd-Enter": "insertLineAfter",
     "Shift-Enter": "insertLineAfter",
     "Shift-Cmd-Enter": "insertLineBefore",
+    "Shift-Cmd-F": "format",
     "Cmd-D": "selectNextOccurrence",
     "Cmd-Ctrl-Up": "swapLineUp",
     "Cmd-Ctrl-Down": "swapLineDown",
@@ -364,6 +426,7 @@ define([
     "Ctrl-Enter": "insertLineAfter",
     "Shift-Enter": "insertLineAfter",
     "Shift-Ctrl-Enter": "insertLineBefore",
+    "Shift-Ctrl-F": "format",
     "Ctrl-D": "selectNextOccurrence",
     "Shift-Ctrl-Up": "swapLineUp",
     "Shift-Ctrl-Down": "swapLineDown",
