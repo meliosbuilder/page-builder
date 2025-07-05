@@ -12,6 +12,7 @@ bin/magento module:enable Melios_PageBuilder --clear-static-content
 ## Highlights
 
  -  CodeMirror editor used for HTML content elements.
+ -  HTML/JS/CSS code formatter using [Prettier](https://prettier.io/).
  -  Live preview automatically reloads the browser tab when its content is updated &mdash; **Pro edition only**
  -  AI assistant &mdash; **Pro edition only**
  -  Responsive Margin/Padding for all Page Builder components.
