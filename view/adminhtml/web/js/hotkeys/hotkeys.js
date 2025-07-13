@@ -1,7 +1,8 @@
 define([
     'jquery',
+    'knockout',
     'Melios_PageBuilder/js/utils/can-use-hotkeys',
-], function ($, canUseHotkeys) {
+], function ($, ko, canUseHotkeys) {
     'use strict';
 
     $(document).on('dblclick', (e) => {
@@ -65,7 +66,7 @@ define([
         }
     });
 
-    // Confirm "back" if it's caused by touch swipe gesture and pagebuilder is opened
+    // Confirm page upload when needed
     (() => {
         var lastScroll = new Date();
 
@@ -78,9 +79,18 @@ define([
         }, { passive: true });
 
         window.addEventListener('beforeunload', e => {
+            // Confirm "back" if it's caused by swipe gesture and pagebuilder is opened
             if ($('.pagebuilder-stage-wrapper.stage-full-screen').length &&
                 (new Date() - lastScroll) < 2000 // assume it's an accidental swipe
             ) {
+                e.preventDefault();
+                e.returnValue = '';
+            }
+
+            // Confirm unload if pagebuilder is dirty
+            if ($('.pagebuilder-stage-wrapper').get().some(el => {
+                return ko.dataFor(el.parentElement)?.hasChanged();
+            })) {
                 e.preventDefault();
                 e.returnValue = '';
             }
