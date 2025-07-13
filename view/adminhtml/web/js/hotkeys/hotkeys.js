@@ -88,12 +88,12 @@ define([
             }
 
             // Confirm unload if pagebuilder is dirty
-            if ($('.pagebuilder-stage-wrapper').get().some(el => {
-                return ko.dataFor(el.parentElement)?.hasChanged();
-            })) {
-                e.preventDefault();
-                e.returnValue = '';
-            }
+            // if ($('.pagebuilder-stage-wrapper').get().some(el => {
+            //     return ko.dataFor(el.parentElement)?.hasChanged();
+            // })) {
+            //     e.preventDefault();
+            //     e.returnValue = '';
+            // }
         });
     })();
 });
