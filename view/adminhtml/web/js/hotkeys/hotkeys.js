@@ -64,4 +64,26 @@ define([
             return el.find('.edit-content-type').click();
         }
     });
+
+    // Confirm "back" if it's caused by touch swipe gesture and pagebuilder is opened
+    (() => {
+        var lastScroll = new Date();
+
+        window.addEventListener('wheel', (e) => {
+            lastScroll = new Date();
+        }, { passive: true });
+
+        window.addEventListener('scroll', e => {
+            lastScroll = new Date();
+        }, { passive: true });
+
+        window.addEventListener('beforeunload', e => {
+            if ($('.pagebuilder-stage-wrapper.stage-full-screen').length &&
+                (new Date() - lastScroll) < 2000 // assume it's an accidental swipe
+            ) {
+                e.preventDefault();
+                e.returnValue = '';
+            }
+        });
+    })();
 });
