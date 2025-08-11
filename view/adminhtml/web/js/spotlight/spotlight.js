@@ -241,7 +241,7 @@ define([
         },
         renderItems: function () {
             this.body.html(this.items().map(item => {
-                return `<div class="item ${item.class}" tabindex="0" data-id="${item.id}">
+                return `<div class="item ${item.class || ''}" tabindex="0" data-id="${item.id}">
                     <i class="${item.icon}"></i>
                     ${item.label}
                 </div>`;
