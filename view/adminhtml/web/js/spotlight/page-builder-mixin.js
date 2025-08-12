@@ -307,13 +307,13 @@ define([
 
                         // add timeout to run our logic after mouseup listeners
                         setTimeout(() => {
-                            $('.content-type-container.ui-sortable').each(function () {
+                            $('.content-type-container.ui-sortable', '.stage-full-screen').each(function () {
                                 if ($(this).data('ui-sortable')) {
                                     $(this).sortable('option', 'tolerance', 'intersect');
                                 }
                             });
 
-                            var handles = $('.pagebuilder-draggable-content-type.ui-draggable.ui-draggable-handle'),
+                            var handles = $('.pagebuilder-draggable-content-type.ui-draggable.ui-draggable-handle', '.stage-full-screen'),
                                 firstVisibleHandle = handles.filter(':visible').first(),
                                 width = firstVisibleHandle.width() || 150,
                                 height = firstVisibleHandle.height() || 40,
@@ -346,9 +346,12 @@ define([
 
                             setTimeout(() => {
                                 activateFocusTrap(
-                                    $('.pagebuilder-drop-indicator', '.pagebuilder-root-container')
+                                    $('.pagebuilder-drop-indicator', '.stage-full-screen .pagebuilder-root-container')
                                         .add(
-                                            $('.ui-sortable:not(:has(>.pagebuilder-drop-indicator))', '.pagebuilder-root-container')
+                                            $(
+                                                '.ui-sortable:not(:has(>.pagebuilder-drop-indicator))',
+                                                '.stage-full-screen .pagebuilder-root-container'
+                                            )
                                                 .filter((i, el) => {
                                                     if (config.name === 'column-group' &&
                                                         el.closest('.pagebuilder-column-group')
