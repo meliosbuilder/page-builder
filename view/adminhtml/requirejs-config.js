@@ -23,6 +23,11 @@ var config = {
                 'Melios_PageBuilder/js/open-pagebuilder/wysiwyg-mixin': true,
             },
 
+            'Magento_PageBuilder/js/uploader': {
+                // Apply dimensions when uploading/selecting image without opening the form
+                'Melios_PageBuilder/js/image/uploader-mixin': true,
+            },
+
             'mage/adminhtml/wysiwyg/tiny_mce/tinymce5Adapter': {
                 // Do not paste raw data from copy-paste buffer
                 'Melios_PageBuilder/js/copy-paste/tinymceAdapter-mixin': true,
