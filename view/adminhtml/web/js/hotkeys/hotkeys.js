@@ -64,6 +64,11 @@ define([
         if (e.key === 'Enter' && !e.metaKey && !e.ctrlKey) {
             return el.find('.edit-content-type').click();
         }
+
+        // add child to the hovered element
+        if (e.key === '+' && !e.metaKey && !e.ctrlKey) {
+            return el.find('.add-child').click();
+        }
     });
 
     // Confirm page upload when needed
