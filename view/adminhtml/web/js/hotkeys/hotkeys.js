@@ -71,6 +71,22 @@ define([
         }
     });
 
+    // Modal hotkeys
+    $(document).on('keydown', (e) => {
+        var modal = $(event.target).closest('[data-role="modal"]');
+        if (!modal.length || !modal.hasClass('_show')) {
+            return;
+        }
+
+        // Ctrl+Enter
+        if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
+            $(event.target).blur();
+            return setTimeout(() => {
+                modal.find('.save.primary, .action-primary').click();
+            }, 20);
+        }
+    });
+
     // Confirm page upload when needed
     (() => {
         var lastScroll = new Date();
