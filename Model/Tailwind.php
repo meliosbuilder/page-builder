@@ -27,9 +27,8 @@ class Tailwind
         $this->fileDriver->filePutContents($outputPath, '');
         $this->fileDriver->filePutContents($tmp . '/content.html', $html);
 
-        chdir($tw);
-        chmod('tailwindcss', 0755);
-        exec("tailwindcss -i {$inputPath} -o {$outputPath} --minify");
+        chmod("{$tw}/tailwindcss", 0755);
+        exec("{$tw}/tailwindcss -i {$inputPath} -o {$outputPath} --minify", $output);
 
         $css = $this->fileDriver->fileGetContents($outputPath);
 
