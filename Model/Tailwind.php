@@ -15,24 +15,29 @@ class Tailwind
     ) {
     }
 
-    public function run($html)
+    public function run($html): string
     {
-        $tw = $this->directoryList->getPath(DirectoryList::VAR_DIR) . '/melios/tailwind';
-        $tmp = $tw . '/' . bin2hex(random_bytes(4));
-        $inputPath = $tmp . '/input.css';
-        $outputPath = $tmp . '/output.css';
+        $twDir = $this->directoryList->getPath(DirectoryList::VAR_DIR) . '/melios/tailwind';
+        $twBinary = "{$twDir}/tailwindcss";
+        if (!$this->fileDriver->isExists($twBinary)) {
+            return '';
+        }
 
-        $this->fileDriver->createDirectory($tmp);
+        $tmpDir = $twDir . '/' . bin2hex(random_bytes(4));
+        $inputPath = $tmpDir . '/input.css';
+        $outputPath = $tmpDir . '/output.css';
+
+        $this->fileDriver->createDirectory($tmpDir);
         $this->fileDriver->filePutContents($inputPath, $this->input());
         $this->fileDriver->filePutContents($outputPath, '');
-        $this->fileDriver->filePutContents($tmp . '/content.html', $html);
+        $this->fileDriver->filePutContents($tmpDir . '/content.html', $html);
 
-        chmod("{$tw}/tailwindcss", 0755);
-        exec("{$tw}/tailwindcss -i {$inputPath} -o {$outputPath} --minify", $output);
+        chmod($twBinary, 0755);
+        exec("{$twBinary} -i {$inputPath} -o {$outputPath} --minify", $output);
 
         $css = $this->fileDriver->fileGetContents($outputPath);
 
-        $this->fileDriver->deleteDirectory($tmp);
+        $this->fileDriver->deleteDirectory($tmpDir);
 
         return $css;
     }
