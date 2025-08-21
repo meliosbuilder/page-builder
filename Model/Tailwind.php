@@ -17,13 +17,12 @@ class Tailwind
 
     public function run($html): string
     {
-        $twDir = $this->directoryList->getPath(DirectoryList::VAR_DIR) . '/melios/tailwind';
-        $twBinary = "{$twDir}/tailwindcss";
+        $twBinary = $this->bin();
         if (!$this->fileDriver->isExists($twBinary)) {
             return '';
         }
 
-        $tmpDir = $twDir . '/' . bin2hex(random_bytes(4));
+        $tmpDir = dirname($twBinary) . '/' . bin2hex(random_bytes(4));
         $inputPath = $tmpDir . '/input.css';
         $outputPath = $tmpDir . '/output.css';
 
@@ -58,5 +57,17 @@ class Tailwind
         @import 'tailwindcss/utilities.css' source(none);
         @source 'content\.html';
         CSS;
+    }
+
+    public function bin()
+    {
+        return $this->directoryList->getPath(DirectoryList::VAR_DIR)
+            . '/melios/tailwind/tailwindcss';
+    }
+
+    public function version()
+    {
+        exec("{$this->bin()} --help", $output);
+        return $output[0];
     }
 }

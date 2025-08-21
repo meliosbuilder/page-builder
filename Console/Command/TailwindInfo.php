@@ -2,12 +2,19 @@
 
 namespace Melios\PageBuilder\Console\Command;
 
+use Melios\PageBuilder\Model\Tailwind;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class TailwindInfo extends Command
 {
+    public function __construct(
+        private Tailwind $tailwind
+    ) {
+        parent::__construct();
+    }
+
     protected function configure()
     {
         $this->setName('melios:tailwind:info')
@@ -18,7 +25,16 @@ class TailwindInfo extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         try {
-            $output->writeln('<info>WIP</info>');
+            $bin = $this->tailwind->bin();
+            $output->writeln("Checking tailwind executable: {$bin}");
+
+            if (!file_exists($bin)) {
+                $output->writeln("<error>File not found. Run bin/magento melios:tailwind:download</error>");
+            } elseif (!is_executable($bin)) {
+                $output->writeln("<error>File not executable. Run chmod +x {$bin}</error>");
+            } else {
+                $output->writeln("<info>{$this->tailwind->version()}</info>");
+            }
 
             return \Magento\Framework\Console\Cli::RETURN_SUCCESS;
         } catch (\Exception $e) {
