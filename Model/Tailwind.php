@@ -17,7 +17,7 @@ class Tailwind
 
     public function run($html)
     {
-        $tw = $this->directoryList->getPath(DirectoryList::VAR_DIR) . '/melios/tw';
+        $tw = $this->directoryList->getPath(DirectoryList::VAR_DIR) . '/melios/tailwind';
         $tmp = $tw . '/' . bin2hex(random_bytes(4));
         $inputPath = $tmp . '/input.css';
         $outputPath = $tmp . '/output.css';
