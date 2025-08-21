@@ -22,7 +22,10 @@ class GenerateTailwindStyles implements \Magento\Framework\Event\ObserverInterfa
         $postData = $request->getPostValue();
 
         foreach ($postData as $key => $value) {
-            if (!$value || !is_string($value)) {
+            // "< 33" means that there is no content to process because
+            // <style data-mls-tailwind></style> = 33 and
+            // <div data-content-type="a"></div> = 33
+            if (!$value || !is_string($value) || strlen($value) < 33) {
                 continue;
             }
 
