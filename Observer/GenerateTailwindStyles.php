@@ -22,7 +22,7 @@ class GenerateTailwindStyles implements \Magento\Framework\Event\ObserverInterfa
         $postData = $request->getPostValue();
 
         foreach ($postData as $key => $value) {
-            if (!$value || !is_string($value) || !str_contains($value, ' data-content-type="')) {
+            if (!$value || !is_string($value)) {
                 continue;
             }
 
@@ -38,10 +38,12 @@ class GenerateTailwindStyles implements \Magento\Framework\Event\ObserverInterfa
             }
 
             // generate new tailwind styles
-            $twStyles = $this->tailwind->run($value);
-            if ($twStyles) {
-                // media is used to prevent stage parser error
-                $postData[$key] = "<style data-mls-tailwind>@media all { {$twStyles} }</style>" . $value;
+            if (str_contains($value, ' data-content-type="')) {
+                $twStyles = $this->tailwind->run($value);
+                if ($twStyles) {
+                    // media is used to prevent stage parser error
+                    $postData[$key] = "<style data-mls-tailwind>@media all { {$twStyles} }</style>" . $value;
+                }
             }
         }
 
