@@ -17,7 +17,7 @@ class Tailwind
 
     public function run($html): string
     {
-        $twBinary = $this->bin();
+        $twBinary = $this->binaryPath();
         if (!$this->fileDriver->isExists($twBinary)) {
             return '';
         }
@@ -59,7 +59,7 @@ class Tailwind
         CSS;
     }
 
-    public function bin()
+    public function binaryPath()
     {
         return $this->directoryList->getPath(DirectoryList::VAR_DIR)
             . '/melios/tailwind/tailwindcss';
@@ -67,7 +67,7 @@ class Tailwind
 
     public function version()
     {
-        exec("{$this->bin()} --help", $output);
+        exec("{$this->binaryPath()} --help", $output);
         return $output[0];
     }
 }

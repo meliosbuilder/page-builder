@@ -25,7 +25,7 @@ class TailwindInfo extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         try {
-            $bin = $this->tailwind->bin();
+            $bin = $this->tailwind->binaryPath();
             $output->writeln("Checking tailwind executable: {$bin}");
 
             if (!file_exists($bin)) {
