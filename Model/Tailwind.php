@@ -2,6 +2,7 @@
 
 namespace Melios\PageBuilder\Model;
 
+use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\App\Filesystem\DirectoryList;
 use Magento\Framework\Filesystem\Driver\File;
 use Symfony\Component\Process\Process;
@@ -12,6 +13,7 @@ class Tailwind
     private $input;
 
     public function __construct(
+        private ScopeConfigInterface $scopeConfig,
         private DirectoryList $directoryList,
         private File $fileDriver
     ) {
@@ -71,9 +73,12 @@ class Tailwind
             return $this->input;
         }
 
+        $twConfig = $this->scopeConfig->getValue('melios_builder/tailwind/config');
+
         return <<<CSS
         @import 'tailwindcss/theme.css';
         @import 'tailwindcss/utilities.css' source(none);
+        {$twConfig}
         @source 'content\.html';
         CSS;
     }
