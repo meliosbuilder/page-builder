@@ -22,21 +22,26 @@ class Tailwind
             return '';
         }
 
-        $tmpDir = dirname($twBinary) . '/' . bin2hex(random_bytes(4));
+        do {
+            $tmpDir = dirname($twBinary) . '/' . bin2hex(random_bytes(4));
+        } while ($this->fileDriver->isExists($tmpDir));
+
         $inputPath = $tmpDir . '/input.css';
         $outputPath = $tmpDir . '/output.css';
 
-        $this->fileDriver->createDirectory($tmpDir);
-        $this->fileDriver->filePutContents($inputPath, $this->input());
-        $this->fileDriver->filePutContents($outputPath, '');
-        $this->fileDriver->filePutContents($tmpDir . '/content.html', $html);
+        try {
+            $this->fileDriver->createDirectory($tmpDir);
+            $this->fileDriver->filePutContents($inputPath, $this->input());
+            $this->fileDriver->filePutContents($outputPath, '');
+            $this->fileDriver->filePutContents($tmpDir . '/content.html', $html);
 
-        chmod($twBinary, 0755);
-        exec("{$twBinary} -i {$inputPath} -o {$outputPath} --minify", $output);
+            chmod($twBinary, 0755);
+            exec("{$twBinary} -i {$inputPath} -o {$outputPath} --minify", $output);
 
-        $css = $this->fileDriver->fileGetContents($outputPath);
-
-        $this->fileDriver->deleteDirectory($tmpDir);
+            $css = $this->fileDriver->fileGetContents($outputPath);
+        } finally {
+            $this->fileDriver->deleteDirectory($tmpDir);
+        }
 
         return $css;
     }
