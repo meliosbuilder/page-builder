@@ -4,6 +4,8 @@ namespace Melios\PageBuilder\Model;
 
 use Magento\Framework\App\Filesystem\DirectoryList;
 use Magento\Framework\Filesystem\Driver\File;
+use Symfony\Component\Process\Process;
+use RuntimeException;
 
 class Tailwind
 {
@@ -36,7 +38,19 @@ class Tailwind
             $this->fileDriver->filePutContents($tmpDir . '/content.html', $html);
 
             chmod($twBinary, 0755);
-            exec("{$twBinary} -i {$inputPath} -o {$outputPath} --minify", $output);
+            // exec("{$twBinary} -i {$inputPath} -o {$outputPath} --minify");
+            $process = new Process([
+                $twBinary,
+                '-i', $inputPath,
+                '-o', $outputPath,
+                '--minify'
+            ]);
+
+            $process->run();
+
+            if (!$process->isSuccessful()) {
+                throw new RuntimeException($process->getErrorOutput());
+            }
 
             $css = $this->fileDriver->fileGetContents($outputPath);
         } finally {
@@ -72,7 +86,15 @@ class Tailwind
 
     public function version()
     {
-        exec("{$this->binaryPath()} --help", $output);
-        return $output[0];
+        // exec("{$this->binaryPath()} --help", $output);
+        // return $output[0];
+        $process = new Process([$this->binaryPath(), '--help']);
+        $process->run();
+
+        if (!$process->isSuccessful()) {
+            throw new RuntimeException($process->getErrorOutput());
+        }
+
+        return explode("\n", $process->getOutput())[0];
     }
 }

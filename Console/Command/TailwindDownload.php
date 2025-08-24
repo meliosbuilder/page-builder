@@ -11,6 +11,7 @@ use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Process\Process;
 use RuntimeException;
 
 class TailwindDownload extends Command
@@ -139,7 +140,10 @@ class TailwindDownload extends Command
 
         $key = $os . '-' . $arch;
         if ($os === 'Linux') {
-            exec('ldd --version 2>&1', $out);
+            // exec('ldd --version 2>&1', $out);
+            $process = new Process(['ldd', '--version']);
+            $process->run();
+            $out = $process->getOutput() . $process->getErrorOutput();
             $out = strtolower(implode(' ', $out));
             $key .= (str_contains($out, 'musl') ? '-musl' : '-glibc');
         }
