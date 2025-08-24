@@ -51,7 +51,7 @@ class GenerateTailwindStyles implements \Magento\Framework\Event\ObserverInterfa
                     $twStyles = $this->tailwind->run($value);
                     if ($twStyles) {
                         // media is used to prevent stage parser error
-                        $postData[$key] .= "<style data-mls-tailwind>@media all { {$twStyles} }</style>";
+                        $postData[$key] = "<style data-mls-tailwind>@media all { {$twStyles} }</style>" . $value;
                     }
                 } catch (Exception $e) {
                     $this->messageManager->addErrorMessage($e->getMessage());
