@@ -81,7 +81,7 @@ class TailwindDownload extends Command
         $progressBar->setFormat("Downloading {$asset['name']} [%bar%] %percent:3s%% (%current%/%max% MB)");
         $progressBar->start();
 
-        $fp = fopen($target, 'w');
+        $fp = fopen($target . '.tmp', 'w');
         $ch = curl_init($asset['browser_download_url']);
 
         curl_setopt_array($ch, [
@@ -105,6 +105,7 @@ class TailwindDownload extends Command
         curl_close($ch);
         fclose($fp);
 
+        $this->fileDriver->rename($target . '.tmp', $target);
         $progressBar->finish();
         $output->writeln('');
     }
