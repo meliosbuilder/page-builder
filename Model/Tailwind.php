@@ -10,8 +10,6 @@ use RuntimeException;
 
 class Tailwind
 {
-    private $input;
-
     public function __construct(
         private ScopeConfigInterface $scopeConfig,
         private DirectoryList $directoryList,
@@ -62,17 +60,8 @@ class Tailwind
         return $css;
     }
 
-    public function input($input = null)
+    public function input()
     {
-        if ($input) {
-            $this->input = $input;
-            return;
-        }
-
-        if ($this->input) {
-            return $this->input;
-        }
-
         $twConfig = $this->scopeConfig->getValue('melios_builder/tailwind/config');
 
         return <<<CSS
