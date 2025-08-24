@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <section id="cms">
+            <group id="melios_builder" translate="label" type="text" sortOrder="2010" showInDefault="1" showInWebsite="0" showInStore="0">
+                <label>Melios Page Builder</label>
+                <group id="tailwind" translate="label" type="text" sortOrder="5" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Tailwind CSS</label>
+                    <field id="config" translate="label" type="textarea" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="1">
+                        <label>Config</label>
+                        <comment>https://tailwindcss.com/docs/theme#default-theme-variable-reference</comment>
+                        <config_path>melios_builder/tailwind/config</config_path>
+                    </field>
+                </group>
+            </group>
+        </section>
+    </system>
+</config>
