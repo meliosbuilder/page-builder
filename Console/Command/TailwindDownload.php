@@ -140,12 +140,10 @@ class TailwindDownload extends Command
 
         $key = $os . '-' . $arch;
         if ($os === 'Linux') {
-            // exec('ldd --version 2>&1', $out);
             $process = new Process(['ldd', '--version']);
             $process->run();
             $out = $process->getOutput() . $process->getErrorOutput();
-            $out = strtolower(implode(' ', $out));
-            $key .= (str_contains($out, 'musl') ? '-musl' : '-glibc');
+            $key .= (str_contains(strtolower($out), 'musl') ? '-musl' : '-glibc');
         }
 
         if (!isset($map[$key])) {
