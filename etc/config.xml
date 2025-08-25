@@ -7,7 +7,7 @@
                 <config><![CDATA[@theme {
     --spacing: 4px;
 
-    --breakpoint-2xs: 320px;
+    --breakpoint-2xs: 375px;
     --breakpoint-xs: 480px;
     --breakpoint-sm: 640px;
     --breakpoint-md: 768px;
