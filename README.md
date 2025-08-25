@@ -7,10 +7,12 @@ Must-have improvements for the built-in Magento PageBuilder module.
 ```bash
 composer require melios/page-builder
 bin/magento module:enable Melios_PageBuilder --clear-static-content
+bin/magento melios/tailwind:download # optional
 ```
 
 ## Highlights
 
+ -  Tailwind CSS inside Magento PageBuilder!
  -  CodeMirror editor used for HTML content elements.
  -  HTML/JS/CSS code formatter using [Prettier](https://prettier.io/).
  -  Live preview automatically reloads the browser tab when its content is updated &mdash; **Pro edition only**
