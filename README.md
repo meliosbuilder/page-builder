@@ -7,7 +7,7 @@ Must-have improvements for the built-in Magento PageBuilder module.
 ```bash
 composer require melios/page-builder
 bin/magento module:enable Melios_PageBuilder --clear-static-content
-bin/magento melios/tailwind:download # optional
+bin/magento melios:tailwind:download # required for tailwindcss support
 ```
 
 ## Highlights
