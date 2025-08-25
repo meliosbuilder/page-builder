@@ -1,6 +1,15 @@
 <?xml version="1.0"?>
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Magento\Framework\Console\CommandListInterface">
+        <arguments>
+            <argument name="commands" xsi:type="array">
+                <item name="melios_tailwind_info" xsi:type="object">Melios\PageBuilder\Console\Command\TailwindInfo</item>
+                <item name="melios_tailwind_download" xsi:type="object">Melios\PageBuilder\Console\Command\TailwindDownload</item>
+            </argument>
+        </arguments>
+    </type>
+
     <!-- Allow uploading and resizing modern media formats -->
     <type name="Magento\Framework\File\Uploader">
         <plugin name="melios_page_builder" type="Melios\PageBuilder\Plugin\FileUploader" />

@@ -5,7 +5,8 @@
     "version": "1.7.0",
     "license": "GPL-3.0-or-later",
     "require": {
-        "php": "^8.0"
+        "php": "^8.0",
+        "symfony/process": "*"
     },
     "autoload": {
         "files": [
