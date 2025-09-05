@@ -17,10 +17,10 @@ define([
             options.receive = wrapper.wrap(options.receive, async (o, ...args) => {
                 var draggedNewContentConfig = registry.getDraggedContentTypeConfig(),
                     draggedExistingContent = draggedNewContentConfig ? false : ko.dataFor(args[1].item[0]),
-                    parents = (draggedNewContentConfig || draggedExistingContent.config).allowed_parents,
+                    parents = (draggedNewContentConfig || draggedExistingContent?.config)?.allowed_parents,
                     event = args[0];
 
-                if (parents.includes(preview.config.name) || !parents.includes('row')) {
+                if (!parents || parents.includes(preview.config.name) || !parents.includes('row')) {
                     return o(...args);
                 }
 
