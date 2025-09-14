@@ -158,35 +158,6 @@
     }
 }
 
-// Mobile breakpoint notice
-.admin__field-mobile-breakpoint-notice {
-    .admin__field-control._with-tooltip {
-        display: flex;
-        .admin__field-tooltip {
-            &:extend(.admin__fieldset .admin__field.admin__field-min-height-mobile-with-notice .admin__field-control._with-tooltip .admin__field-tooltip);
-            &-action {
-                &:extend(.admin__fieldset .admin__field.admin__field-min-height-mobile-with-notice .admin__field-control._with-tooltip .admin__field-tooltip-action all);
-            }
-            &-content {
-                &:extend(.admin__fieldset .admin__field.admin__field-min-height-mobile-with-notice .admin__field-control._with-tooltip .admin__field-tooltip-content all);
-                p {
-                    &:extend(.admin__fieldset .admin__field.admin__field-min-height-mobile-with-notice .admin__field-control._with-tooltip .admin__field-tooltip-content p);
-                }
-            }
-        }
-    }
-    &.admin__field-small > {
-        .admin__field-control._with-tooltip {
-            width: 17rem;
-        }
-    }
-    .theme-m137 & {
-        .admin__field-design-options {
-            width: 100%;
-        }
-    }
-}
-
 @import (multiple) '_codemirror.less';
 .tox {
     // reset .tox :not(svg):not(rect) styles
