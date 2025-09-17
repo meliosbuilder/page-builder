@@ -20,7 +20,7 @@ define([
                     parents = (draggedNewContentConfig || draggedExistingContent?.config)?.allowed_parents,
                     event = args[0];
 
-                if (!parents || parents.includes(preview.config.name) || !parents.includes('row')) {
+                if ($(event.target).sortable('option', 'disabled') || !parents || parents.includes(preview.config.name) || !parents.includes('row')) {
                     return o(...args);
                 }
 
