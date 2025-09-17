@@ -369,7 +369,7 @@ define([
                                         .filter((i, el) => {
                                             var details = $(el).parents('details');
 
-                                            return !details.length || details.is('[open]');
+                                            return !details.length || details.get().every(d => d.open);
                                         })
                                 );
                             }, 100);
