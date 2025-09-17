@@ -365,6 +365,12 @@ define([
                                                 })
                                         )
                                         .filter((i, el) => $(el).css('visibility') !== 'hidden')
+                                        .filter(':visible')
+                                        .filter((i, el) => {
+                                            var details = $(el).parents('details');
+
+                                            return !details.length || details.is('[open]');
+                                        })
                                 );
                             }, 100);
                         }, 20);
