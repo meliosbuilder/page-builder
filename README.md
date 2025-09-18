@@ -17,18 +17,17 @@ bin/magento melios:tailwind:download # required for tailwindcss support
  -  HTML/JS/CSS code formatter using [Prettier](https://prettier.io/).
  -  Live preview automatically reloads the browser tab when its content is updated &mdash; **Pro edition only**
  -  AI assistant &mdash; **Pro edition only**
- -  Responsive Margin/Padding for all Page Builder components.
  -  Hotkeys
     - <kbd>Alt+0</kbd> to activate pagebuilder immediately.
     - <kbd>Ctr+C</kbd>, <kbd>Ctrl+V</kbd> to copy/paste whole pagebuilder content.
     - <kbd>Ctr+C</kbd>, <kbd>Ctrl+V</kbd> to copy/paste selected pagebuilder elements &mdash; **Pro edition only**
     - <kbd>Ctr+S</kbd> to save contents without leaving the editor &mdash; **Pro edition only**
  -  Image enhancements
-    - Added dimensions with autofill feature.
-    - Added fetchpriority attribute.
+    - Allow uploading `WEBP` and `AVIF` images.
     - Added ability to lazy load the image or background image.
     - Added ability to preload the image or background image &mdash; **Pro edition only**
-    - Allow uploading `WEBP` and `AVIF` images.
+    - Added dimensions with autofill feature.
+    - Added fetchpriority attribute.
  -  Added ability to use `Gap` property for columns component.
  -  Double click to edit hovered element.
 
