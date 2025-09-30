@@ -48,7 +48,10 @@ class GenerateTailwindStyles implements \Magento\Framework\Event\ObserverInterfa
                 !str_contains($value, 'melios-tailwind-off')
             ) {
                 try {
-                    $twStyles = $this->tailwind->run($value);
+                    $twStyles = $this->tailwind->run(
+                        html_entity_decode($value, ENT_QUOTES | ENT_HTML5, 'UTF-8')
+                    );
+
                     if ($twStyles) {
                         // media is used to prevent stage parser error
                         $postData[$key] = "<style data-mls-tailwind>@media all { {$twStyles} }</style>" . $value;
