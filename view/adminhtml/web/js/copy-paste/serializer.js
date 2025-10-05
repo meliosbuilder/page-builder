@@ -1,10 +1,13 @@
-define([], () => {
+define([
+    'underscore'
+], (_) => {
     'use strict';
 
-    // @todo: omit unnecessary data
     function collectData(contentType) {
         return {
-            config: contentType.config,
+            config: _.pick(contentType.config, [
+                'name',
+            ]),
             states: contentType.getDataStoresStates(),
             children: contentType.children?.().map(child => collectData(child)),
         };
