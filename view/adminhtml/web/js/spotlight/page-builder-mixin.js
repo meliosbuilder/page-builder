@@ -213,6 +213,28 @@ define([
         }
 
         if (!focused) {
+            var rects = $(elements)
+                .filter((i, el) => isInViewport(el, { rootMargin }))
+                .get()
+                .map(el => ({
+                    el,
+                    rect: el.getBoundingClientRect()
+                }));
+
+            focused = rects.reduce((nearest, { el, rect }) => {
+                var dx = mouseCoords.x < rect.left ? rect.left - mouseCoords.x :
+                           mouseCoords.x > rect.right ? mouseCoords.x - rect.right : 0,
+                    dist = Math.hypot(dx, mouseCoords.y - rect.y);
+
+                return !nearest || dist < nearest.dist ? { el, dist } : nearest;
+            }, null);
+
+            if (focused) {
+                $(focused.el).focus();
+            }
+        }
+
+        if (!focused) {
             $(elements)
                 .filter((i, el) => isInViewport(el, { rootMargin }))
                 .each((i, el) => {
