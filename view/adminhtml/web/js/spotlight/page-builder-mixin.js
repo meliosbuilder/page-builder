@@ -128,12 +128,6 @@ define([
             position.top -= 2;
         }
 
-        // hide jumping drop indicator
-        $('body').addClass('mls-hide-sortable-placeholder');
-        setTimeout(() => {
-            $('body').removeClass('mls-hide-sortable-placeholder');
-        }, 100);
-
         // hacky code to activate sortable placeholder
         currentDraggable._mouseDrag(jQuery.Event('mousemove', {
             pageX: position.left,
@@ -325,7 +319,7 @@ define([
                         $('body').addClass('mls-hide-sortable-placeholder');
                         setTimeout(() => {
                             $('body').removeClass('mls-hide-sortable-placeholder');
-                        }, 200);
+                        }, 300);
 
                         // add timeout to run our logic after mouseup listeners
                         setTimeout(() => {
