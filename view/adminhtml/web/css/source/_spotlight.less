@@ -1,0 +1,117 @@
+.melios-spotlight {
+    [class^="icon-pagebuilder-"] {
+        font-size: 18px; // sync icon width with premium elements icons
+        margin-inline-end: 1px;
+    }
+}
+.pagebuilder-header {
+    justify-content: flex-start;
+    gap: 20px;
+}
+.pagebuilder-header .spotlight-buttons {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    color: #f7f3eb;
+
+    span {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        padding: 12px;
+        cursor: pointer;
+        &:hover {
+            background: #4a4542;
+        }
+    }
+
+    .panel-hide {
+        opacity: .5;
+    }
+
+    .spotlight-faux-input {
+        cursor: text;
+        color: ~"rgb(255 255 255 / 50%)";
+        padding: 4px 6px 4px 8px;
+        border-radius: 6px;
+        background: #4a4542;
+        user-select: none;
+        .hotkey {
+            pointer-events: none;
+            display: inline-flex;
+            margin-left: 25px;
+            padding: 0px 7px;
+            border: 1px solid ~"rgb(239 233 228 / 20%)";
+            border-radius: 5px;
+            font-size: 12px;
+            background: ~"rgb(255 255 255 / 5%)";
+        }
+    }
+    .theme-m137 & {
+        left: 15px;
+        color: inherit;
+        .panel-hide {
+            &:extend(button all);
+            &:extend(.page-builder-viewport all);
+            opacity: .85 !important;
+        }
+        .spotlight-faux-input {
+            padding: 10px 15px;
+            border-radius: 999px;
+            color: inherit;
+            background: ~"rgb(0 0 0 / 7%)";
+            .hotkey {
+                background: ~"rgb(0 0 0 / 7%)";
+                border-color: transparent;
+            }
+        }
+    }
+}
+.pagebuilder-wysiwyg-snapshot {
+    .pagebuilder-stage-wrapper.hidden-sidebar {
+        .pagebuilder-header {
+            width: 100%;
+            left: 0;
+        }
+        .pagebuilder-panel-wrapper {
+            display: none;
+        }
+        .pagebuilder-stage {
+            width: 100%;
+            margin-left: 0;
+        }
+    }
+    .theme-m137 & {
+        .pagebuilder-stage-wrapper.stage-full-screen {
+            &.hidden-sidebar .pagebuilder-stage {
+                width: 100%;
+            }
+        }
+    }
+}
+
+.mls-focusable {
+    // Override important style in MagentoPageBuilder
+    &.mls-focusable.mls-focusable.mls-focusable.mls-focusable.mls-focusable {
+        display: block !important;
+    }
+    &:focus-visible {
+        transition: none;
+        outline: 2px solid currentColor;
+        outline-offset: 2px;
+    }
+}
+.mls-hide-sortable-placeholder {
+    .mls-focusable {
+        outline: none !important;
+    }
+    .pagebuilder-sortable-placeholder {
+        opacity: 0;
+    }
+}
+
+// Fix for pagebuilder inside modal
+.modal-slide:has(.pagebuilder-stage-wrapper.stage-full-screen:not(.transition-out)) {
+    margin: 0 !important;
+    left: 0;
+}
