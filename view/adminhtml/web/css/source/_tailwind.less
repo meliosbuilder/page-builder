@@ -1,0 +1,57 @@
+.mls-tw-input-wrapper {
+    position: relative;
+    input {
+        padding-right: 30px;
+    }
+    .btn-enlarge {
+        position: absolute;
+        right: 4px;
+        top: 4px;
+    }
+}
+.mls-tw-popup {
+    --mls-transition-duration: .5s;
+    position: fixed;
+    z-index: 910;
+    opacity: 0;
+    filter: blur(10px);
+    transition: all var(--mls-transition-duration) ease;
+    pointer-events: none;
+
+    background: #fff;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.05);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 10px;
+
+    > * {
+        opacity: 0;
+        transition: opacity calc(var(--mls-transition-duration) / 2) ease;
+    }
+
+    &.opened {
+        --mls-transition-duration: .3s;
+        opacity: 1;
+        filter: blur(0px);
+        pointer-events: auto;
+        box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+        > * {
+            opacity: 1;
+        }
+    }
+
+    textarea {
+        width: 100%;
+        height: 100%;
+        border: 0;
+        resize: none;
+        background: transparent;
+    }
+
+    .actions {
+        display: flex;
+        gap: 6px;
+        flex-direction: row-reverse;
+    }
+}

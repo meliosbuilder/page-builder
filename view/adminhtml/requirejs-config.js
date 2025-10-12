@@ -84,5 +84,6 @@ var config = {
     deps: [
         'Melios_PageBuilder/js/copy-paste/copy-paste',
         'Melios_PageBuilder/js/hotkeys/hotkeys',
+        'Melios_PageBuilder/js/tailwind/editor',
     ]
 };
