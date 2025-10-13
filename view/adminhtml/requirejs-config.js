@@ -61,9 +61,17 @@ var config = {
                 'Melios_PageBuilder/js/make-droppable/sortable-mixin': true,
             },
 
+            // Tailwind
             // allow > inside css class: [&>div]:pt-0
             'Magento_Ui/js/lib/validation/validator': {
                 'Melios_PageBuilder/js/tailwind/validator-mixin': true,
+            },
+            // allow newlines and spaces in class names
+            'Magento_PageBuilder/js/content-type/observable-updater/css': {
+                'Melios_PageBuilder/js/tailwind/css-updater-mixin': true,
+            },
+            'knockoutjs/knockout': {
+                'Melios_PageBuilder/js/tailwind/knockout-mixin': true,
             },
 
             // BUGFIXES
