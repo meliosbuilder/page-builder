@@ -147,18 +147,27 @@ define([
             require([
                 'Melios_PageBuilder/js/lib/codemirror/lib/codemirror',
                 'Melios_PageBuilder/js/editor/codemirror-config',
-                'Melios_PageBuilder/js/editor/codemirror-fixes'
-            ], (CodeMirror, config) => {
+                'Melios_PageBuilder/js/editor/codemirror-resizable',
+                'Melios_PageBuilder/js/editor/codemirror-control-panel',
+                'Melios_PageBuilder/js/editor/codemirror-text-marks',
+                'Melios_PageBuilder/js/editor/codemirror-fixes',
+                'Melios_PageBuilder/js/tailwind/codemirror-classlist'
+            ], (CodeMirror, config, resizable, textMarks, controlPanel) => {
                 var cm = CodeMirror(parentEl, Object.assign(config(), {
                     lineNumbers: false,
                     lint: false,
-                    mode: null,
+                    mode: 'classlist',
                     extraKeys: {
                         Tab: false,
                         'Shift-Tab': false
                     }
                 }));
 
+                cm.setSize(null, 200);
+
+                resizable(cm);
+                textMarks(cm);
+                controlPanel(cm);
                 resolve(cm);
             });
         });

@@ -59,7 +59,9 @@ define([
         $(cm.getWrapperElement()).on('click', '[data-mls-cm]', function (e) {
             if ($(this).data('global')) {
                 editors.map(editor => {
-                    if (editor.getTextArea().isConnected) {
+                    if (editor.getTextArea?.().isConnected ||
+                        editor.getInputField?.()?.isConnected
+                    ) {
                         editor.execCommand($(this).data('action'))
                     }
                 });

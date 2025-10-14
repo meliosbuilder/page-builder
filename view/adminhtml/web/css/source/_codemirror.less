@@ -95,6 +95,12 @@
         }
     }
 }
+.CodeMirror-code {
+    // space for .mls-cm-controls
+    > *:nth-child(-n+3) {
+        padding-right: 125px !important;
+    }
+}
 .mls-cm-controls {
     position: absolute;
     top: 8px;
