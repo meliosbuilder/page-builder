@@ -186,9 +186,9 @@ define([
             $('<div class="mls-css-editor"></div>').insertAfter(input)[0]
         );
 
-        cm.setValue(input.value/*.replaceAll('  ', "\n")*/);
+        cm.setValue(input.value);
         cm.on('changes', () => {
-            $(input).val(cm.getValue()/*.replaceAll("\n", '  ')*/).change();
+            $(input).val(cm.getValue().replaceAll("\n", ' ')).change();
         });
         $(input).hide();
     });
