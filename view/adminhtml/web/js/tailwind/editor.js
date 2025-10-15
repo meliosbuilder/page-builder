@@ -157,13 +157,21 @@ define([
                     lineNumbers: false,
                     lint: false,
                     mode: 'classlist',
+                    formatter: {
+                        parser: 'classlist',
+                        printWidth: 9999,
+                        deps: [
+                          'Melios_PageBuilder/js/lib/prettier/standalone',
+                          'Melios_PageBuilder/js/tailwind/prettier-classlist',
+                        ],
+                    },
                     extraKeys: {
                         Tab: false,
                         'Shift-Tab': false
                     }
                 }));
 
-                cm.setSize(null, 200);
+                cm.setSize(null, 180);
 
                 resizable(cm);
                 textMarks(cm);
@@ -178,10 +186,10 @@ define([
             $('<div class="mls-css-editor"></div>').insertAfter(input)[0]
         );
 
-        cm.setValue(input.value.replaceAll('  ', "\n"));
+        cm.setValue(input.value/*.replaceAll('  ', "\n")*/);
         cm.on('changes', () => {
-            $(input).val(cm.getValue().replaceAll("\n", '  ')).change();
+            $(input).val(cm.getValue()/*.replaceAll("\n", '  ')*/).change();
         });
-        // $(input).hide();
+        $(input).hide();
     });
 });

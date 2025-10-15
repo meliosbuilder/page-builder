@@ -344,13 +344,8 @@ define([
         .filter(([str]) => value.includes(str))
         .flatMap(([, deps]) => deps);
 
-    if (cm.getMode().name === 'classlist') {
-      parser = 'classlist';
-      printWidth = 9999;
-      deps = [
-        'Melios_PageBuilder/js/lib/prettier/standalone',
-        'Melios_PageBuilder/js/lib/prettier/plugins/classlist',
-      ];
+    if (cm.getOption('formatter')) {
+      ({ parser, printWidth, deps } = cm.getOption('formatter'));
     }
 
     require(deps, function (prettier, ...plugins) {
