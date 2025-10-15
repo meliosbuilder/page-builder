@@ -1,6 +1,58 @@
 define([], () => {
   'use strict';
 
+  // Ordered pattern groups
+  const ORDER = [
+    // layout & spacing
+    /^m[xy]?-/,
+    /^m[setrbl]?-/,
+    /^p[xy]?-/,
+    /^p[setrbl]?-/,
+    /^flex/, /^grid/, /^block/, /^inline/, /^hidden/,
+    /^max-|^min-|^w-|^h-|^size-/,
+
+    // background / gradient
+    /^bg-/, /^from-/, /^via-/, /^to-/,
+
+    // text & typography
+    /^text-(center|left|right|justify)/,
+    /^text-(xs|sm|base|lg|xl|2xl|3xl|4xl|5xl|6xl|7xl|8xl|9xl|balance|pretty)/,
+    /^font-/, /^tracking-/, /^leading-/, /^whitespace-/,
+
+    // color & opacity
+    /^text-/, /^opacity-/,
+
+    // state / structural
+    /^first:/, /^last:/, /^odd:/, /^even:/,
+    /^not-/, /^before:/, /^after:/,
+
+    // interaction (must go after)
+    /^hover:/, /^focus:/, /^focus-visible:/, /^active:/, /^disabled:/,
+
+    // responsive
+    /^2xs:/, /^xs:/, /^sm:/, /^md:/, /^lg:/, /^xl:/, /^2xl:/, /^3xl:/,
+
+    // dark mode
+    /^dark:/,
+
+    // arbitrary selectors last
+    /^\[.*\]/,
+  ];
+
+  function getWeight(cls) {
+    for (let i = 0; i < ORDER.length; i++) {
+      if (ORDER[i].test(cls)) return i + 1;
+    }
+    return 0;
+  }
+
+  function classSorter(a, b) {
+    const wa = getWeight(a);
+    const wb = getWeight(b);
+    if (wa !== wb) return wa - wb;
+    return a.localeCompare(b);
+  }
+
   return {
     languages: [
       {
@@ -33,7 +85,7 @@ define([], () => {
       classlist: {
         print(path) {
           const { classes } = path.getValue();
-          const sorted = [...classes].sort();
+          const sorted = [...classes].sort(classSorter);
           return sorted.join(' ');
         }
       }
