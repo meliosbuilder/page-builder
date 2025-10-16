@@ -40,6 +40,9 @@ define([], () => {
   ];
 
   function getWeight(cls) {
+    if (!cls) {
+      return 0;
+    }
     for (let i = 0; i < ORDER.length; i++) {
       if (ORDER[i].test(cls)) return i + 1;
     }
@@ -50,6 +53,21 @@ define([], () => {
     const wa = getWeight(a);
     const wb = getWeight(b);
     if (wa !== wb) return wa - wb;
+
+    var i = 1;
+    do {
+      var nextA = a.split(':').at(i),
+          nextB = b.split(':').at(i),
+          wnextA = getWeight(nextA),
+          wnextB = getWeight(nextB);
+
+      if (wnextA !== wnextB) {
+        return wnextA - wnextB
+      }
+
+      i++;
+    } while (nextA && nextB);
+
     return a.localeCompare(b);
   }
 
