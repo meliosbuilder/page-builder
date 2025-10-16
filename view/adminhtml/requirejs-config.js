@@ -66,13 +66,6 @@ var config = {
             'Magento_Ui/js/lib/validation/validator': {
                 'Melios_PageBuilder/js/tailwind/validator-mixin': true,
             },
-            // allow newlines and spaces in class names
-            'Magento_PageBuilder/js/content-type/observable-updater/css': {
-                'Melios_PageBuilder/js/tailwind/css-updater-mixin': true,
-            },
-            'knockoutjs/knockout': {
-                'Melios_PageBuilder/js/tailwind/knockout-mixin': true,
-            },
 
             // BUGFIXES
             // Fixed incorrectly added 'no-column-line' class when pagebuilder is slowly rendered
