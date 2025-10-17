@@ -325,6 +325,8 @@ define([
   cmds.format = function(cm) {
     var timer = setTimeout(() => $('body').trigger('processStart'), 150),
       value = cm.getValue(),
+      parser = 'html',
+      printWidth = undefined,
       depsMap = {
         '': [
           'Melios_PageBuilder/js/lib/prettier/standalone',
@@ -342,9 +344,14 @@ define([
         .filter(([str]) => value.includes(str))
         .flatMap(([, deps]) => deps);
 
+    if (cm.getOption('formatter')) {
+      ({ parser, printWidth, deps } = cm.getOption('formatter'));
+    }
+
     require(deps, function (prettier, ...plugins) {
       var options = {
-        parser: 'html',
+        parser,
+        printWidth,
         singleQuote: true,
         embeddedLanguageFormatting: 'auto',
         plugins

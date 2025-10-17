@@ -61,6 +61,7 @@ var config = {
                 'Melios_PageBuilder/js/make-droppable/sortable-mixin': true,
             },
 
+            // Tailwind
             // allow > inside css class: [&>div]:pt-0
             'Magento_Ui/js/lib/validation/validator': {
                 'Melios_PageBuilder/js/tailwind/validator-mixin': true,
@@ -84,5 +85,6 @@ var config = {
     deps: [
         'Melios_PageBuilder/js/copy-paste/copy-paste',
         'Melios_PageBuilder/js/hotkeys/hotkeys',
+        'Melios_PageBuilder/js/tailwind/editor',
     ]
 };

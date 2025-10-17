@@ -1,0 +1,28 @@
+.mls-tw-input-wrapper {
+    position: relative;
+    input {
+        padding-right: 30px;
+    }
+    .btn-enlarge {
+        position: absolute;
+        right: 4px;
+        top: 4px;
+    }
+    .mls-css-editor {
+        opacity: 0;
+        overflow: clip;
+        transition: height 400ms cubic-bezier(0.4, 0, 0.2, 1),
+                    opacity 600ms cubic-bezier(0.4, 0, 0.2, 1),
+                    content-visibility 400ms allow-discrete;
+        interpolate-size: allow-keywords;
+
+        &.no-animation {
+            transition: none;
+        }
+
+        &.ready {
+            height: auto !important;
+            opacity: 1;
+        }
+    }
+}
