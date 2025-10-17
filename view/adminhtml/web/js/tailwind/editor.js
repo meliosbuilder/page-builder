@@ -3,58 +3,65 @@ define([
 ], function ($) {
     'use strict';
 
-    function createEditor(input) {
-        var parentEl = $('<div class="mls-css-editor no-animation"></div>')
-            .insertAfter(input)
-            .height($(input).outerHeight());
+    async function createEditor(input) {
+        return new Promise(resolve => {
+            var parentEl = $('<div class="mls-css-editor no-animation"></div>')
+                .insertAfter(input)
+                .height($(input).outerHeight());
 
-        $(input).hide().parent().find('.btn-enlarge').remove();
+            $(input).hide().parent().find('.btn-enlarge').remove();
 
-        requestAnimationFrame(() => parentEl.removeClass('no-animation'));
+            requestAnimationFrame(() => parentEl.removeClass('no-animation'));
 
-        require([
-            'Melios_PageBuilder/js/lib/codemirror/lib/codemirror',
-            'Melios_PageBuilder/js/editor/codemirror-config',
-            'Melios_PageBuilder/js/editor/codemirror-resizable',
-            'Melios_PageBuilder/js/editor/codemirror-control-panel',
-            'Melios_PageBuilder/js/editor/codemirror-text-marks',
-            'Melios_PageBuilder/js/editor/codemirror-fixes',
-            'Melios_PageBuilder/js/tailwind/codemirror-classlist'
-        ], (CodeMirror, config, resizable, textMarks, controlPanel) => {
-            var cm = CodeMirror(parentEl[0], Object.assign(config(), {
-                lineNumbers: false,
-                lint: false,
-                mode: 'classlist',
-                formatter: {
-                    parser: 'classlist',
-                    printWidth: 9999,
-                    deps: [
-                      'Melios_PageBuilder/js/lib/prettier/standalone',
-                      'Melios_PageBuilder/js/tailwind/prettier-classlist',
-                    ],
-                },
-                extraKeys: {
-                    Tab: false,
-                    'Shift-Tab': false
-                }
-            }));
+            require([
+                'Melios_PageBuilder/js/lib/codemirror/lib/codemirror',
+                'Melios_PageBuilder/js/editor/codemirror-config',
+                'Melios_PageBuilder/js/editor/codemirror-resizable',
+                'Melios_PageBuilder/js/editor/codemirror-control-panel',
+                'Melios_PageBuilder/js/editor/codemirror-text-marks',
+                'Melios_PageBuilder/js/editor/codemirror-fixes',
+                'Melios_PageBuilder/js/tailwind/codemirror-classlist'
+            ], (CodeMirror, config, resizable, textMarks, controlPanel) => {
+                var cm = CodeMirror(parentEl[0], Object.assign(config(), {
+                    lineNumbers: false,
+                    lint: false,
+                    mode: 'classlist',
+                    formatter: {
+                        parser: 'classlist',
+                        printWidth: 9999,
+                        deps: [
+                          'Melios_PageBuilder/js/lib/prettier/standalone',
+                          'Melios_PageBuilder/js/tailwind/prettier-classlist',
+                        ],
+                    },
+                    extraKeys: {
+                        Tab: false,
+                        'Shift-Tab': false
+                    }
+                }));
 
-            resizable(cm);
-            textMarks(cm);
-            controlPanel(cm);
+                resizable(cm);
+                textMarks(cm);
+                controlPanel(cm);
 
-            cm.setSize(null, 200);
-            cm.setValue(input.value);
-            cm.on('changes', () => {
-                $(input).val(cm.getValue().replaceAll("\n", ' ')).change();
+                cm.setSize(null, 200);
+                cm.setValue(input.value);
+                cm.on('changes', () => {
+                    $(input).val(cm.getValue().replaceAll("\n", ' ')).change();
+                });
+
+                requestAnimationFrame(() => $('.mls-css-editor').addClass('ready'));
+
+                resolve(cm);
             });
-
-            requestAnimationFrame(() => $('.mls-css-editor').addClass('ready'));
         });
     }
 
-    $(document).on('click', '.mls-tw-input-wrapper .btn-enlarge', e => {
-        createEditor(e.currentTarget.previousElementSibling);
+    $(document).on('click', '.mls-tw-input-wrapper .btn-enlarge', async (e) => {
+        var timer = setTimeout(() => $('body').trigger('processStart'), 160);
+        await createEditor(e.currentTarget.previousElementSibling);
+        clearTimeout(timer);
+        $('body').trigger('processStop');
     });
 
     $.async('[name="css_classes"]', input => {
