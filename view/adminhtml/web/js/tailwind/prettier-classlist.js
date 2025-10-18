@@ -11,6 +11,8 @@ define([], () => {
     /^flex/, /^grid/, /^block/, /^inline/, /^hidden/,
     /^max-|^min-|^w-|^h-|^size-/,
 
+    /^rounded$/, /^rounded-/,
+
     // background / gradient
     /^bg-/, /^from-/, /^via-/, /^to-/,
 
@@ -20,7 +22,7 @@ define([], () => {
     /^font-/, /^tracking-/, /^leading-/, /^whitespace-/,
 
     // color & opacity
-    /^text-/, /^opacity-/,
+    /^text-/, /^opacity-/, /transition/,
 
     // state / structural
     /^first:/, /^last:/, /^odd:/, /^even:/,
@@ -45,6 +47,10 @@ define([], () => {
     }
     for (let i = 0; i < ORDER.length; i++) {
       if (ORDER[i].test(cls)) return i + 1;
+    }
+    if (cls.includes(':')) {
+      // /^after:/
+      return 31;
     }
     return 0;
   }
