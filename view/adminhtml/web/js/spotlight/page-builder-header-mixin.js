@@ -37,16 +37,9 @@ define([
     }
 
     function getSidebarState() {
-        if (storage.isSet('spotlight.sidebar')) {
-            return +storage.get('spotlight.sidebar');
-        }
-
-        var state = +localStorage.getItem('melios-spotlight-sidebar');
-
-        storage.set('spotlight.sidebar', state);
-        localStorage.removeItem('melios-spotlight-sidebar');
-
-        return state;
+        return storage.isSet('spotlight.sidebar')
+            ? +storage.get('spotlight.sidebar')
+            : 1;
     }
 
     function syncSidebarState(pagebuilder) {
