@@ -12,9 +12,12 @@
                 <elements>
                     <element name="main">
                         <style name="gap" source="gap" converter="Magento_PageBuilder/js/converter/style/remove-px"/>
+                        <attribute name="mobile_mode" source="data-mls-mobile-mode"/>
                     </element>
+                    <!-- Old Page Builder -->
                     <element name="columnLine">
                         <style name="gap" source="gap" converter="Magento_PageBuilder/js/converter/style/remove-px"/>
+                        <attribute name="mobile_mode" source="data-mls-mobile-mode"/>
                     </element>
                 </elements>
             </appearance>
