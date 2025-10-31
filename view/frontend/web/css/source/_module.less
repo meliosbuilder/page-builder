@@ -7,6 +7,24 @@
             display: flex;
             flex-direction: column;
         }
+
+        // mobile multicolumn mode
+        @media (min-width: 375px) and (max-width: 767px) {
+            [data-mls-mobile-mode="2"] .pagebuilder-column {
+                flex-basis: 50%;
+            }
+            [data-mls-mobile-mode="3"] .pagebuilder-column {
+                flex-basis: 33.333%;
+            }
+            [data-mls-mobile-mode="desktop"] {
+                .pagebuilder-column-line {
+                    flex-wrap: nowrap;
+                }
+                .pagebuilder-column {
+                    flex-basis: auto;
+                }
+            }
+        }
     }
 }
 

@@ -1,0 +1,13 @@
+.mobile-viewport {
+    [data-mls-mobile-mode="2"] .pagebuilder-content-type.children-min-height.pagebuilder-column {
+        width: ~"calc(50% - 1px) !important";
+    }
+    [data-mls-mobile-mode="3"] .pagebuilder-content-type.children-min-height.pagebuilder-column {
+        width: ~"calc(33.333% - 1px) !important";
+    }
+    [data-mls-mobile-mode="desktop"] {
+        .pagebuilder-column-line > .element-children {
+            flex-wrap: nowrap;
+        }
+    }
+}

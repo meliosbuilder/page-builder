@@ -22,7 +22,11 @@
                 </item>
             </argument>
             <settings>
-                <label translate="true">Mobile Mode</label>
+                <label translate="true"><![CDATA[Mobile Mode]]></label>
+                <tooltip>
+                    <link>https://meliosbuilder.com/docs#columns</link>
+                    <description translate="true"><![CDATA[This mode is for the screen size within 375px-767px range. Follow the <a href="https://meliosbuilder.com/docs#columns">docs about Columns</a> for more options.]]></description>
+                </tooltip>
                 <additionalClasses>
                     <class name="admin__field-medium">true</class>
                 </additionalClasses>
