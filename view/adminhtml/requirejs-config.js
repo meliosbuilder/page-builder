@@ -67,6 +67,14 @@ var config = {
                 'Melios_PageBuilder/js/tailwind/validator-mixin': true,
             },
 
+            // Allow saving css properties as styles (--mls-*)
+            'Magento_PageBuilder/js/property/style-property-reader': {
+                'Melios_PageBuilder/js/content-type/style-property-reader-mixin': true,
+            },
+            'Magento_PageBuilder/js/utils/string': {
+                'Melios_PageBuilder/js/content-type/string-utils-mixin': true,
+            },
+
             // BUGFIXES
             // Fixed incorrectly added 'no-column-line' class when pagebuilder is slowly rendered
             'Magento_PageBuilder/js/content-type/column-group/preview': {

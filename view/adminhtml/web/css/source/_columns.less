@@ -1,9 +1,12 @@
+.pagebuilder-column-line > .element-children {
+    gap: var(--mls-colgroup-gap);
+}
 .mobile-viewport {
     [data-mls-mobile-mode="2"] .pagebuilder-content-type.children-min-height.pagebuilder-column {
-        width: ~"calc(50% - 1px) !important";
+        width: ~"calc(50% - 1px - var(--mls-colgroup-gap, 0px)) !important";
     }
     [data-mls-mobile-mode="3"] .pagebuilder-content-type.children-min-height.pagebuilder-column {
-        width: ~"calc(33.333% - 1px) !important";
+        width: ~"calc(33.333% - 1px - var(--mls-colgroup-gap, 0px)) !important";
     }
     [data-mls-mobile-mode="desktop"] {
         .pagebuilder-column-line > .element-children {

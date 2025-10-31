@@ -2,19 +2,24 @@
 
 & when (@media-common = true) {
     & when (@critical = unsure), (@critical) {
+        // Columns gap
+        .pagebuilder-column-line {
+            gap: var(--mls-colgroup-gap);
+        }
         // add gap between column-lines
         :where(.pagebuilder-column-group:has(> .pagebuilder-column-line)) {
             display: flex;
             flex-direction: column;
+            gap: var(--mls-colgroup-gap);
         }
 
         // mobile multicolumn mode
         @media (min-width: 375px) and (max-width: 767px) {
             [data-mls-mobile-mode="2"] .pagebuilder-column {
-                flex-basis: 50%;
+                flex-basis: ~"calc(50% - var(--mls-colgroup-gap, 0px))";
             }
             [data-mls-mobile-mode="3"] .pagebuilder-column {
-                flex-basis: 33.333%;
+                flex-basis: ~"calc(33.333% - var(--mls-colgroup-gap, 0px))";
             }
             [data-mls-mobile-mode="desktop"] {
                 .pagebuilder-column-line {
