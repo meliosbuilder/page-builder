@@ -2,10 +2,57 @@
 
 & when (@media-common = true) {
     & when (@critical = unsure), (@critical) {
+        // Columns gap
+        .pagebuilder-column-line {
+            gap: var(--mls-colgroup-gap);
+        }
         // add gap between column-lines
         :where(.pagebuilder-column-group:has(> .pagebuilder-column-line)) {
             display: flex;
             flex-direction: column;
+            gap: var(--mls-colgroup-gap);
+        }
+
+        // small screen column modes
+        @media (min-width: 375px) and (max-width: 639px) {
+            #html-body {
+                [data-mls-mobile-mode="2"] .pagebuilder-column {
+                    flex-basis: auto;
+                    width: ~"calc((100% - var(--mls-colgroup-gap, 0px)) / 2)";
+                }
+                [data-mls-mobile-mode="3"] .pagebuilder-column {
+                    flex-basis: auto;
+                    width: ~"calc((100% - var(--mls-colgroup-gap, 0px) * 2) / 3)";
+                }
+                [data-mls-mobile-mode="desktop"] {
+                    .pagebuilder-column-line {
+                        flex-wrap: nowrap;
+                    }
+                    .pagebuilder-column {
+                        flex-basis: auto;
+                    }
+                }
+            }
+        }
+        @media (min-width: 640px) and (max-width: 767px) {
+            #html-body {
+                [data-mls-tablet-mode="2"] .pagebuilder-column {
+                    flex-basis: auto;
+                    width: ~"calc((100% - var(--mls-colgroup-gap, 0px)) / 2)";
+                }
+                [data-mls-tablet-mode="3"] .pagebuilder-column {
+                    flex-basis: auto;
+                    width: ~"calc((100% - var(--mls-colgroup-gap, 0px) * 2) / 3)";
+                }
+                [data-mls-tablet-mode="desktop"] {
+                    .pagebuilder-column-line {
+                        flex-wrap: nowrap;
+                    }
+                    .pagebuilder-column {
+                        flex-basis: auto;
+                    }
+                }
+            }
         }
     }
 }

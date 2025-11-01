@@ -65,7 +65,12 @@ define([
     });
 
     $.async('[name="css_classes"]', input => {
+        if ($(input).parent().hasClass('mls-tw-input-wrapper')) {
+            return;
+        }
+
         $(input).parent().addClass('mls-tw-input-wrapper');
+        $(input).removeAttr('maxlength');
 
         if (input.offsetWidth > input.scrollWidth) {
             return $(input).after(`
