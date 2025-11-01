@@ -2,7 +2,7 @@
     "name": "melios/page-builder",
     "description": "Improvements for the built-in Magento PageBuilder module",
     "type": "magento2-module",
-    "version": "1.11.0",
+    "version": "1.10.1",
     "license": "GPL-3.0-or-later",
     "require": {
         "php": "^8.0",
