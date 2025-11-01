@@ -16,10 +16,10 @@
         // mobile multicolumn mode
         @media (min-width: 375px) and (max-width: 767px) {
             [data-mls-mobile-mode="2"] .pagebuilder-column {
-                flex-basis: ~"calc(50% - var(--mls-colgroup-gap, 0px))";
+                flex-basis: ~"calc((100% - var(--mls-colgroup-gap, 0px)) / 2)";
             }
             [data-mls-mobile-mode="3"] .pagebuilder-column {
-                flex-basis: ~"calc(33.333% - var(--mls-colgroup-gap, 0px))";
+                flex-basis: ~"calc((100% - var(--mls-colgroup-gap, 0px)) / 3)";
             }
             [data-mls-mobile-mode="desktop"] {
                 .pagebuilder-column-line {
