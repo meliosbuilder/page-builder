@@ -29,7 +29,7 @@
                 </argument>
                 <settings>
                     <label translate="true">Small Screen Modes</label>
-                    <notice>Width: 640-767px</notice>
+                    <notice>Tablet: 640-767px</notice>
                     <additionalClasses>
                         <class name="admin__field-small">true</class>
                     </additionalClasses>
@@ -66,10 +66,10 @@
                     </item>
                 </argument>
                 <settings>
-                    <notice>Width: 375-639px</notice>
+                    <notice>Phone: 375-639px</notice>
                     <tooltip>
                         <link>https://meliosbuilder.com/docs#columns</link>
-                        <description translate="true"><![CDATA[Need more options? Follow the <a href="https://meliosbuilder.com/docs#columns">docs</a> to read about advanced use cases.]]></description>
+                        <description translate="true"><![CDATA[Need more options? Follow the <a href="https://meliosbuilder.com/docs#columns" target="_blank" rel="noopener">docs</a> to read about advanced usage.]]></description>
                     </tooltip>
                     <additionalClasses>
                         <class name="admin__field-medium">true</class>

@@ -13,4 +13,15 @@
             flex-wrap: nowrap;
         }
     }
+    [data-mls-tablet-mode="2"] .pagebuilder-content-type.children-min-height.pagebuilder-column {
+        width: ~"calc(50% - 1px - var(--mls-colgroup-gap, 0px)) !important";
+    }
+    [data-mls-tablet-mode="3"] .pagebuilder-content-type.children-min-height.pagebuilder-column {
+        width: ~"calc(33.333% - 1px - var(--mls-colgroup-gap, 0px)) !important";
+    }
+    [data-mls-tablet-mode="desktop"] {
+        .pagebuilder-column-line > .element-children {
+            flex-wrap: nowrap;
+        }
+    }
 }
