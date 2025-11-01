@@ -12,6 +12,7 @@
                 <elements>
                     <element name="main">
                         <style name="gap" source="--mls-colgroup-gap" converter="Magento_PageBuilder/js/converter/style/remove-px"/>
+                        <attribute name="tablet_mode" source="data-mls-tablet-mode"/>
                         <attribute name="mobile_mode" source="data-mls-mobile-mode"/>
                     </element>
                 </elements>
