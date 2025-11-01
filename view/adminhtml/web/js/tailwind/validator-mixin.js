@@ -6,9 +6,9 @@ define([
 
     // magento/module-page-builder/view/adminhtml/web/js/form/element/validator-rules-mixin.js
     // original pattern: /^[a-zA-Z\d\-_/:.[\]&@()! ]+$/i
-    // `>,#` was added.
+    // `>,#%` was added.
     function validateCssClass(str) {
-        return (/^[a-zA-Z\d\-_/:.[\]&@()! >,#]+$/i).test(str);
+        return (/^[a-zA-Z\d\-_/:.[\]&@()! >,#%]+$/i).test(str);
     }
 
     return function (validator) {
