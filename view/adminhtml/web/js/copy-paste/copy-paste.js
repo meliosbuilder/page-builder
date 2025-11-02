@@ -56,15 +56,14 @@ define([
         }
 
         var copyingToast = toast.showLater('Copying...', 150),
-            [el, text] = await getElementAndTextToCopy(e);
+            promise = getElementAndTextToCopy(e);
 
-        copyingToast.hideToast();
-
-        if (!text) {
-            return;
-        }
-
+        promise.then(() => copyingToast.hideToast());
         e.preventDefault();
+
+        var text = new ClipboardItem({
+            'text/plain': promise.then(([el, text]) => new Blob([text], { type: 'text/plain' }))
+        });
 
         clipboard.writeText(text).then(() => {
             toast.show('Copied!');
@@ -79,15 +78,15 @@ define([
         }
 
         var cuttingToast = toast.showLater('Cutting...', 150),
-            [el, text] = await getElementAndTextToCopy(e);
+            promise = getElementAndTextToCopy(e);
 
-        cuttingToast.hideToast();
-
-        if (!text) {
-            return;
-        }
-
+        promise.then(() => cuttingToast.hideToast());
         e.preventDefault();
+
+        var text = new ClipboardItem({
+            'text/plain': promise.then(([el, text]) => new Blob([text], { type: 'text/plain' }))
+        });
+        var el = promise.then(([el]) => el);
 
         if (!require.defined('Melios_PageBuilderPro/js/copy-paste/copy-paste')) {
             toast.show('Melios Page Builder Pro version is required for cut operations.');
