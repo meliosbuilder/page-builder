@@ -24,7 +24,9 @@ define([
         writeText: function (text) {
             return new Promise(async (resolve, reject) => {
                 if (!navigator.clipboard) {
-                    return unsecuredCopyToClipboard(text) ? resolve() : reject();
+                    return unsecuredCopyToClipboard(text) ? resolve() : reject({
+                        message: 'Unable to copy to clipboard'
+                    });
                 }
 
                 try {
