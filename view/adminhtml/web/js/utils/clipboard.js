@@ -28,7 +28,9 @@ define([
                 }
 
                 try {
-                    await navigator.permissions.query({ name: 'clipboard-write' });
+                    await navigator.permissions.query({ name: 'clipboard-write' }).catch(() => {
+                        // Fix for Safari and Firefox
+                    });
                     await navigator.clipboard.writeText(text);
                     resolve();
                 } catch (e) {
