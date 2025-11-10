@@ -13,6 +13,11 @@ var config = {
                 'Melios_PageBuilder/js/spotlight/page-builder-header-mixin': true,
             },
 
+            'Magento_PageBuilder/js/panel': {
+                // Allow inserting widgets right from the panel
+                'Melios_PageBuilder/js/easy-widget/panel-mixin': true,
+            },
+
             'Magento_PageBuilder/js/form/element/html-code': {
                 // Html Editor
                 'Melios_PageBuilder/js/editor/html-code-mixin': true,

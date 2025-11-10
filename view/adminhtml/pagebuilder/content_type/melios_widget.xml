@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_PageBuilder:etc/content_type.xsd">
+    <type name="melios-widget"
+          label="Widget"
+          component="Magento_PageBuilder/js/content-type"
+          preview_component="Melios_PageBuilder/js/content-type/widget/preview"
+          menu_section="add_content"
+          icon="icon-pagebuilder-widget"
+          translate="label"
+          sortOrder="25">
+        <appearances>
+            <appearance default="true"
+                        name="default"
+                        preview_template="Magento_PageBuilder/content-type/text/default/preview"
+                        master_template="Magento_PageBuilder/content-type/text/default/master"
+                        reader="Magento_PageBuilder/js/master-format/read/configurable">
+                <elements>
+                    <element name="main"></element>
+                </elements>
+            </appearance>
+        </appearances>
+    </type>
+</config>
