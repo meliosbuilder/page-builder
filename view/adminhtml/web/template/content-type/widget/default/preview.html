@@ -1,0 +1,16 @@
+<div class="pagebuilder-content-type pagebuilder-melios-widget"
+    event="{ mouseover: onMouseOver, mouseout: onMouseOut }, mouseoverBubble: false">
+    <render args="getOptions().template"></render>
+    <div class="pagebuilder-melios-widget-container"
+        attr="data.main.attributes"
+        css="data.main.css"
+        ko-style="data.main.style"
+        ><div event="{
+                click: openWidgetSettings,
+                dblclick: (data, e) => e.stopPropagation()
+            }"><span if="data.main.html" text="data.main.html"
+            ></span><span ifnot="data.main.html" translate="'Widget is not configured yet'"
+            ></span>
+        </div>
+    </div>
+</div>
