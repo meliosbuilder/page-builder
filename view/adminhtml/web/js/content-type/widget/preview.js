@@ -13,7 +13,7 @@ define([
 
             events.on('melios-widget:dropAfter', args => {
                 if (args.id === this.contentType.id && !this.data.main.html()) {
-                    // open widget settings
+                    this.openWidgetSettings();
                 }
             });
         }
@@ -21,12 +21,23 @@ define([
         retrieveOptions() {
             const options = super.retrieveOptions();
 
-            // options.title = new Option({
-            //     preview: this,
-            //     title: $t('Widget Wrapper'),
-            //     template: 'Magento_PageBuilder/content-type/title',
-            //     sort: 20
-            // });
+            options.editContentType = new Option({
+                preview: this,
+                icon: "<i class='icon-admin-pagebuilder-widgets'></i>",
+                title: $t('Edit Widget'),
+                action: this.onOptionEdit,
+                classes: ['edit-content-type'],
+                sort: 30
+            });
+
+            options.edit = new Option({
+                preview: this,
+                icon: "<i class='icon-admin-pagebuilder-systems'></i>",
+                title: $t('Edit Container'),
+                action: this.openContentTypeSettings,
+                classes: ['edit-content-type-container'],
+                sort: 31
+            });
 
             options.hideShow = new HideShow({
                 preview: this,
@@ -40,8 +51,16 @@ define([
             return options;
         }
 
+        openEdit() {
+            this.openWidgetSettings();
+        }
+
         openWidgetSettings(self, event) {
-            //
+            console.log('openWidgetSettings');
+        }
+
+        openContentTypeSettings() {
+            return this.edit.open();
         }
     };
 });
