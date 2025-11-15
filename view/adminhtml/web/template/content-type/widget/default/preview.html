@@ -1,12 +1,12 @@
 <div class="pagebuilder-content-type pagebuilder-melios-widget"
+    ko-style="data.main.style"
     event="{ mouseover: onMouseOver, mouseout: onMouseOut }, mouseoverBubble: false">
     <render args="getOptions().template"></render>
     <div class="pagebuilder-melios-widget-container"
         attr="data.main.attributes"
         css="data.main.css"
-        ko-style="data.main.style"
-        ><span if="data.main.html" text="data.main.html"
-            ></span><span ifnot="data.main.html" translate="'Widget is not configured'"
-            ></span>
+        ><div if="data.main.html" html="data.main.html"
+            ></div><div ifnot="data.main.html" translate="'Widget is not configured'"
+            ></div>
     </div>
 </div>
