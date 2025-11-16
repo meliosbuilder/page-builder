@@ -5,10 +5,7 @@
     <div class="pagebuilder-melios-widget-container"
         attr="data.main.attributes"
         css="data.main.css">
-        <div if="data.main.html" data-bind="attr: { title: data.main.html }">
-            <img if="widgetIcon" data-bind="attr: { src: widgetIcon }"/>
-            <span text="widgetTitle"/>
-        </div>
+        <div if="data.main.html" data-bind="attr: { title: data.main.html }" text="widgetTitle"></div>
         <div ifnot="data.main.html" translate="'Widget is not configured'"></div>
     </div>
 </div>

@@ -9,10 +9,12 @@
     > div {
         display: flex;
         align-items: center;
-        gap: 4px;
-    }
-    img {
-        max-width: 20px;
+        gap: 6px;
+        &::before {
+            .icon-admin-pagebuilder-systems;
+            content: '\e612';
+            font-size: 14px;
+        }
     }
 }
 

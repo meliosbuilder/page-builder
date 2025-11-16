@@ -51,9 +51,7 @@ define([
                     return;
                 }
 
-                type = type[1];
-                this.widgetTitle(editorConfig.widgets.types[type] || type);
-                this.widgetIcon(editorConfig.widgets.placeholders[type]);
+                this.widgetTitle(editorConfig.widgets.types[type[1]] || type[1]);
             });
 
             events.on('melios-widget:dropAfter', args => {
@@ -111,7 +109,6 @@ define([
 
                 try {
                     node = $(html);
-                    // node.attr('id', Base64.idEncode(html));
                 } catch {
                 }
 
@@ -125,10 +122,7 @@ define([
 
                 widgetTools.setActiveSelectedNode(node[0]);
                 widgetTools.setEditMode(node?.length);
-                widgetTools.openDialog(
-                    'https://magento2.test/admin/admin/widget/index/widget_target_id/' + this.uid + '/'
-                    // this.widgetUrl.replace(HTML_ID_PLACEHOLDER, this.uid)
-                );
+                widgetTools.openDialog(config.getConfig('tinymce').widgets.window_url);
             });
         }
 
