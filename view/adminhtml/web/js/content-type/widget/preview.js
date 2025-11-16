@@ -1,12 +1,14 @@
 define([
     'jquery',
+    'knockout',
     'mage/translate',
     'mage/utils/wrapper',
     'Magento_PageBuilder/js/content-type/preview',
     'Magento_PageBuilder/js/content-type-menu/hide-show-option',
     'Magento_PageBuilder/js/content-type-menu/option',
-    'Magento_PageBuilder/js/events'
-], function ($, $t, wrapper, Parent, HideShow, Option, events) {
+    'Magento_PageBuilder/js/events',
+    'Magento_PageBuilder/js/config'
+], function ($, ko, $t, wrapper, Parent, HideShow, Option, events, config) {
     'use strict';
 
     function overrideWidgetTools() {
@@ -38,6 +40,21 @@ define([
     return class Widget extends Parent {
         bindEvents() {
             super.bindEvents();
+
+            this.widgetTitle = ko.observable();
+            this.widgetIcon = ko.observable();
+            this.contentType.dataStore.subscribe(data => {
+                var type = data.html.match(/type="(.+?)"/),
+                    editorConfig = config.getConfig('tinymce');
+
+                if (!type) {
+                    return;
+                }
+
+                type = type[1];
+                this.widgetTitle(editorConfig.widgets.types[type] || type);
+                this.widgetIcon(editorConfig.widgets.placeholders[type]);
+            });
 
             events.on('melios-widget:dropAfter', args => {
                 if (args.id === this.contentType.id && !this.data.main.html()) {

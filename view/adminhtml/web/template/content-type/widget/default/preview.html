@@ -4,9 +4,11 @@
     <render args="getOptions().template"></render>
     <div class="pagebuilder-melios-widget-container"
         attr="data.main.attributes"
-        css="data.main.css"
-        ><div if="data.main.html" html="data.main.html"
-            ></div><div ifnot="data.main.html" translate="'Widget is not configured'"
-            ></div>
+        css="data.main.css">
+        <div if="data.main.html" data-bind="attr: { title: data.main.html }">
+            <img if="widgetIcon" data-bind="attr: { src: widgetIcon }"/>
+            <span text="widgetTitle"/>
+        </div>
+        <div ifnot="data.main.html" translate="'Widget is not configured'"></div>
     </div>
 </div>
