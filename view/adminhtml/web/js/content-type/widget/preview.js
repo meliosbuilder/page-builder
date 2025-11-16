@@ -64,23 +64,24 @@ define([
         retrieveOptions() {
             const options = super.retrieveOptions();
 
-            options.editContentType = new Option({
+            options.edit = new Option({
                 preview: this,
-                icon: "<i class='icon-admin-pagebuilder-widgets'></i>",
+                // icon: "<i class='icon-admin-pagebuilder-widgets'></i>",
+                icon: "<i class='icon-admin-pagebuilder-systems'></i>",
                 title: $t('Edit Widget'),
                 action: this.onOptionEdit,
                 classes: ['edit-content-type'],
                 sort: 30
             });
 
-            options.edit = new Option({
-                preview: this,
-                icon: "<i class='icon-admin-pagebuilder-systems'></i>",
-                title: $t('Edit Container'),
-                action: this.openContentTypeSettings,
-                classes: ['edit-content-type-container'],
-                sort: 31
-            });
+            // options.editContentType = new Option({
+            //     preview: this,
+            //     icon: "<i class='icon-admin-pagebuilder-systems'></i>",
+            //     title: $t('Edit Container'),
+            //     action: this.openContentTypeSettings,
+            //     classes: ['edit-content-type-container'],
+            //     sort: 31
+            // });
 
             options.hideShow = new HideShow({
                 preview: this,
