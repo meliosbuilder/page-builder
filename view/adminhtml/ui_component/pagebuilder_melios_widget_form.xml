@@ -52,24 +52,27 @@
         <settings>
             <label/>
         </settings>
-        <field name="html" formElement="textarea" sortOrder="10" component="Magento_PageBuilder/js/form/element/html-code" class="Magento\PageBuilder\Component\Form\HtmlCode">
+        <field name="html" formElement="textarea" sortOrder="10">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="source" xsi:type="string">page</item>
                 </item>
             </argument>
             <settings>
-                <additionalClasses>
-                    <class name="admin__field-wide">true</class>
-                    <class name="admin__font-console">true</class>
-                </additionalClasses>
+                <label translate="true">Code</label>
                 <dataScope>html</dataScope>
                 <dataType>text</dataType>
                 <validation>
                     <rule name="validate-no-utf8mb4-characters" xsi:type="boolean">true</rule>
                 </validation>
-                <placeholder translate="true">Enter HTML, CSS or JavaScript code</placeholder>
             </settings>
+            <formElements>
+                <textarea>
+                    <settings>
+                        <rows>5</rows>
+                    </settings>
+                </textarea>
+            </formElements>
         </field>
     </fieldset>
 </form>
