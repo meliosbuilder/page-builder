@@ -116,8 +116,7 @@ define([
                     node = $('<div>').appendTo('body');
                 }
 
-                node.data('melios-widget', true).data('preview', this)
-                    .attr('id', Base64.idEncode(html));
+                node.attr('id', Base64.idEncode(html));
                 node[0].meliosPreview = this;
 
                 widgetTools.setActiveSelectedNode(node[0]);
