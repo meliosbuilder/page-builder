@@ -1,6 +1,5 @@
 define([
     'jquery',
-    'underscore',
     'ko',
     'mage/utils/wrapper',
     'Magento_PageBuilder/js/events',
@@ -8,7 +7,7 @@ define([
     'Melios_PageBuilder/js/spotlight/spotlight',
     'Melios_PageBuilder/js/utils/can-use-hotkeys',
     'Melios_PageBuilder/js/utils/is-in-viewport'
-], function ($, _, ko, wrapper, events, matrix, spotlight, canUseHotkeys, isInViewport) {
+], function ($, ko, wrapper, events, matrix, spotlight, canUseHotkeys, isInViewport) {
     'use strict';
 
     var mouseCoords = {
@@ -267,18 +266,6 @@ define([
             target.prototype.initListeners,
             function () {
                 this.createSpotlight();
-
-                this.panel.menuSections.subscribe(_.debounce(items => {
-                    this.spotlight.spotlight('items', items.flatMap(menu => {
-                        return menu.contentTypes().map(type => {
-                            return {
-                                id: type.config.name,
-                                label: type.label(),
-                                icon: type.icon(),
-                            };
-                        })
-                    }));
-                }, 500));
 
                 this.isFullScreen.subscribe(flag => {
                     if (!flag) {

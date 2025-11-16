@@ -248,15 +248,7 @@ define([
             }) || '');
             this.select(0);
         },
-        items: function (items) {
-            if (items) {
-                this.options.items = items;
-                if (this.body) {
-                    this.renderItems();
-                }
-                return;
-            }
-
+        items: function () {
             if (typeof this.options.items === 'function') {
                 return this.options.items(this.input.val());
             }
