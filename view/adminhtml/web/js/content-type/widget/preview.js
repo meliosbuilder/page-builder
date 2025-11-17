@@ -44,7 +44,7 @@ define([
             this.widgetTitle = ko.observable();
             this.widgetIcon = ko.observable();
             this.contentType.dataStore.subscribe(data => {
-                var type = data.html.match(/type="(.+?)"/),
+                var type = data.html.match(/{{widget.*\stype="(.+?)".*}}/),
                     editorConfig = config.getConfig('tinymce');
 
                 if (!type) {
