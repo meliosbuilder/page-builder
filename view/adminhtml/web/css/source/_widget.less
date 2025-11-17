@@ -1,0 +1,37 @@
+.icon-pagebuilder-melios.icon-widget::before {
+    content: '';
+    display: inline-block;
+    flex-shrink: 0;
+    width: 18px;
+    height: 18px;
+    background-color: currentColor;
+    -webkit-mask: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"><g fill="none" fill-rule="evenodd"><g fill="currentColor" transform="translate(1 1.5)"><path fill-rule="nonzero" d="M5.999.251 6 1.45c0 .3038.9626.55 2.15.55 1.1874 0 2.15-.2462 2.15-.55L10.299.4 13.1 1.8H10v1.65c0 .3038.9626.55 2.15.55 1.1874 0 2.15-.2462 2.15-.55l-.001-1.05L16 3.25l-8 4-8-4 1.999-.999L2 3.45c0 .2869.8586.5225 1.9543.5478L4.15 4c1.1874 0 2.15-.2462 2.15-.55V1.8H2.9L5.999.251ZM10.3 3.8H6v1.65c0 .3038.9626.55 2.15.55 1.1874 0 2.15-.2462 2.15-.55V3.8ZM8-.75l1.1.55H6.9L8-.75Z"/><ellipse cx="4.15" cy="1.75" rx="2.15" ry="1"/><ellipse cx="8.15" cy="-.25" rx="2.15" ry="1"/><ellipse cx="12.15" cy="1.75" rx="2.15" ry="1"/><ellipse cx="8.15" cy="3.75" rx="2.15" ry="1"/><path fill-rule="nonzero" d="M0 4.5v7.5889L7.4 16V8.2zM16 4.5v7.5889L8.6 16V8.2z"/></g></g></svg>') no-repeat 50% 50%;
+    -webkit-mask-size: 18px 18px;
+}
+
+.pagebuilder-melios-widget-container {
+    &:extend(.placeholder-html-code);
+    white-space: normal;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 72px;
+    font-weight: 600;
+    > div {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        &::before {
+            .icon-admin-pagebuilder-systems;
+            content: '\e612';
+            font-size: 16px;
+        }
+    }
+}
+
+.icon-admin-pagebuilder-widgets {
+    &:extend(.icon-admin-pagebuilder-systems all);
+    &::before {
+        content: '\e612';
+    }
+}

@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <argument name="data" xsi:type="array">
+        <item name="template" xsi:type="string">templates/form/collapsible</item>
+        <item name="js_config" xsi:type="array">
+            <item name="provider" xsi:type="string">pagebuilder_melios_widget_form.pagebuilder_melios_widget_form_data_source</item>
+        </item>
+        <item name="label" xsi:type="string" translate="true">Widget</item>
+    </argument>
+    <settings>
+        <deps>
+            <dep>pagebuilder_melios_widget_form.pagebuilder_melios_widget_form_data_source</dep>
+        </deps>
+        <namespace>pagebuilder_melios_widget_form</namespace>
+        <dataScope>data</dataScope>
+        <buttons>
+            <button name="save" class="Magento\PageBuilder\Block\Adminhtml\ContentType\Edit\SaveButton"/>
+            <button name="close" class="Magento\PageBuilder\Block\Adminhtml\ContentType\Edit\ModalCloseButton"/>
+        </buttons>
+    </settings>
+    <dataSource name="pagebuilder_melios_widget_form_data_source">
+        <argument name="data" xsi:type="array">
+            <item name="js_config" xsi:type="array">
+                <item name="component" xsi:type="string">Magento_PageBuilder/js/form/provider</item>
+            </item>
+        </argument>
+        <dataProvider name="pagebuilder_melios_widget_form_data_source" class="Magento\PageBuilder\Model\ContentType\DataProvider">
+            <settings>
+                <requestFieldName/>
+                <primaryFieldName/>
+            </settings>
+        </dataProvider>
+    </dataSource>
+    <fieldset name="appearance_fieldset" sortOrder="10" component="Magento_PageBuilder/js/form/element/dependent-fieldset">
+        <field name="appearance" formElement="select" sortOrder="10" component="Magento_PageBuilder/js/form/element/dependent-select">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="default" xsi:type="string">default</item>
+                </item>
+            </argument>
+            <formElements>
+                <select>
+                    <settings>
+                        <options>
+                            <option name="0" xsi:type="array">
+                                <item name="value" xsi:type="string">default</item>
+                                <item name="label" xsi:type="string" translate="true">Default</item>
+                            </option>
+                        </options>
+                    </settings>
+                </select>
+            </formElements>
+        </field>
+    </fieldset>
+    <fieldset name="general" sortOrder="20">
+        <settings>
+            <label/>
+        </settings>
+        <field name="html" formElement="textarea" sortOrder="10">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">page</item>
+                </item>
+            </argument>
+            <settings>
+                <label translate="true">Code</label>
+                <dataScope>html</dataScope>
+                <dataType>text</dataType>
+                <validation>
+                    <rule name="validate-no-utf8mb4-characters" xsi:type="boolean">true</rule>
+                </validation>
+            </settings>
+            <formElements>
+                <textarea>
+                    <settings>
+                        <rows>5</rows>
+                    </settings>
+                </textarea>
+            </formElements>
+        </field>
+    </fieldset>
+    <fieldset name="advanced" sortOrder="90">
+        <settings>
+            <label translate="true">Advanced</label>
+            <collapsible>true</collapsible>
+            <opened>true</opened>
+        </settings>
+        <field name="css_classes" sortOrder="10" formElement="input">
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">CSS Classes</label>
+                <notice translate="true">Space separated list of classes.</notice>
+                <validation>
+                    <rule name="validate-css-class" xsi:type="boolean">true</rule>
+                </validation>
+            </settings>
+        </field>
+        <field name="border" sortOrder="20" formElement="select">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="default" xsi:type="string">_default</item>
+                </item>
+            </argument>
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">Border</label>
+            </settings>
+            <formElements>
+                <select>
+                    <settings>
+                        <options>
+                            <option name="0" xsi:type="array">
+                                <item name="value" xsi:type="string">_default</item>
+                                <item name="label" xsi:type="string" translate="true">Default</item>
+                            </option>
+                            <option name="1" xsi:type="array">
+                                <item name="value" xsi:type="string">none</item>
+                                <item name="label" xsi:type="string" translate="true">None</item>
+                            </option>
+                            <option name="2" xsi:type="array">
+                                <item name="value" xsi:type="string">dotted</item>
+                                <item name="label" xsi:type="string" translate="true">Dotted</item>
+                            </option>
+                            <option name="3" xsi:type="array">
+                                <item name="value" xsi:type="string">dashed</item>
+                                <item name="label" xsi:type="string" translate="true">Dashed</item>
+                            </option>
+                            <option name="4" xsi:type="array">
+                                <item name="value" xsi:type="string">solid</item>
+                                <item name="label" xsi:type="string" translate="true">Solid</item>
+                            </option>
+                            <option name="5" xsi:type="array">
+                                <item name="value" xsi:type="string">double</item>
+                                <item name="label" xsi:type="string" translate="true">Double</item>
+                            </option>
+                            <option name="6" xsi:type="array">
+                                <item name="value" xsi:type="string">groove</item>
+                                <item name="label" xsi:type="string" translate="true">Groove</item>
+                            </option>
+                            <option name="7" xsi:type="array">
+                                <item name="value" xsi:type="string">ridge</item>
+                                <item name="label" xsi:type="string" translate="true">Ridge</item>
+                            </option>
+                            <option name="8" xsi:type="array">
+                                <item name="value" xsi:type="string">inset</item>
+                                <item name="label" xsi:type="string" translate="true">Inset</item>
+                            </option>
+                            <option name="9" xsi:type="array">
+                                <item name="value" xsi:type="string">outset</item>
+                                <item name="label" xsi:type="string" translate="true">Outset</item>
+                            </option>
+                        </options>
+                    </settings>
+                </select>
+            </formElements>
+        </field>
+        <field name="border_color" sortOrder="30" formElement="colorPicker">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="disabledValues" xsi:type="array">
+                        <item name="none" xsi:type="string">none</item>
+                    </item>
+                </item>
+            </argument>
+            <settings>
+                <label translate="true">Border Color</label>
+                <componentType>colorPicker</componentType>
+                <placeholder translate="true">No Color</placeholder>
+                <validation>
+                    <rule name="validate-color" xsi:type="boolean">true</rule>
+                </validation>
+                <dataScope>border_color</dataScope>
+                <additionalClasses>
+                    <class name="admin__field-medium">true</class>
+                </additionalClasses>
+                <imports>
+                    <link name="setDisabled">ns = ${ $.ns }, index = border:value</link>
+                </imports>
+            </settings>
+            <formElements>
+                <colorPicker>
+                    <settings>
+                        <colorPickerMode>full</colorPickerMode>
+                        <colorFormat>hex</colorFormat>
+                    </settings>
+                </colorPicker>
+            </formElements>
+        </field>
+        <field name="border_width" sortOrder="40" formElement="input">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="default" xsi:type="null" />
+                    <item name="disabledValues" xsi:type="array">
+                        <item name="none" xsi:type="string">none</item>
+                    </item>
+                </item>
+            </argument>
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">Border Width</label>
+                <additionalClasses>
+                    <class name="admin__field-small">true</class>
+                </additionalClasses>
+                <addAfter translate="true">px</addAfter>
+                <placeholder translate="true">Default</placeholder>
+                <imports>
+                    <link name="setDisabled">ns = ${ $.ns }, index = border:value</link>
+                </imports>
+                <validation>
+                    <rule name="validate-number" xsi:type="boolean">true</rule>
+                    <rule name="greater-than-equals-to" xsi:type="number">0</rule>
+                </validation>
+            </settings>
+        </field>
+        <field name="border_radius" sortOrder="50" formElement="input">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="default" xsi:type="null"/>
+                </item>
+            </argument>
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">Border Radius</label>
+                <additionalClasses>
+                    <class name="admin__field-small">true</class>
+                </additionalClasses>
+                <addAfter translate="true">px</addAfter>
+                <placeholder translate="true">Default</placeholder>
+                <validation>
+                    <rule name="validate-number" xsi:type="boolean">true</rule>
+                    <rule name="greater-than-equals-to" xsi:type="number">0</rule>
+                </validation>
+            </settings>
+        </field>
+        <field name="margins_and_padding" sortOrder="70" formElement="input" component="Magento_PageBuilder/js/form/element/margins-and-padding">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="default" xsi:type="null" />
+                </item>
+            </argument>
+            <settings>
+                <label translate="true">Margins and Padding</label>
+                <placeholder translate="true">Default</placeholder>
+                <validation>
+                    <rule name="validate-number" xsi:type="boolean">true</rule>
+                    <rule name="less-than-equals-to" xsi:type="number">999</rule>
+                    <rule name="greater-than-equals-to" xsi:type="number">-999</rule>
+                </validation>
+            </settings>
+        </field>
+    </fieldset>
+</form>
