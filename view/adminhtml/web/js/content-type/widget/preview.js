@@ -48,7 +48,7 @@ define([
                     editorConfig = config.getConfig('tinymce');
 
                 if (!type) {
-                    return;
+                    return this.widgetTitle($t('Widget is not configured'));
                 }
 
                 this.widgetTitle(editorConfig.widgets.types[type[1]] || type[1]);
