@@ -38,3 +38,10 @@
 .pagebuilder-options.pagebuilder-options-middle {
     transform: translate(50%, -90%);
 }
+// Better toolbar show/hide timings
+.pagebuilder-options {
+    transition-delay: 200ms; // wait before hide
+    &-visible {
+        transition-delay: 100ms; // wait before show
+    }
+}
