@@ -45,3 +45,12 @@
         transition-delay: 100ms; // wait before show
     }
 }
+// Do not show image uploader when hovering outer column
+.pagebuilder-image-uploader-container {
+    .pagebuilder-options {
+        pointer-events: none;
+        &-visible {
+            pointer-events: auto;
+        }
+    }
+}
