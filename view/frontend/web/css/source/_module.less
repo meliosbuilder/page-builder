@@ -2,10 +2,12 @@
 
 & when (@media-common = true) {
     & when (@critical = unsure), (@critical) {
+        :root {
+            --gap: var(--mls-colgroup-gap);
+        }
         // Columns gap
         .pagebuilder-column-group,
         .pagebuilder-column-line {
-            --gap: var(--mls-colgroup-gap);
             gap: var(--mls-colgroup-gap);
         }
         // add gap between column-lines
