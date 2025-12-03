@@ -1,1 +1,8 @@
 @import '../source/_module.less';
+
+& when (@critical) {
+    .pagebuilder-column-group[class],
+    .pagebuilder-column-line[class] {
+        gap: var(--mls-colgroup-gap, var(--gap));
+    }
+}
