@@ -20,6 +20,8 @@ bin/magento melios:tailwind:download # required for tailwindcss support
  -  [Live preview](https://meliosbuilder.com/docs#live-preview) automatically
     reloads the browser tab when [Quick-save](https://meliosbuilder.com/docs#quick-save)
     is used &mdash; **Pro edition only**
+ -  [Better Widgets support](https://meliosbuilder.com/docs#widgets)
+ -  [Nested Columns](https://meliosbuilder.com/docs#nested-columns) &mdash; **Pro edition only**
  -  [AI assistant](https://meliosbuilder.com/docs#ai-assistant) &mdash; **Pro edition only**
  -  [Premium Elements](https://meliosbuilder.com/elements) &mdash; **Pro edition only**
  -  Hotkeys
