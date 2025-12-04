@@ -1,12 +1,14 @@
 @critical: unsure;
 
 & when (@media-common = true) {
-    & when (@critical = unsure), (@critical) {
+    & when (@critical = unsure) {
         // Columns gap
         .pagebuilder-column-group,
         .pagebuilder-column-line {
             gap: var(--mls-colgroup-gap);
         }
+    }
+    & when (@critical = unsure), (@critical) {
         // add gap between column-lines
         .pagebuilder-column-group {
             display: flex;
