@@ -89,19 +89,23 @@ define([
 
     // Confirm page upload when needed
     (() => {
-        var lastScroll = new Date();
+        var lastScroll = new Date(),
+            lastDelta = 0;
 
         window.addEventListener('wheel', (e) => {
             lastScroll = new Date();
+            lastDelta = e.deltaX;
         }, { passive: true });
 
         window.addEventListener('scroll', e => {
             lastScroll = new Date();
+            lastDelta = e.deltaX;
         }, { passive: true });
 
         window.addEventListener('beforeunload', e => {
             // Confirm "back" if it's caused by swipe gesture and pagebuilder is opened
             if ($('.pagebuilder-stage-wrapper.stage-full-screen').length &&
+                lastDelta < 0 &&
                 (new Date() - lastScroll) < 2000 // assume it's an accidental swipe
             ) {
                 e.preventDefault();
