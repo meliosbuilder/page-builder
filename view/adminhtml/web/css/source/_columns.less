@@ -1,6 +1,9 @@
 .pagebuilder-column-line > .element-children {
     gap: var(--mls-colgroup-gap);
 }
+.pagebuilder-column-line ~ .pagebuilder-column-line {
+    margin-top: var(--mls-colgroup-gap);
+}
 .mobile-viewport {
     [data-mls-mobile-mode="2"] .pagebuilder-content-type.children-min-height.pagebuilder-column {
         width: ~"calc(50% - 1px - var(--mls-colgroup-gap, 0px)) !important";
