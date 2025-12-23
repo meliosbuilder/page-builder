@@ -51,4 +51,28 @@
             </settings>
         </field>
     </fieldset>
+    <fieldset name="advanced">
+        <field name="margins_and_padding">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="default" xsi:type="null" />
+                    <item name="breakpoints" xsi:type="array">
+                        <item name="mobile" xsi:type="boolean">true</item>
+                    </item>
+                </item>
+            </argument>
+            <settings>
+                <additionalClasses>
+                    <class name="admin__field-mobile-breakpoint-notice">true</class>
+                </additionalClasses>
+                <tooltip>
+                    <description translate="true">
+                        <![CDATA[
+                        <p>Style changes will only affect this breakpoint</p>
+                        ]]>
+                    </description>
+                </tooltip>
+            </settings>
+        </field>
+    </fieldset>
 </form>
