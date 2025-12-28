@@ -66,7 +66,9 @@ class Tailwind
 
         return <<<CSS
         @import 'tailwindcss/theme.css';
-        @import 'tailwindcss/utilities.css' source(none);
+        @scope {
+            @import 'tailwindcss/utilities.css' source(none);
+        }
         {$twConfig}
         @source 'content\.html';
         CSS;
