@@ -291,6 +291,7 @@ define([
       wrapper.closest('.modal-slide').css({
         left: 0,
         right: 0,
+        width: 'auto',
       });
 
       state.scrollTop = wrapper.closest('.modal-inner-wrap')
@@ -306,6 +307,7 @@ define([
     $(cm.getWrapperElement()).closest('.modal-slide').css({
       left: '',
       right: '',
+      width: '',
     });
 
     $(cm.getWrapperElement()).closest('.modal-inner-wrap')
