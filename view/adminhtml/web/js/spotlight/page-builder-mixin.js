@@ -411,11 +411,18 @@ define([
                             return false;
                         }
 
-                        var topmostModal = $('.modals-wrapper > ._show').sort((a, b) => {
-                            return b.style.zIndex - a.style.zIndex;;
-                        }).get(0);
+                        var modal = $('#' + this.id).closest('.modal-slide').get(0),
+                            topmostOverlay = $('.modals-wrapper > .modals-overlay')
+                                .filter(':visible')
+                                .sort((a, b) => {
+                                    return b.style.zIndex - a.style.zIndex;
+                                }).get(0);
 
-                        if (topmostModal && !$(topmostModal).has('#' + this.id).length) {
+                        if (topmostOverlay && modal &&
+                            (modal.style.zIndex < topmostOverlay.style.zIndex ||
+                                modal.style.zIndex == topmostOverlay.style.zIndex &&
+                                $(modal).index() < $(topmostOverlay).index())
+                        ) {
                             return false
                         }
 
