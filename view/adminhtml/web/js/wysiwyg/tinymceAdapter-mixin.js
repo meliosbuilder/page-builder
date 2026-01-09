@@ -11,6 +11,10 @@ define([
             settings.menubar = true;
             settings.promotion = false;
 
+            if (settings.toolbar && !settings.toolbar.includes(' code')) {
+                settings.toolbar += ' | code';
+            }
+
             return settings;
         });
 
