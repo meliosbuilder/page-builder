@@ -9,7 +9,7 @@ define([
         $(cm.getWrapperElement()).resizable({
             handles: 's',
             resize: _.debounce(() => cm.refresh(), 100),
-            zIndex: 900
+            zIndex: 8
         });
     };
 });
