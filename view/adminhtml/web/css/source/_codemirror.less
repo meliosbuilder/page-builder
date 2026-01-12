@@ -95,12 +95,6 @@
         }
     }
 }
-.CodeMirror-code {
-    // space for .mls-cm-controls
-    > *:nth-child(-n+3) {
-        padding-right: 125px !important;
-    }
-}
 .mls-cm-controls {
     position: absolute;
     top: 8px;
@@ -108,12 +102,39 @@
 
     display: flex;
     align-items: center;
+    justify-content: flex-end;
     gap: 5px;
     border-radius: 999px;
     background: #eee;
     padding: 8px 13px;
+    opacity: .65;
+    max-width: 50px;
+    overflow: hidden;
+    transition-property: opacity, max-width;
+    transition-timing-function: ~"cubic-bezier(0.4, 0, 0.2, 1)";
+    transition-duration: 150ms;
+
+    &:hover {
+        opacity: 1;
+        width: auto;
+        overflow: visible;
+        max-width: 150px;
+        button {
+            transform: none;
+            opacity: 1;
+        }
+    }
 
     button {
+        --mls-btn-size: 24px;
+        opacity: 0;
+        transform: ~"translateX(calc(var(--mls-btn-i) * var(--mls-btn-size)))";
+        transition-property: opacity, transform;
+        transition-timing-function: ~"cubic-bezier(0.4, 0, 0.2, 1)";
+        transition-duration: 150ms;
+        transition-delay: ~"calc(var(--mls-btn-i) * 10ms)";
+
+        flex-shrink: 0;
         border: 0;
         background: none;
         padding: 0;
@@ -138,6 +159,13 @@
 
         &:active {
             transform: scale(.95);
+        }
+
+        &:nth-child(1) { --mls-btn-i: 2; }
+        &:nth-child(2) { --mls-btn-i: 1; }
+        &:last-child {
+            --mls-btn-i: 0;
+            opacity: 1;
         }
     }
 
