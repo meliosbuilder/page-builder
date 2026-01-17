@@ -55,14 +55,22 @@
         .mls-more {
             color: #fff;
             display: flex;
-            .theme-m137 & {
-                color: inherit;
-            }
         }
         .mls-more,
         .icon-pagebuilder-fullscreen-exit {
             padding-left: 15px;
             padding-right: 15px;
+        }
+    }
+}
+
+.theme-m137 {
+    .pagebuilder-header .mls-actions {
+        .mls-save:hover {
+            background: #d2d2d2;
+        }
+        .mls-more {
+            color: inherit;
         }
     }
 }
