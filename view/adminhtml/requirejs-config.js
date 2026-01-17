@@ -11,6 +11,8 @@ var config = {
                 'Melios_PageBuilder/js/spotlight/page-builder-mixin': true,
                 // Spotlight: Toggle sidebar panel
                 'Melios_PageBuilder/js/spotlight/page-builder-header-mixin': true,
+                // Simple Save: Add save button, hide template buttons
+                'Melios_PageBuilder/js/simple-save/page-builder-mixin': true,
             },
 
             'Magento_PageBuilder/js/form/element/html-code': {
