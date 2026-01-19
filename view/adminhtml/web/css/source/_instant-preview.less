@@ -1,0 +1,512 @@
+:root {
+    --mls-slideout-width: 350px;
+}
+
+.modal-slide.pagebuilder_modal_form_pagebuilder_modal_form_modal {
+    position: fixed; // override ui-resizable style
+}
+html.melios-instant-preview-disabled {
+    .melios-toolbar {
+        display: none;
+    }
+    .pagebuilder_modal_form_pagebuilder_modal_form_modal > .ui-resizable-handle {
+        display: none !important;
+    }
+}
+html:not(.melios-instant-preview-disabled) {
+    body:has(> .modals-wrapper .pagebuilder_modal_form_pagebuilder_modal_form_modal._show) {
+        .pagebuilder-stage-wrapper.stage-full-screen {
+            right: var(--mls-slideout-width);
+            width: auto;
+            transition: right 0ms linear 300ms;
+        }
+    }
+
+    // Tinymce
+    .pagebuilder-stage-wrapper.stage-full-screen {
+        width: auto;
+        right: 0;
+    }
+    .pagebuilder_modal_form_pagebuilder_modal_form_modal {
+        .tox-hugerte:not(.tox-fullscreen),
+        .tox-tinymce:not(.tox-fullscreen) {
+            height: 400px !important;
+        }
+        .tox-editor-header {
+            overflow-x: auto;
+        }
+        .tox .tox-toolbar {
+            flex-wrap: wrap;
+            width: 600px
+        }
+        .tox.tox-fullscreen .tox-toolbar {
+            width: auto;
+        }
+        .tox .tox-toolbar__group {
+            padding: 0 7px;
+        }
+        .tox-statusbar__help-text {
+            display: none;
+        }
+        .tox-statusbar__right-container {
+            margin-inline-start: auto;
+        }
+    }
+
+    .modals-wrapper:has(> .modals-overlay ~ ._show) .modals-overlay {
+        display: block;
+    }
+    .pagebuilder_modal_form_pagebuilder_modal_form_modal {
+        left: auto;
+        width: var(--mls-slideout-width);
+
+        ~ .modals-overlay {
+            display: none;
+        }
+
+        .modal-inner-wrap {
+            box-shadow: none;
+            scrollbar-width: thin;
+            border-radius: 0;
+        }
+        .modal-header {
+            position: sticky;
+            top: 0;
+            z-index: 999;
+            padding: 0;
+            background: #fff;
+
+            .page-main-actions {
+                padding: 0 2px;
+                margin: 0;
+                border: 0;
+                height: 50px;
+            }
+            > *:not(.melios-toolbar, .modal-title) {
+                position: absolute;
+                top: -9999px;
+                left: -9999px;
+                overflow: hidden;
+                width: 1px;
+                height: 1px;
+            }
+
+        }
+        .modal-title {
+            position: absolute;
+            left: 52px;
+            top: 0px;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            padding: 0;
+            margin: 0;
+            max-width: 42%;
+            font-size: 17px;
+            font-weight: 600;
+        }
+        .modal-content {
+            padding: 0 15px;
+        }
+
+        .melios-toolbar {
+            display: flex;
+            justify-content: flex-end;
+            .page-actions {
+                width: 100%;
+                margin: 0;
+                align-items: center;
+            }
+            button {
+                display: flex;
+                align-items: center;
+                gap: 5px;
+                padding-left: 10px;
+                padding-right: 10px;
+            }
+            .expand {
+                margin: 0 auto 0 0;
+                padding-left: 14px;
+                padding-right: 14px;
+            }
+            .close {
+                justify-content: flex-start;
+                margin: 0 7px 0 0;
+            }
+        }
+        &:has(.CodeMirror-fullscreen) {
+            .melios-toolbar,
+            .modal-title {
+                display: none;
+            }
+        }
+
+        .admin__fieldset-wrapper-content .admin__fieldset {
+            padding-top: 0.5rem;
+            padding-bottom: 1.5rem;
+        }
+
+        &[data-mls-size="sm"] {
+            .admin__fieldset-wrapper-content .admin__fieldset {
+                padding-top: 0.5rem;
+                padding-bottom: 1rem;
+            }
+
+            .admin__fieldset {
+                > .admin__field {
+                    margin-left: 0;
+                    margin-bottom: 1.2rem;
+                    display: flex;
+                    flex-direction: column;
+                    gap: 0px;
+                    > .admin__field-label,
+                    > .admin__field-control {
+                        width: auto;
+                        margin-left: 0;
+                        text-align: left;
+                    }
+                    .admin__field-control .admin__control-select {
+                        min-width: 8rem;
+                    }
+                    &.admin__field-small > .admin__field-control {
+                        width: 15rem;
+                        min-width: 15rem;
+                        .admin__field-tooltip-content {
+                            right: auto;
+                            left: -10.5rem;
+                            &::before,
+                            &::after {
+                                right: auto;
+                                left: 10rem;
+                            }
+                        }
+                    }
+                    &.admin__field-medium > .admin__field-control {
+                        width: 25rem;
+                        min-width: 25rem;
+                    }
+                }
+            }
+            .admin__field + .admin__field {
+                margin-top: 1.2rem;
+            }
+
+            [class*="admin__control-grouped"] {
+                > .admin__field:first-child > .admin__field-label {
+                    width: auto;
+                    margin-left: 0;
+                }
+            }
+
+            // Buttons above the html field
+            .buttons-set {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 5px;
+                button {
+                    margin: 0;
+                }
+            }
+        }
+
+        &[data-mls-size="md"] {
+            .admin__fieldset {
+                > .admin__field {
+                    > .admin__field-label {
+                        width: ~"calc(100% * 0.25 - 10px)";
+                        margin-left: 20px;
+                    }
+                    > .admin__field-control {
+                        width: ~"calc(100% * 0.7 - 10px)";
+                        margin-left: 20px;
+                    }
+                    .admin__field-control .admin__control-select,
+                    &.admin__field-medium > .admin__field-control {
+                        min-width: 8rem;
+                    }
+                    &.admin__field-wide[class] > .admin__field-control {
+                        width: auto;
+                        margin-left: 30px;
+                    }
+                }
+            }
+            [class*="admin__control-grouped"] > .admin__field:first-child > .admin__field-label,
+            .admin__control-fields > .admin__field:first-child > .admin__field-label {
+                width: ~"calc(100% * 0.25 - 10px)";
+                margin-left: 20px;
+            }
+        }
+
+        &[data-mls-size="lg"] {
+            .admin__fieldset {
+                > .admin__field {
+                    > .admin__field-control {
+                        width: ~"calc(100% * 0.6 - 30px)";
+                        margin-left: 30px;
+                    }
+                    &.admin__field-small > .admin__field-control {
+                        width: 15rem;
+                        min-width: 15rem;
+                        .admin__field-tooltip-content {
+                            right: auto;
+                            left: -10.5rem;
+                            &::before,
+                            &::after {
+                                right: auto;
+                                left: 10rem;
+                            }
+                        }
+                    }
+                    &.admin__field-wide[class] > .admin__field-control {
+                        width: auto;
+                    }
+                }
+            }
+        }
+
+        &:not([data-mls-size="lg"]) {
+            // Help
+            .abs-admin__field-tooltip-content,
+            .admin__field-tooltip .admin__field-tooltip-content {
+                width: ~"calc(var(--mls-slideout-width) - 35px)";
+                max-width: 400px;
+            }
+        }
+
+        [class*="admin__control-grouped"] > .admin__field.admin__field-x-small > .admin__field-control,
+        [class*="admin__control-grouped"] > .admin__field.admin__field-small > .admin__field-control,
+        [class*="admin__control-grouped"] > .admin__field.admin__field-medium > .admin__field-control {
+            width: 100%;
+            min-width: 8rem;
+        }
+        [class*="admin__control-grouped"] > .admin__field.admin__field-default,
+        [class*="admin__control-grouped"] > .admin__field.admin__field-x-small,
+        [class*="admin__control-grouped"] > .admin__field.admin__field-small,
+        [class*="admin__control-grouped"] > .admin__field.admin__field-medium,
+        [class*="admin__control-grouped"] > .admin__field.admin__field-large {
+            width: auto;
+        }
+        [class*="admin__control-grouped"] > .admin__field:nth-child(n+2) {
+            padding-left: 7px;
+        }
+
+        // Tooltips
+        .admin__field-tooltip .admin__field-tooltip-content {
+            left: auto;
+        }
+        .admin__fieldset .admin__field.admin__field-min-height-mobile .admin__field-control._with-tooltip .admin__field-tooltip-content,
+        .admin__fieldset .admin__field.admin__field-min-height-mobile-with-notice .admin__field-control._with-tooltip .admin__field-tooltip-content,
+        .admin__field-mobile-breakpoint-notice .admin__field-control._with-tooltip .admin__field-tooltip-content {
+            left: auto;
+            right: -15px;
+            &::before {
+                left: auto;
+                right: 15px;
+            }
+        }
+
+        // Visual select
+        .admin__field-visual-select {
+            ol li {
+                padding: 5px 8px;
+                margin-bottom: 5px;
+                margin-right: 5px;
+                &.active {
+                    outline-width: 1px;
+                }
+            }
+            &-small {
+                width: auto;
+                height: 32px;
+                min-width: 50px;
+                gap: 3px;
+                img {
+                    width: 10px;
+                    margin-right: 0;
+                }
+            }
+            &-large {
+                min-height: 50px;
+                width: 85px;
+            }
+        }
+
+        // URL input
+        .url-input-container {
+            .type-selector-input-container {
+                flex-flow: row;
+            }
+            .url-input-element-linked-element {
+                margin-left: 7px;
+            }
+        }
+
+        // Image uploader
+        .image {
+            width: 100px;
+            &.image-placeholder {
+                height: 100px;
+                .product-image-wrapper::before {
+                    font-size: 3rem;
+                    top: 6px;
+                }
+            }
+            .image-placeholder-text {
+                font-size: 1.2rem;
+                margin-bottom: 10%;
+                padding: 0 10px;
+            }
+            .product-image-wrapper {
+                width: 100px;
+                height: 100px;
+            }
+        }
+        .file-uploader-preview,
+        .file-uploader-placeholder {
+            height: 100px;
+        }
+        .file-uploader .file-uploader-button {
+            margin-right: 2px;
+        }
+        .file-uploader-preview .action-remove {
+            bottom: 5px;
+            left: 5px;
+            padding: 5px;
+            &::before {
+                font-size: 1.5rem;
+            }
+        }
+
+        // Colorpicker
+        .admin__field > .admin__field-control:has(> .admin__field-control > .sp-replacer) {
+            min-width: 11rem;
+        }
+        .sp-replacer {
+            margin: 0;
+        }
+        .colorpicker-input {
+            width: ~"calc(100% - 42px) !important";
+        }
+
+        // Margins and padding
+        &[data-mls-size="lg"] {
+            .admin__fieldset > .admin__field > .admin__field-control:has(.layout-onion) {
+                width: ~"calc(100% * 0.7 - 10px)";
+            }
+        }
+        .admin__field-design-options .layout-onion {
+            width: auto;
+            height: auto;
+            .label {
+                position: static;
+                margin: 5px;
+            }
+            input[type="text"] {
+                position: static;
+                transform: none;
+                margin: 5px;
+                padding: 5px;
+                width: ~"calc(100% - 5px)";
+                max-width: 80px;
+            }
+            .layout-onion-layer {
+                width: auto;
+                height: auto;
+                display: grid;
+                grid-template-columns: repeat(5, 1fr);
+                grid-template-rows:    repeat(5, 1fr);
+                grid-template-areas:
+                    ".      .       top     .           ."
+                    ".      center  center  center      ."
+                    "left   center  center  center  right"
+                    ".      center  center  center      ."
+                    ".      .       bottom  .           .";
+                align-items: center;
+                justify-items: center;
+
+                > .label { align-self: start; justify-self: start; }
+                > .layout-onion-top { grid-area: top; }
+                > .layout-onion-right { grid-area: right; }
+                > .layout-onion-bottom { grid-area: bottom; }
+                > .layout-onion-left { grid-area: left; }
+                > .layout-border { grid-area: center; }
+            }
+            .layout-border {
+                position: static;
+                width: auto;
+                grid-template-columns: subgrid;
+                grid-template-rows: subgrid;
+                &::after {
+                    display: none;
+                }
+            }
+        }
+
+        // Mobile view
+        .admin__fieldset .admin__field.admin__field-min-height-mobile-with-notice .admin__field-note {
+            width: 100%;
+        }
+        .admin__fieldset .admin__field.admin__field-min-height-mobile .admin__field-control._with-tooltip .admin__field-tooltip,
+        .admin__fieldset .admin__field.admin__field-min-height-mobile-with-notice .admin__field-control._with-tooltip .admin__field-tooltip,
+        .admin__field-mobile-breakpoint-notice .admin__field-control._with-tooltip .admin__field-tooltip {
+            margin-left: 10px;
+        }
+
+        // Add location button
+        .admin__field-complex {
+            margin: 1rem 0 1.5rem;
+            .admin__field-complex-elements {
+                max-width: 80%;
+            }
+        }
+
+        // Category filter
+        .admin__action-multiselect-tree .action-menu,
+        .admin__action-multiselect-tree .abs-action-menu .action-submenu,
+        .admin__action-multiselect-tree .action-menu .action-submenu,
+        .admin__action-multiselect-tree .actions-split .dropdown-menu .action-submenu,
+        .admin__action-multiselect-tree .actions-split .action-menu .action-submenu,
+        .admin__action-multiselect-tree .abs-action-menu .action-submenu .action-submenu,
+        .admin__action-multiselect-tree .actions-split .dropdown-menu .action-submenu .action-submenu,
+        .admin__action-multiselect-tree .actions-split .action-menu .action-submenu .action-submenu {
+            min-width: 100%;
+        }
+    }
+}
+
+// Hide non-mobile fields on mobile view
+html:not(.melios-instant-preview-disabled) {
+    body:has(.page-builder-viewport.desktop-switcher:enabled) {
+        .pagebuilder_modal_form_pagebuilder_modal_form_modal {
+            .admin__field:not(.admin__field-mobile-breakpoint-notice, .admin__field-min-height-mobile-with-notice, .admin__field-min-height-mobile) {
+                display: none;
+            }
+            .fieldset-wrapper:not(:has(.admin__field-mobile-breakpoint-notice, .admin__field-min-height-mobile-with-notice, .admin__field-min-height-mobile)) {
+                display: none;
+            }
+            .entry-edit:has(.admin__field):not(:has(.admin__field-mobile-breakpoint-notice, .admin__field-min-height-mobile-with-notice, .admin__field-min-height-mobile)) {
+                &::before {
+                    display: block;
+                    content: "This element doesn't provide mobile settings";
+                    text-align: center;
+                    margin: 30px 0;
+                }
+            }
+        }
+    }
+}
+
+html:not(.melios-instant-preview-disabled) {
+    .theme-m137 {
+        .pagebuilder_modal_form_pagebuilder_modal_form_modal {
+            .admin__field-control._with-tooltip > .admin__control-addon,
+            .admin__field-control._with-tooltip > .admin__field-option,
+            .admin__field-control._with-tooltip > .admin__control-select,
+            .admin__field-control._with-tooltip > .admin__control-text,
+            .admin__field-control._with-tooltip > .admin__control-textarea,
+            .admin__field-control._with-tooltip > .ui-datepicker .ui-datepicker-title select {
+                max-width: ~"calc(100% - 50px)";
+            }
+        }
+    }
+}
