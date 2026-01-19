@@ -5,16 +5,15 @@
         content: '' !important;
     }
 }
-.mls-dimensions {
-    .admin__field-small > .admin__field-control {
-        width: 10.35rem !important;
-    }
-}
 .mls-aspect-ratio {
-    width: 20px;
+    width: 20px !important;
     opacity: .8;
     &:hover {
         opacity: 1;
+    }
+
+    > .admin__field-control {
+        min-width: 20px !important;
     }
 
     &,
