@@ -14,7 +14,7 @@ define([
 
     return {
         getTopModal: topModal,
-        updateSource: _.debounce(source => {
+        updateSource: _.throttle(source => {
             var topSource = ko.dataFor(topModal().find('[name="appearance"]')[0])?.source;
 
             if (topSource?.name === source.name) {
