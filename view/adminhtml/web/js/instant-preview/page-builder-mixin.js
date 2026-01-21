@@ -5,6 +5,8 @@ define([
 ], function ($, ko, events) {
     'use strict';
 
+    $('body').addClass('melios-instant-preview');
+
     /**
      * Update on input event
      */

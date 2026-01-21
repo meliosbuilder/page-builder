@@ -2,19 +2,22 @@
     --mls-slideout-width: 350px;
 }
 
-.modal-slide.pagebuilder_modal_form_pagebuilder_modal_form_modal {
-    position: fixed; // override ui-resizable style
-}
-html.melios-instant-preview-disabled {
-    .melios-toolbar {
-        display: none;
+.pagebuilder_modal_form_pagebuilder_modal_form_modal {
+    &.modal-slide {
+        position: fixed; // override ui-resizable style
     }
-    .pagebuilder_modal_form_pagebuilder_modal_form_modal > .ui-resizable-handle {
-        display: none !important;
+    body:not(.melios-instant-preview) & {
+        .melios-toolbar {
+            display: none;
+        }
+        > .ui-resizable-handle {
+            display: none !important;
+        }
     }
 }
-html:not(.melios-instant-preview-disabled) {
-    body:has(> .modals-wrapper .pagebuilder_modal_form_pagebuilder_modal_form_modal._show) {
+
+body.melios-instant-preview {
+    &:has(> .modals-wrapper .pagebuilder_modal_form_pagebuilder_modal_form_modal._show) {
         .pagebuilder-stage-wrapper.stage-full-screen {
             right: var(--mls-slideout-width);
             width: auto;
@@ -475,8 +478,8 @@ html:not(.melios-instant-preview-disabled) {
 }
 
 // Hide non-mobile fields on mobile view
-html:not(.melios-instant-preview-disabled) {
-    body:has(.page-builder-viewport.desktop-switcher:enabled) {
+body.melios-instant-preview {
+    &:has(.page-builder-viewport.desktop-switcher:enabled) {
         .pagebuilder_modal_form_pagebuilder_modal_form_modal {
             .admin__field:not(.admin__field-mobile-breakpoint-notice, .admin__field-min-height-mobile-with-notice, .admin__field-min-height-mobile) {
                 display: none;
@@ -496,17 +499,15 @@ html:not(.melios-instant-preview-disabled) {
     }
 }
 
-html:not(.melios-instant-preview-disabled) {
-    .theme-m137 {
-        .pagebuilder_modal_form_pagebuilder_modal_form_modal {
-            .admin__field-control._with-tooltip > .admin__control-addon,
-            .admin__field-control._with-tooltip > .admin__field-option,
-            .admin__field-control._with-tooltip > .admin__control-select,
-            .admin__field-control._with-tooltip > .admin__control-text,
-            .admin__field-control._with-tooltip > .admin__control-textarea,
-            .admin__field-control._with-tooltip > .ui-datepicker .ui-datepicker-title select {
-                max-width: ~"calc(100% - 50px)";
-            }
+body.melios-instant-preview.theme-m137 {
+    .pagebuilder_modal_form_pagebuilder_modal_form_modal {
+        .admin__field-control._with-tooltip > .admin__control-addon,
+        .admin__field-control._with-tooltip > .admin__field-option,
+        .admin__field-control._with-tooltip > .admin__control-select,
+        .admin__field-control._with-tooltip > .admin__control-text,
+        .admin__field-control._with-tooltip > .admin__control-textarea,
+        .admin__field-control._with-tooltip > .ui-datepicker .ui-datepicker-title select {
+            max-width: ~"calc(100% - 50px)";
         }
     }
 }

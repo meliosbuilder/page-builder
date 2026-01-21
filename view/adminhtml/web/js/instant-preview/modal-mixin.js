@@ -118,11 +118,11 @@ define([
                             this.closeModal();
                             break;
                         case 'expand':
-                            $('html').addClass('melios-instant-preview-disabled');
+                            $('body').removeClass('melios-instant-preview');
                             $(e.currentTarget)
                                 .closest('.modal-inner-wrap')
                                 .one('modalclosed', () => {
-                                    $('html').removeClass('melios-instant-preview-disabled');
+                                    $('body').addClass('melios-instant-preview');
                                 });
                             break;
                     }
