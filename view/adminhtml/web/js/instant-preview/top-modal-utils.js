@@ -17,8 +17,8 @@ define([
         updateSource: _.throttle(source => {
             var topSource = ko.dataFor(topModal().find('[name="appearance"]')[0])?.source;
 
-            if (topSource?.name === source.name) {
-                source.save?.();
+            if (topSource?.name === source?.name) {
+                source?.save?.();
             }
         }, 80),
     }

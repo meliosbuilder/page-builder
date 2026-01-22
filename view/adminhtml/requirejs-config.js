@@ -18,6 +18,9 @@ var config = {
             'Magento_PageBuilder/js/form/element/margins-and-padding': {
                 'Melios_PageBuilder/js/instant-preview/margins-and-padding-mixin': true,
             },
+            'Magento_PageBuilder/js/content-type-menu/edit': {
+                'Melios_PageBuilder/js/instant-preview/edit-content-mixin': true,
+            },
             'Magento_Ui/js/form/element/wysiwyg': {
                 'Melios_PageBuilder/js/instant-preview/wysiwyg-mixin': true,
             },
