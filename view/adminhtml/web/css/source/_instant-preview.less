@@ -194,11 +194,17 @@ body.melios-instant-preview {
                 margin-top: 1.2rem;
             }
 
-            [class*="admin__control-grouped"] {
-                > .admin__field:first-child > .admin__field-label {
-                    width: auto;
-                    margin-left: 0;
-                }
+            [class*='admin__control-grouped'] > .admin__field:first-child > .admin__field-label,
+            .admin__control-fields > .admin__field:first-child > .admin__field-label {
+                width: auto;
+                margin-left: 0;
+            }
+
+            // Help
+            .abs-admin__field-tooltip-content,
+            .admin__field-tooltip .admin__field-tooltip-content {
+                width: ~"calc(var(--mls-slideout-width) - 35px)";
+                max-width: 200px;
             }
 
             // Buttons above the html field
@@ -238,6 +244,13 @@ body.melios-instant-preview {
                 width: ~"calc(100% * 0.25 - 10px)";
                 margin-left: 20px;
             }
+
+            // Help
+            .abs-admin__field-tooltip-content,
+            .admin__field-tooltip .admin__field-tooltip-content {
+                width: ~"calc(var(--mls-slideout-width) - 35px)";
+                max-width: 350px;
+            }
         }
 
         &[data-mls-size="lg"] {
@@ -264,15 +277,6 @@ body.melios-instant-preview {
                         width: auto;
                     }
                 }
-            }
-        }
-
-        &:not([data-mls-size="lg"]) {
-            // Help
-            .abs-admin__field-tooltip-content,
-            .admin__field-tooltip .admin__field-tooltip-content {
-                width: ~"calc(var(--mls-slideout-width) - 35px)";
-                max-width: 400px;
             }
         }
 
