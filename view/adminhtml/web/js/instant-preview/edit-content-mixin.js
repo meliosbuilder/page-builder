@@ -9,6 +9,9 @@ define([
         target.prototype.open = wrapper.wrap(
             target.prototype.open,
             _.debounce(function (o) {
+                if ($.active) {
+                    return;
+                }
                 o();
             }, 500, true)
         );
