@@ -330,12 +330,16 @@ body.melios-instant-preview {
 
         // Visual select
         .admin__field-visual-select {
-            ol li {
-                padding: 5px 8px;
-                margin-bottom: 5px;
-                margin-right: 5px;
-                &.active {
-                    outline-width: 1px;
+            ol {
+                display: flex;
+                flex-wrap: wrap;
+                li {
+                    padding: 5px 8px;
+                    margin-bottom: 5px;
+                    margin-right: 5px;
+                    &.active {
+                        outline-width: 1px;
+                    }
                 }
             }
             &-small {
