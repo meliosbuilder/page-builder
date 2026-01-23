@@ -73,7 +73,7 @@ define([
                             position: 'fixed',
                             inset: 0,
                             background: '#fff',
-                            zIndex: 500
+                            zIndex: 550
                         }).appendTo('body');
                     },
                     stop: function (event, ui) {
