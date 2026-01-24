@@ -6,6 +6,25 @@ var config = {
     },
     config: {
         mixins: {
+            'Magento_Ui/js/form/element/abstract': {
+                'Melios_PageBuilder/js/instant-preview/abstract-element-mixin': true,
+            },
+            'Magento_Ui/js/dynamic-rows/dynamic-rows': {
+                'Melios_PageBuilder/js/instant-preview/dynamic-rows-mixin': true,
+            },
+            'Magento_PageBuilder/js/modal/modal': {
+                'Melios_PageBuilder/js/instant-preview/modal-mixin': true,
+            },
+            'Magento_PageBuilder/js/form/element/margins-and-padding': {
+                'Melios_PageBuilder/js/instant-preview/margins-and-padding-mixin': true,
+            },
+            'Magento_PageBuilder/js/content-type-menu/edit': {
+                'Melios_PageBuilder/js/instant-preview/edit-content-mixin': true,
+            },
+            'Magento_Ui/js/form/element/wysiwyg': {
+                'Melios_PageBuilder/js/instant-preview/wysiwyg-mixin': true,
+            },
+
             'Magento_PageBuilder/js/page-builder': {
                 // Spotlight: Hotkeys, focus-trap
                 'Melios_PageBuilder/js/spotlight/page-builder-mixin': true,
@@ -13,6 +32,8 @@ var config = {
                 'Melios_PageBuilder/js/spotlight/page-builder-header-mixin': true,
                 // Simple Save: Add save button, hide template buttons
                 'Melios_PageBuilder/js/simple-save/page-builder-mixin': true,
+                // Instant Preview
+                'Melios_PageBuilder/js/instant-preview/page-builder-mixin': true,
             },
 
             'Magento_PageBuilder/js/form/element/html-code': {
@@ -37,6 +58,8 @@ var config = {
                 'Melios_PageBuilder/js/wysiwyg/tinymceAdapter-mixin': true,
                 // Codemirror
                 'Melios_PageBuilder/js/editor/tinymceAdapter-mixin': true,
+                // Fullscreen
+                'Melios_PageBuilder/js/instant-preview/tinymceAdapter-mixin': true,
             },
             'mage/adminhtml/wysiwyg/tiny_mce/tinymceAdapter': {
                 // Do not paste raw data from copy-paste buffer
@@ -45,6 +68,8 @@ var config = {
                 'Melios_PageBuilder/js/wysiwyg/tinymceAdapter-mixin': true,
                 // Codemirror
                 'Melios_PageBuilder/js/editor/tinymceAdapter-mixin': true,
+                // Fullscreen
+                'Melios_PageBuilder/js/instant-preview/tinymceAdapter-mixin': true,
             },
 
             // Allow modern images upload

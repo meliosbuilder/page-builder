@@ -74,7 +74,11 @@ define([
     // Modal hotkeys
     $(document).on('keydown', (e) => {
         var modal = $(event.target).closest('[data-role="modal"]');
-        if (!modal.length || !modal.hasClass('_show')) {
+        if (!modal.length ||
+            !modal.hasClass('_show') ||
+            (modal.hasClass('pagebuilder_modal_form_pagebuilder_modal_form_modal') &&
+                $('body').hasClass('melios-instant-preview'))
+        ) {
             return;
         }
 
