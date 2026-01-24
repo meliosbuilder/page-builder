@@ -63,6 +63,13 @@ define([
         lastEdit.preview.openEdit();
     });
 
+    // Close slideout when element is removed
+    events.on('contentType:removeAfter', (data) => {
+        if (data.contentType.id === lastEdit?.id) {
+            $('.pagebuilder_modal_form_pagebuilder_modal_form_modal._show button.close').click();
+        }
+    });
+
     return function (target) {
         return target;
     };
