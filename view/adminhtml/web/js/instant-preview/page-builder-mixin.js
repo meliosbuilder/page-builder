@@ -46,9 +46,7 @@ define([
     // Close form on pagebuilder exit
     events.on('stage:fullScreenModeChangeAfter', (data) => {
         if (!data.fullScreen) {
-            $('.modals-wrapper > ._show button.close').each(function() {
-                $(this).click();
-            });
+            $('.pagebuilder_modal_form_pagebuilder_modal_form_modal._show button.close').click();
         }
     });
 
