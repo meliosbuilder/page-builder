@@ -60,7 +60,7 @@ define([
                 slideout.css('position', slideout.css('position')).resizable({
                     autoHide: true,
                     minWidth: 330,
-                    maxWidth: 700,
+                    maxWidth: 800,
                     handles: 'w',
                     ghost: true,
                     resize: function (event, ui) {

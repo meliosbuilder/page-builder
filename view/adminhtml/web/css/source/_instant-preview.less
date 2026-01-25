@@ -33,14 +33,16 @@ body.melios-instant-preview {
     .pagebuilder_modal_form_pagebuilder_modal_form_modal {
         .tox-hugerte:not(.tox-fullscreen),
         .tox-tinymce:not(.tox-fullscreen) {
-            height: 400px !important;
+            min-height: 400px !important;
         }
-        .tox-editor-header {
-            overflow-x: auto;
-        }
-        .tox .tox-toolbar {
-            flex-wrap: wrap;
-            width: 600px
+        &:not([data-mls-size="lg"]) {
+            .tox-editor-header {
+                overflow-x: auto;
+            }
+            .tox .tox-toolbar {
+                flex-wrap: wrap;
+                width: 600px
+            }
         }
         .tox.tox-fullscreen .tox-toolbar {
             width: auto;
@@ -256,9 +258,13 @@ body.melios-instant-preview {
         &[data-mls-size="lg"] {
             .admin__fieldset {
                 > .admin__field {
+                    > .admin__field-label {
+                        width: ~"calc(100% * 0.2 - 10px)";
+                        margin-left: 20px;
+                    }
                     > .admin__field-control {
-                        width: ~"calc(100% * 0.6 - 30px)";
-                        margin-left: 30px;
+                        width: ~"calc(100% * 0.75 - 10px)";
+                        margin-left: 20px;
                     }
                     &.admin__field-small > .admin__field-control {
                         width: 15rem;
@@ -277,6 +283,11 @@ body.melios-instant-preview {
                         width: auto;
                     }
                 }
+            }
+            [class*="admin__control-grouped"] > .admin__field:first-child > .admin__field-label,
+            .admin__control-fields > .admin__field:first-child > .admin__field-label {
+                width: ~"calc(100% * 0.2 - 10px)";
+                margin-left: 20px;
             }
         }
 
