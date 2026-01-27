@@ -7,19 +7,35 @@ define([
 ], ($, tinyMCE, _, wrapper, events) => {
     'use strict';
 
-    events.on('stage:fullScreenModeChangeAfter', (data) => {
-        if (data.fullScreen) {
-            $('.pagebuilder-stage-wrapper.stage-is-active')
-                .get(0)
-                .addEventListener('scroll', (e) => {
-                    var scrollTop = e.target.scrollTop;
+    var curStage;
 
-                    console.log(
-                        scrollTop,
-                        $('.tox-tinymce-inline:not([style*="display: none"])').offset()
-                    );
-                }, { passive: true });
+    function onScroll() {
+        const toolbar = document.querySelector('.tox-tinymce-inline:not([style*="display: none"])');
+
+        if (!toolbar) {
+            return;
         }
+
+        const rect = toolbar.getBoundingClientRect();
+        const minTop = 50;
+        const maxBottom = window.innerHeight;
+
+        let delta = 0;
+
+        if (rect.top < minTop) {
+            delta = minTop - rect.top;
+        } else if (rect.bottom > maxBottom) {
+            delta = maxBottom - rect.bottom;
+        }
+
+        if (delta !== 0) {
+            toolbar.style.top = (toolbar.offsetTop + delta) + 'px';
+        }
+    }
+
+    document.addEventListener('scroll', onScroll, {
+        capture: true,
+        passive: true
     });
 
     return function (target) {
