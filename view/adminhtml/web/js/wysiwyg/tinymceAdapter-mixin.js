@@ -14,7 +14,10 @@ define([
             toolbar;
 
         function start() {
-            toolbar = $('.tox-tinymce-inline:not([style*="display: none"])')[0];
+            toolbar = $(`
+                .tox-tinymce-inline:not([style*="display: none"]),
+                .tox-hugerte-inline:not([style*="display: none"])
+            `)[0];
 
             if (toolbar) {
                 defaultTop = toolbar.offsetTop;
