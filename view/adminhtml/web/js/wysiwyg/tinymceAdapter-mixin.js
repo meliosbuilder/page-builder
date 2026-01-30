@@ -1,6 +1,6 @@
 define([
     'tinymce',
-    'mage/utils/wrapper',
+    'mage/utils/wrapper'
 ], (tinyMCE, wrapper) => {
     'use strict';
 

@@ -1,6 +1,6 @@
 define([
     'jquery',
-    'mage/utils/wrapper',
+    'mage/utils/wrapper'
 ], function ($, wrapper) {
     'use strict';
 
