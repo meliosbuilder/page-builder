@@ -75,7 +75,6 @@ define([
         return {
             start,
             stop,
-            updatePosition,
         };
     })();
 
