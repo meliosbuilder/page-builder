@@ -2,6 +2,8 @@ var config = {
     map: {
         '*': {
             'htmlhint': 'Melios_PageBuilder/js/lib/htmlhint',
+            '@floating-ui/core': 'Melios_PageBuilder/js/lib/floating-ui/core',
+            '@floating-ui/dom': 'Melios_PageBuilder/js/lib/floating-ui/dom',
         },
     },
     config: {
@@ -23,6 +25,10 @@ var config = {
             },
             'Magento_Ui/js/form/element/wysiwyg': {
                 'Melios_PageBuilder/js/instant-preview/wysiwyg-mixin': true,
+            },
+
+            'Magento_PageBuilder/js/wysiwyg/tinymce': {
+                'Melios_PageBuilder/js/wysiwyg/wysiwyg-tinymce-mixin': true,
             },
 
             'Magento_PageBuilder/js/page-builder': {
