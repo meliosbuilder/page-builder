@@ -22,13 +22,14 @@ define([
             }
 
             if (caretRect) {
-                if (placement === 'bottom' && caretRect.top > toolbar.offsetHeight + minTop) {
-                    if (caretRect.bottom >= window.innerHeight - toolbar.offsetHeight) {
-                        // If end of selection is not near bottom
-                        placement = 'top';
-                    } else if (e === true && toolbarAnchor.getBoundingClientRect().top + scrollContainer.scrollTop - minTop > toolbar.offsetHeight) {
+                var hasFreeSpaceAbove = toolbarAnchor.getBoundingClientRect().top + scrollContainer.scrollTop - minTop > toolbar.offsetHeight;
+                if (placement === 'bottom' && hasFreeSpaceAbove && caretRect.top > toolbar.offsetHeight + minTop) {
+                    if (e === true) {
                         // If it's the first activation - prefer top position, if text has space on the top.
                         // Don't do this on all nexts activations to prevent too noisy toolbar jumping.
+                        placement = 'top';
+                    } else if (caretRect.bottom >= window.innerHeight - toolbar.offsetHeight) {
+                        // If end of selection is not near bottom
                         placement = 'top';
                     }
                 } else if (placement === 'top' &&
