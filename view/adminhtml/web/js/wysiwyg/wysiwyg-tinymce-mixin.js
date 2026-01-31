@@ -1,15 +1,39 @@
 define([
     'jquery',
-    'mage/utils/wrapper'
-], function ($, wrapper) {
+    'mage/utils/wrapper',
+    'tinymce'
+], function ($, wrapper, tinyMCE) {
     'use strict';
 
     var stickyToolbar = (() => {
         var minTop = 50,
             waitTimer,
             placement,
+            editor,
             toolbarAnchor,
             toolbar;
+
+        function onSelectionChange(e) {
+            var caretRect = editor?.selection.getRng().getBoundingClientRect();
+
+            if (!caretRect.height) {
+                caretRect = editor?.selection.getRng().startContainer?.getBoundingClientRect();
+            }
+
+            if (caretRect) {
+                if (placement === 'bottom' &&
+                    caretRect.top >= window.innerHeight - toolbar.offsetHeight - 20
+                ) {
+                    placement = 'top';
+                } else if (placement === 'top' &&
+                    caretRect.top <= toolbar.offsetHeight + minTop + 20
+                ) {
+                    placement = 'bottom';
+                }
+            }
+
+            updatePosition();
+        }
 
         function start() {
             toolbar = $(`
@@ -21,7 +45,10 @@ define([
                 toolbar.dataset.mlsFloatingToolbar = true;
                 placement = toolbar.offsetTop < 0 ? 'top' : 'bottom';
                 toolbarAnchor = $(toolbar).prevAll('.inline-wysiwyg')[0];
-                return updatePosition();
+                editor = tinymce.get(toolbarAnchor.id);
+                editor?.on('SelectionChange', onSelectionChange);
+
+                return onSelectionChange();
             }
 
             waitTimer = setTimeout(start, 100);
@@ -29,8 +56,10 @@ define([
 
         function stop() {
             clearTimeout(waitTimer);
+            editor?.off('SelectionChange', onSelectionChange);
             delete toolbar.dataset.mlsFloatingToolbar;
             toolbar = null;
+            editor = null;
         }
 
         function updatePosition() {
