@@ -65,6 +65,9 @@ define([
 
         function stop() {
             clearTimeout(waitTimer);
+            if (!toolbar) {
+                return;
+            }
             editor?.off('SelectionChange', onSelectionChange);
             delete toolbar.dataset.mlsFloatingToolbar;
             toolbar = null;
@@ -122,7 +125,7 @@ define([
             function (o) {
                 var $inlineToolbar = this.getFixedToolbarContainer().find('.tox-tinymce-inline,.tox-hugerte-inline');
 
-                if ($inlineToolbar.attr('data-mls-floating-toolbar')) {
+                if (!$inlineToolbar.length || $inlineToolbar.attr('data-mls-floating-toolbar')) {
                     return;
                 }
 
