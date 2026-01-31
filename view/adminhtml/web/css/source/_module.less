@@ -56,3 +56,21 @@
         }
     }
 }
+
+// Do not cover text by inline editor toolbar when stick to bottom
+.pagebuilder-stage .pagebuilder-canvas {
+    padding-bottom: 200px;
+}
+.mce-content-body {
+    ~ .tox-tinymce-inline,
+    ~ .tox-hugerte-inline {
+        will-change: top;
+        opacity: 0;
+        transition: 0ms opacity 0ms ease-out;
+        .mce-edit-focus& {
+            opacity: 1;
+            transition-delay: 70ms;
+            transition-duration: 200ms;
+        }
+    }
+}
