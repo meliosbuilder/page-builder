@@ -22,11 +22,13 @@ define([
 
             if (caretRect) {
                 if (placement === 'bottom' &&
-                    caretRect.bottom >= window.innerHeight - toolbar.offsetHeight - 20
+                    caretRect.bottom >= window.innerHeight - toolbar.offsetHeight - 20 &&
+                    caretRect.top > toolbar.offsetHeight + minTop + 20
                 ) {
                     placement = 'top';
                 } else if (placement === 'top' &&
-                    caretRect.top <= toolbar.offsetHeight + minTop + 20
+                    caretRect.top <= toolbar.offsetHeight + minTop + 20 &&
+                    caretRect.bottom < window.innerHeight - toolbar.offsetHeight - 20
                 ) {
                     placement = 'bottom';
                 }
