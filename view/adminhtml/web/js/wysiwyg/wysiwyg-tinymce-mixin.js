@@ -22,8 +22,8 @@ define([
             }
 
             if (caretRect) {
-                if (placement === 'bottom' && caretRect.top > toolbar.offsetHeight + minTop + 20) {
-                    if (caretRect.bottom >= window.innerHeight - toolbar.offsetHeight - 20) {
+                if (placement === 'bottom' && caretRect.top > toolbar.offsetHeight + minTop) {
+                    if (caretRect.bottom >= window.innerHeight - toolbar.offsetHeight) {
                         // If end of selection is not near bottom
                         placement = 'top';
                     } else if (e === true && toolbarAnchor.getBoundingClientRect().top + scrollContainer.scrollTop - minTop > toolbar.offsetHeight) {
@@ -32,8 +32,8 @@ define([
                         placement = 'top';
                     }
                 } else if (placement === 'top' &&
-                    caretRect.top <= toolbar.offsetHeight + minTop + 20 &&
-                    caretRect.bottom < window.innerHeight - toolbar.offsetHeight - 20
+                    caretRect.top <= toolbar.offsetHeight + minTop &&
+                    caretRect.bottom < window.innerHeight - toolbar.offsetHeight
                 ) {
                     // if caret is near bottom, and start of selection is not near top
                     placement = 'bottom';
