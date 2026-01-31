@@ -10,6 +10,7 @@ define([
             waitTimer,
             placement,
             editor,
+            scrollContainer,
             toolbarAnchor,
             toolbar;
 
@@ -21,15 +22,20 @@ define([
             }
 
             if (caretRect) {
-                if (placement === 'bottom' &&
-                    caretRect.bottom >= window.innerHeight - toolbar.offsetHeight - 20 &&
-                    caretRect.top > toolbar.offsetHeight + minTop + 20
-                ) {
-                    placement = 'top';
+                if (placement === 'bottom' && caretRect.top > toolbar.offsetHeight + minTop + 20) {
+                    if (caretRect.bottom >= window.innerHeight - toolbar.offsetHeight - 20) {
+                        // If end of selection is not near bottom
+                        placement = 'top';
+                    } else if (e === true && toolbarAnchor.getBoundingClientRect().top + scrollContainer.scrollTop - minTop > toolbar.offsetHeight) {
+                        // If it's the first activation - prefer top position, if text has space on the top.
+                        // Don't do this on all nexts activations to prevent too noisy toolbar jumping.
+                        placement = 'top';
+                    }
                 } else if (placement === 'top' &&
                     caretRect.top <= toolbar.offsetHeight + minTop + 20 &&
                     caretRect.bottom < window.innerHeight - toolbar.offsetHeight - 20
                 ) {
+                    // if caret is near bottom, and start of selection is not near top
                     placement = 'bottom';
                 }
             }
@@ -44,13 +50,13 @@ define([
             `)[0];
 
             if (toolbar) {
+                toolbarAnchor = $(toolbar).prevAll('.inline-wysiwyg')[0];
+                scrollContainer = $(toolbar).closest('.stage-full-screen')[0];
                 toolbar.dataset.mlsFloatingToolbar = true;
                 placement = toolbar.offsetTop < 0 ? 'top' : 'bottom';
-                toolbarAnchor = $(toolbar).prevAll('.inline-wysiwyg')[0];
                 editor = tinymce.get(toolbarAnchor.id);
                 editor?.on('SelectionChange', onSelectionChange);
-
-                return onSelectionChange();
+                return onSelectionChange(true);
             }
 
             waitTimer = setTimeout(start, 100);
