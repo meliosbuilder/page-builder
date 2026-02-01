@@ -28,7 +28,7 @@
                     </item>
                 </argument>
                 <settings>
-                    <label translate="true">Small Screen Modes</label>
+                    <label translate="true">Tablet and Phone Modes</label>
                     <notice>Tablet: 640-767px</notice>
                     <additionalClasses>
                         <class name="admin__field-small">true</class>
