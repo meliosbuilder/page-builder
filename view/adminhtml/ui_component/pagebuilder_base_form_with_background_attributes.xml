@@ -2,6 +2,20 @@
 <form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
       xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
     <fieldset name="background">
+        <field name="background_position" formElement="select">
+            <formElements>
+                <select>
+                    <settings>
+                        <options>
+                            <option name="-1" xsi:type="array">
+                                <item name="value" xsi:type="string"></item>
+                                <item name="label" xsi:type="string" translate="true">Default</item>
+                            </option>
+                        </options>
+                    </settings>
+                </select>
+            </formElements>
+        </field>
         <field name="loading_mode" sortOrder="21" formElement="select">
             <settings>
                 <dataType>text</dataType>
