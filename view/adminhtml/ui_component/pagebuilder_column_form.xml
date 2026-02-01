@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <fieldset name="appearance_fieldset">
+        <field name="order" sortOrder="25" formElement="input">
+            <settings>
+                <visible>false</visible>
+                <label translate="true">Sort Order</label>
+                <notice translate="true">Use -999 to move column to the start, or 999 to move it to the end</notice>
+                <additionalClasses>
+                    <class name="admin__field-small">true</class>
+                </additionalClasses>
+            </settings>
+        </field>
+    </fieldset>
+</form>
+

@@ -108,6 +108,10 @@ var config = {
                 'Melios_PageBuilder/js/content-type/string-utils-mixin': true,
             },
 
+            'Magento_PageBuilder/js/content-type/column/preview': {
+                'Melios_PageBuilder/js/column-sort-order/column-preview-mixin': true
+            },
+
             // BUGFIXES
             // Fixed incorrectly added 'no-column-line' class when pagebuilder is slowly rendered
             'Magento_PageBuilder/js/content-type/column-group/preview': {

@@ -1,5 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd" extends="pagebuilder_column_form">
+    <fieldset name="appearance_fieldset">
+        <field name="order">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="default" xsi:type="null" />
+                    <item name="breakpoints" xsi:type="array">
+                        <item name="mobile" xsi:type="boolean">true</item>
+                    </item>
+                </item>
+            </argument>
+            <settings>
+                <visible>true</visible>
+                <additionalClasses>
+                    <class name="admin__field-mobile-breakpoint-notice">true</class>
+                </additionalClasses>
+                <tooltip>
+                    <description translate="true">
+                        <![CDATA[
+                        <p>Style changes will only affect this breakpoint</p>
+                        ]]>
+                    </description>
+                </tooltip>
+            </settings>
+        </field>
+    </fieldset>
     <fieldset name="background">
         <field name="background_position">
             <argument name="data" xsi:type="array">
