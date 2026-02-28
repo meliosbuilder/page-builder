@@ -522,7 +522,11 @@ body.melios-instant-preview {
 body.melios-instant-preview {
     &:has(.page-builder-viewport.desktop-switcher:enabled) {
         .pagebuilder_modal_form_pagebuilder_modal_form_modal {
-            .admin__field:not(.admin__field-mobile-breakpoint-notice, .admin__field-min-height-mobile-with-notice, .admin__field-min-height-mobile) {
+            .admin__field.admin__field-mobile-breakpoint-notice .admin__field-visual-select {
+                float: left;
+                max-width: ~"calc(100% - 45px)";
+            }
+            .admin__fieldset > .admin__field:not(.admin__field-mobile-breakpoint-notice, .admin__field-min-height-mobile-with-notice, .admin__field-min-height-mobile) {
                 display: none;
             }
             .fieldset-wrapper:not(:has(.admin__field-mobile-breakpoint-notice, .admin__field-min-height-mobile-with-notice, .admin__field-min-height-mobile)) {
