@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_PageBuilder:etc/content_type.xsd">
+    <type name="row">
+        <appearances>
+            <appearance name="contained">
+                <elements>
+                    <element name="main">
+                        <style name="content_visibility" source="content_visibility"/>
+                        <style name="contain_intrinsic_height" source="contain_intrinsic_height" converter="Melios_PageBuilder/js/row/converter-remove-auto"/>
+                    </element>
+                </elements>
+            </appearance>
+            <appearance name="full-width">
+                <elements>
+                    <element name="main">
+                        <style name="content_visibility" source="content_visibility"/>
+                        <style name="contain_intrinsic_height" source="contain_intrinsic_height" converter="Melios_PageBuilder/js/row/converter-remove-auto"/>
+                    </element>
+                </elements>
+            </appearance>
+            <appearance name="full-bleed">
+                <elements>
+                    <element name="main">
+                        <style name="content_visibility" source="content_visibility"/>
+                        <style name="contain_intrinsic_height" source="contain_intrinsic_height" converter="Melios_PageBuilder/js/row/converter-remove-auto"/>
+                    </element>
+                </elements>
+            </appearance>
+        </appearances>
+    </type>
+</config>

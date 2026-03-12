@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <fieldset name="performance" sortOrder="85">
+        <settings>
+            <label translate="true">Performance</label>
+            <collapsible>true</collapsible>
+            <opened>true</opened>
+        </settings>
+        <field name="content_visibility" sortOrder="10" formElement="checkbox">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="default" xsi:type="string">visible</item>
+                </item>
+            </argument>
+            <settings>
+                <dataType>boolean</dataType>
+                <label translate="true">Lazy Renderer</label>
+                <notice translate="true">Render the section only when revealed.</notice>
+            </settings>
+            <formElements>
+                <checkbox>
+                    <settings>
+                        <valueMap>
+                            <map name="false" xsi:type="string">visible</map>
+                            <map name="true" xsi:type="string">auto</map>
+                        </valueMap>
+                        <prefer>toggle</prefer>
+                    </settings>
+                </checkbox>
+            </formElements>
+        </field>
+        <field name="contain_intrinsic_height" sortOrder="11" formElement="input">
+            <settings>
+                <label translate="true">Approximate Height</label>
+                <notice translate="true">Required to prevent jumping when the "lazy" section is revealed.</notice>
+                <additionalClasses>
+                    <class name="admin__field-small">true</class>
+                </additionalClasses>
+                <imports>
+                    <link name="visible">${ $.parentName }.content_visibility:checked</link>
+                </imports>
+            </settings>
+        </field>
+    </fieldset>
+</form>
