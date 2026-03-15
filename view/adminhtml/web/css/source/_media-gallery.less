@@ -11,6 +11,26 @@
         top: 0;
     }
 
+    // Improve grid settings to fill more available space
+    .masonry-image-grid {
+        grid-template-columns: ~"repeat(auto-fill, minmax(180px, 1fr))";
+        gap: 10px;
+        @media (max-width: 850px) {
+            grid-template-columns: ~"repeat(2, 1fr)";
+        }
+    }
+    .masonry-image-column {
+        width: auto;
+        margin: 0;
+    }
+    .media-gallery-image {
+        width: auto;
+        height: auto;
+    }
+    .media-gallery-image-actions {
+        min-width: 20px;
+    }
+
     // Crisp icons
     :where(body:not(.theme-m137)) & {
         .jstree-default .jstree-container-ul .jstree-anchor {
