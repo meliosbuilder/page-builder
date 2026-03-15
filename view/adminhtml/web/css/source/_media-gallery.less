@@ -5,6 +5,13 @@
         z-index: 300;
     }
 
+    // Prevent gallery layout shift caused by added/removed message
+    .messages {
+        position: fixed;
+        top: 0;
+    }
+
+    // Crisp icons
     :where(body:not(.theme-m137)) & {
         .jstree-default .jstree-container-ul .jstree-anchor {
             display: inline-flex;
