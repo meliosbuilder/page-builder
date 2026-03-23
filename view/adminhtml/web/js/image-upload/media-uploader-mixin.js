@@ -20,27 +20,27 @@ define([
         return o(value, array, fromIndex);
     });
 
-    if (require.defined('jquery/uppy-core')) {
-        /* global Uppy */
-        // Do not compress the image if output is bigger than the input
-        Uppy.Compressor.prototype.compress = wrapper.wrap(
-            Uppy.Compressor.prototype.compress,
-            function (o, uncompressed) {
-                return new Promise(async resolve => {
-                    var compressed = await o(uncompressed),
-                        result = compressed;
-
-                    if (compressed.size - uncompressed.size > 1024 * 5) {
-                        result = uncompressed;
-                    }
-
-                    resolve(result);
-                });
-            }
-        );
-    }
-
     return function (target) {
+        if (require.defined('jquery/uppy-core')) {
+            /* global Uppy */
+            // Do not compress the image if output is bigger than the input
+            Uppy.Compressor.prototype.compress = wrapper.wrap(
+                Uppy.Compressor.prototype.compress,
+                function (o, uncompressed) {
+                    return new Promise(async resolve => {
+                        var compressed = await o(uncompressed),
+                            result = compressed;
+
+                        if (compressed.size - uncompressed.size > 1024 * 5) {
+                            result = uncompressed;
+                        }
+
+                        resolve(result);
+                    });
+                }
+            );
+        }
+
         // this code does nothing since media uloader uses hardcoded extensions
         // target.prototype._create = wrapper.wrap(
         //     target.prototype._create,
