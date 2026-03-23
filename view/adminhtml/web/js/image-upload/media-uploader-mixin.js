@@ -1,7 +1,6 @@
 define([
     'jquery',
-    'mage/utils/wrapper',
-    'jquery/uppy-core'
+    'mage/utils/wrapper'
 ], function ($, wrapper) {
     'use strict';
 
@@ -21,22 +20,25 @@ define([
         return o(value, array, fromIndex);
     });
 
-    // Do not compress the image if output is bigger than the input
-    Uppy.Compressor.prototype.compress = wrapper.wrap(
-        Uppy.Compressor.prototype.compress,
-        function (o, uncompressed) {
-            return new Promise(async resolve => {
-                var compressed = await o(uncompressed),
-                    result = compressed;
+    if (require.defined('jquery/uppy-core')) {
+        /* global Uppy */
+        // Do not compress the image if output is bigger than the input
+        Uppy.Compressor.prototype.compress = wrapper.wrap(
+            Uppy.Compressor.prototype.compress,
+            function (o, uncompressed) {
+                return new Promise(async resolve => {
+                    var compressed = await o(uncompressed),
+                        result = compressed;
 
-                if (compressed.size - uncompressed.size > 1024 * 5) {
-                    result = uncompressed;
-                }
+                    if (compressed.size - uncompressed.size > 1024 * 5) {
+                        result = uncompressed;
+                    }
 
-                resolve(result);
-            });
-        }
-    );
+                    resolve(result);
+                });
+            }
+        );
+    }
 
     return function (target) {
         // this code does nothing since media uloader uses hardcoded extensions
