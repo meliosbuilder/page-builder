@@ -13,10 +13,23 @@ define([
                     var img = new Image();
 
                     img.onload = () => {
-                        this.dataStore.set('width', img.width / 2);
-                        this.dataStore.set('mobile_width', img.width / 2);
-                        this.dataStore.set('height', img.height / 2);
-                        this.dataStore.set('mobile_height', img.height / 2);
+                        var oldWidth = this.dataStore.get('width'),
+                            oldHeight = this.dataStore.get('height'),
+                            newWidth = img.width / 2,
+                            newHeight = img.height / 2;
+
+                        if (oldWidth &&
+                            oldHeight &&
+                            Math.round(oldWidth / oldHeight) === Math.round(newWidth / newHeight) &&
+                            Math.abs(newWidth - oldWidth) / oldWidth <= 0.3
+                        ) {
+                            return;
+                        }
+
+                        this.dataStore.set('width', newWidth);
+                        this.dataStore.set('mobile_width', newWidth);
+                        this.dataStore.set('height', newHeight);
+                        this.dataStore.set('mobile_height', newHeight);
                     };
                     img.src = data[0].url;
                 }
