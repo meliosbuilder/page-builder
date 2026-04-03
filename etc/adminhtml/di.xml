@@ -5,4 +5,14 @@
     <type name="Magento\Framework\View\Layout\Generator\Structure">
         <plugin name="melios_page_builder" type="Melios\PageBuilder\Plugin\UiLayoutGenerator" />
     </type>
+
+    <!-- Magento < 2.4.7 -->
+    <type name="Magento\MediaGalleryIntegration\Plugin\SaveImageInformation">
+        <arguments>
+            <argument name="imageExtensions" xsi:type="array">
+                <item name="avif" xsi:type="string">avif</item>
+                <item name="webp" xsi:type="string">webp</item>
+            </argument>
+        </arguments>
+    </type>
 </config>
