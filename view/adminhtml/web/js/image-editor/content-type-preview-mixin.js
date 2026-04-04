@@ -9,6 +9,16 @@ define([
 ], function ($, ko, _, registry, wrapper, $t, MenuOption) {
     'use strict';
 
+    function updateEditorOptionState(cmp) {
+        var value = cmp.previewData[cmp.meliosEditorImageAttr]?.();
+
+        if (cmp.viewport() !== 'desktop') {
+            return cmp.meliosEditorOption.isDisabled(true);
+        }
+
+        cmp.meliosEditorOption.isDisabled(!value || !value.length);
+    }
+
     return function (target) {
         target.prototype.retrieveOptions = wrapper.wrap(
             target.prototype.retrieveOptions,
@@ -45,6 +55,7 @@ define([
                     this.meliosEditorImageAttr = imageAttr;
                     this.meliosEditorOption = options.mlsImageEditor;
                     this.meliosEditorOption.isDisabled(true);
+                    this.viewport.subscribe(value => updateEditorOptionState(this));
                 }
 
                 return options;
@@ -58,7 +69,7 @@ define([
 
                 if (this.meliosEditorOption) {
                     this.previewData[this.meliosEditorImageAttr].subscribe(value => {
-                        this.meliosEditorOption.isDisabled(!value || !value.length);
+                        updateEditorOptionState(this);
                     });
                 }
             }
