@@ -19,4 +19,12 @@
             </argument>
         </arguments>
     </type>
+
+    <!-- Image Editor -->
+    <type name="Magento\Framework\File\Uploader">
+        <plugin name="melios_page_builder_image_editor" type="Melios\PageBuilder\Plugin\FileUploaderAllowSubdirAndOverwrite" />
+    </type>
+    <type name="Magento\PageBuilder\Controller\Adminhtml\ContentType\Image\Upload">
+        <plugin name="melios_page_builder_image_editor" type="Melios\PageBuilder\Plugin\ImageUploadActionFixImageUrlInResult" />
+    </type>
 </config>
