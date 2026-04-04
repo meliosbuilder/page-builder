@@ -8,6 +8,16 @@ var config = {
     },
     config: {
         mixins: {
+            'Magento_MediaGalleryUi/js/grid/columns/image/actions': {
+                'Melios_PageBuilder/js/image-editor/media-gallery-image-actions-mixin': true,
+            },
+            'Magento_MediaGalleryUi/js/image-uploader': {
+                'Melios_PageBuilder/js/image-editor/media-gallery-image-uploader-mixin': true,
+            },
+            'Magento_PageBuilder/js/content-type/preview': {
+                'Melios_PageBuilder/js/image-editor/content-type-preview-mixin': true,
+            },
+
             'Magento_Ui/js/form/element/abstract': {
                 'Melios_PageBuilder/js/instant-preview/abstract-element-mixin': true,
             },
@@ -78,9 +88,11 @@ var config = {
                 'Melios_PageBuilder/js/instant-preview/tinymceAdapter-mixin': true,
             },
 
-            // Allow modern images upload
             'Magento_Ui/js/form/element/image-uploader': {
+                // Allow modern images upload
                 'Melios_PageBuilder/js/image-upload/image-uploader-mixin': true,
+                // Image Editor - allow overwrite, target_folder
+                'Melios_PageBuilder/js/image-editor/image-uploader-mixin': true,
             },
             'Magento_Backend/js/media-uploader': {
                 'Melios_PageBuilder/js/image-upload/media-uploader-mixin': true,

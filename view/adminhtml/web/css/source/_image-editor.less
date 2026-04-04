@@ -1,0 +1,90 @@
+// Magento < 2.4.7 (Backported from 2.4.7)
+.page-main-actions {
+    display: flex;
+}
+.page-actions {
+    margin-left: auto;
+}
+
+// Image editor
+.melios-image-editor .modal-header {
+    display: none;
+}
+@import (inline) '../uppy.min.css';
+.melios-editor-size {
+    padding: 1rem 0;
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    input[type="number"] {
+        flex-grow: 1;
+    }
+
+    .aspect-checked {
+        display: none;
+    }
+    .aspect-unchecked {
+        display: block;
+    }
+    #melios_editor_lock_ratio {
+        opacity: 0;
+        position: absolute;
+    }
+    #melios_editor_lock_ratio:checked {
+        ~ .aspect-checked {
+            display: block;
+        }
+        ~ .aspect-unchecked {
+            display: none;
+        }
+    }
+}
+.melios-image-editor-wrapper {
+    position: relative;
+    .melios-image-info {
+        position: absolute;
+        top: 16px;
+        right: 16px;
+        z-index: 1010;
+        opacity: .6;
+        background: ~"rgba(255, 255, 255, .8)";
+        padding: 3px 5px;
+        border-radius: 4px;
+        box-shadow: ~"0 2px 12px rgba(0, 0, 0, .06)";
+        font-variant-numeric: tabular-nums;
+        font-weight: 600;
+        cursor: pointer;
+        &:hover {
+            opacity: 1;
+        }
+    }
+}
+#melios-image-editor-canvas {
+    .uppy-Dashboard-progressindicators,
+    .uppy-Dashboard-close,
+    .uppy-Dashboard-dropFilesHereHint,
+    .uppy-Dashboard-inner {
+        display: block;
+    }
+    .uppy-Dashboard-files,
+    .uppy-Dashboard-FileCard,
+    .uppy-DashboardContent-bar {
+        display: none;
+    }
+    .uppy-transition-slideDownUp-enter {
+        opacity: 1;
+        transform: none;
+        transition-duration: 20ms;
+    }
+    .uppy-ImageCropper .cropper-modal {
+        opacity: .5;
+    }
+}
+.mls-icon-edit-image {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    &.disabled {
+        display: none !important;
+    }
+}

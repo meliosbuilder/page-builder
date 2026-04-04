@@ -1,0 +1,61 @@
+<?php
+
+use Melios\PageBuilder\Block\Adminhtml\ImageEditor;
+use Magento\Framework\Escaper;
+
+/** @var ImageEditor $block */
+/** @var Escaper $escaper */
+
+?>
+
+<div class="melios-image-editor-modal"
+     data-bind="mageInit: {
+        'Magento_Ui/js/modal/modal': {
+            type: 'slide',
+            buttons: [],
+            modalClass: 'melios-image-editor',
+            title: '<?= $escaper->escapeHtmlAttr(__('Image Editor')); ?>',
+            keyEventHandlers: {
+                escapeKey: () => {}
+            }
+        }
+     }">
+    <div class="page-main-actions" data-bind="scope: 'meliosImageEditorActions'">
+        <!-- ko template: getTemplate() --><!-- /ko -->
+    </div>
+    <div class="melios-image-editor-wrapper">
+        <div id="melios-image-editor-canvas"></div>
+        <div id="melios-image-editor" data-bind="scope: 'meliosImageEditor'">
+            <!-- ko if: image() -->
+                <!-- ko template: getTemplate() --><!-- /ko -->
+            <!-- /ko -->
+        </div>
+    </div>
+</div>
+
+<script type="text/x-magento-init">
+    {
+        "#melios-image-editor": {
+            "Magento_Ui/js/core/app": {
+                "components": {
+                    "meliosImageEditor": {
+                        "component": "Melios_PageBuilder/js/image-editor/image-editor",
+                        "imageDetailsUrl": "<?= $escaper->escapeJs($block->getData('imageDetailsUrl')); ?>",
+                        "modalSelector": ".melios-image-editor-modal",
+                        "modalWindowSelector": ".melios-image-editor"
+                    },
+                    "meliosImageEditorActions": {
+                        "component": "Melios_PageBuilder/js/image-editor/image-editor-actions",
+                        "modalSelector": ".melios-image-editor-modal",
+                        "modalWindowSelector": ".melios-image-editor",
+                        "mediaGalleryImageDetailsName": "mediaGalleryImageDetails",
+                        "editorImageName": "meliosImageEditor",
+                        "onInsertUrl": "<?= $escaper->escapeJs($block->getOnInsertUrl()) ?>",
+                        "storeId": "<?= $escaper->escapeJs($block->getStoreId()) ?>",
+                        "actionsList": <?= /* @noEscape */ $block->getActionsJson() ?>
+                    }
+                }
+            }
+        }
+    }
+</script>
