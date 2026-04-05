@@ -125,6 +125,10 @@ define([
             return this.image().path.split('/').at(-1);
         },
 
+        getFileSize: function () {
+            return this.image().melios_size;
+        },
+
         getFileExt: function () {
             var ext = this.image().path.includes('.')
                     ? this.image().path.split('.').at(-1)
@@ -162,6 +166,7 @@ define([
                 const type = res.headers.get('content-type');
 
                 this.image().content_type = type.split('/').at(-1).replace('jpeg', 'jpg');
+                this.image().melios_size = blob.size;
                 this.setBlob(blob);
             })();
         },

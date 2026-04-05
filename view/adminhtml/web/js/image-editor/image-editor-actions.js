@@ -86,7 +86,10 @@ define([
         meliosSave: async function (imageName) {
             var editor = this.meliosEditor(),
                 isNewImage = !!imageName,
-                ext, type;
+                originalSize = editor.getFileSize(),
+                quality = [0.92, 0.85, 0.8],
+                tries = 0,
+                ext, type, done;
 
             if (imageName && imageName.includes('.')) {
                 var maybeExt = imageName.split('.').at(-1);
@@ -110,88 +113,103 @@ define([
             }
 
             $('body').trigger('processStart');
-            canvas.toBlob(blob => {
-                var file = new File([blob], imageName, { type: blob.type }),
-                    dt = new DataTransfer();
-
-                $(document).trigger('melios:image-editor:upload-before', {
-                    isNewImage,
-                    file,
-                    target_folder: editor.getFolderPath(),
-                });
-                $(document).one('melios:uppy:upload-error.meliosImageEditorSave', () => {
-                    $(document).off('.meliosImageEditorSave');
-                    $('body').trigger('processStop');
-                });
-                $(document).one('melios:uppy:upload-success.meliosImageEditorSave', (e, f, response) => {
-                    var encodedId, fileName = response.body?.name;
-
-                    $(document).off('.meliosImageEditorSave');
-
-                    if (response.body.error) {
-                        $('body').trigger('processStop');
-                    }
-
-                    if (!fileName) {
-                        return;
-                    }
-
-                    encodedId = btoa(
-                            new TextEncoder()
-                                .encode(editor.getFolderPath() + '/' + fileName)
-                                .reduce((data, byte) => {
-                                    return data + String.fromCharCode(byte);
-                                }, '')
-                        )
-                        .replace(/\+/g, ':')
-                        .replace(/\//g, '_')
-                        .replace(/=/g, '-');
-
-                    this.meliosSaveAfter(isNewImage, fileName, encodedId).then(() => {
-                        $('body').trigger('processStop');
-                    });
-                });
-
-                dt.items.add(file);
-                editor.inputField.files = dt.files;
-                editor.inputField.dispatchEvent(new Event('change', { bubbles: true }));
-
-                if (this.gallery) {
-                    var selected = this.gallery.getSelected(),
-                        provider = this.gallery.provider();
-
-                    this.mediaGalleryImageDetails().removeCached(selected.id);
-                    this.mediaGalleryEditDetails().removeCached(selected.id);
-
-                    provider.on('reloaded', () => {
-                        provider.off('meliosSaveImage');
-
-                        // New image is always the first one, because
-                        // Magento silently changes "Sort by" to newest after upload.
-                        // See Magento_MediaGalleryUi/js/image-uploader@openNewestImages
-                        if (isNewImage) {
-                            require(['Melios_PageBuilder/js/utils/is-in-viewport'], isInViewport => {
-                                var el = $('.masonry-image-grid img')[0];
-
-                                if (!isInViewport(el, { sideToCheck: 'top' })) {
-                                    el.scrollIntoView({
-                                        behavior: 'smooth'
-                                    });
-                                }
-                            });
-                            $('body').trigger('processStop');
-                            return this.gallery.select(provider.data.items[0]);
+            do {
+                done = await new Promise(resolve => {
+                    canvas.toBlob(blob => {
+                        if (blob.size <= originalSize || !quality[tries + 1]) {
+                            this.triggerFileSubmit(blob, imageName, isNewImage);
+                            resolve(true);
+                        } else {
+                            resolve(false);
                         }
+                    }, type, quality[tries]);
+                });
+                tries++;
+            } while (!done);
+        },
 
-                        this.gallery.select(provider.data.items.find(item => item.id == selected.id));
-                        this.meliosSaveAfter(isNewImage, imageName, selected.encoded_id).then(() => {
-                            $('body').trigger('processStop');
-                        });
-                    }, 'meliosSaveImage');
+        triggerFileSubmit: function (blob, imageName, isNewImage) {
+            var editor = this.meliosEditor(),
+                file = new File([blob], imageName, { type: blob.type }),
+                dt = new DataTransfer();
+
+            $(document).trigger('melios:image-editor:upload-before', {
+                isNewImage,
+                file,
+                target_folder: editor.getFolderPath(),
+            });
+            $(document).one('melios:uppy:upload-error.meliosImageEditorSave', () => {
+                $(document).off('.meliosImageEditorSave');
+                $('body').trigger('processStop');
+            });
+            $(document).one('melios:uppy:upload-success.meliosImageEditorSave', (e, f, response) => {
+                var encodedId, fileName = response.body?.name;
+
+                $(document).off('.meliosImageEditorSave');
+
+                if (response.body.error) {
+                    $('body').trigger('processStop');
                 }
 
-                this.closeModal();
-            }, type, 0.9);
+                if (!fileName) {
+                    return;
+                }
+
+                encodedId = btoa(
+                        new TextEncoder()
+                            .encode(editor.getFolderPath() + '/' + fileName)
+                            .reduce((data, byte) => {
+                                return data + String.fromCharCode(byte);
+                            }, '')
+                    )
+                    .replace(/\+/g, ':')
+                    .replace(/\//g, '_')
+                    .replace(/=/g, '-');
+
+                this.meliosSaveAfter(isNewImage, fileName, encodedId).then(() => {
+                    $('body').trigger('processStop');
+                });
+            });
+
+            dt.items.add(file);
+            editor.inputField.files = dt.files;
+            editor.inputField.dispatchEvent(new Event('change', { bubbles: true }));
+
+            if (this.gallery) {
+                var selected = this.gallery.getSelected(),
+                    provider = this.gallery.provider();
+
+                this.mediaGalleryImageDetails().removeCached(selected.id);
+                this.mediaGalleryEditDetails().removeCached(selected.id);
+
+                provider.on('reloaded', () => {
+                    provider.off('meliosSaveImage');
+
+                    // New image is always the first one, because
+                    // Magento silently changes "Sort by" to newest after upload.
+                    // See Magento_MediaGalleryUi/js/image-uploader@openNewestImages
+                    if (isNewImage) {
+                        require(['Melios_PageBuilder/js/utils/is-in-viewport'], isInViewport => {
+                            var el = $('.masonry-image-grid img')[0];
+
+                            if (!isInViewport(el, { sideToCheck: 'top' })) {
+                                el.scrollIntoView({
+                                    behavior: 'smooth'
+                                });
+                            }
+                        });
+                        $('body').trigger('processStop');
+                        return this.gallery.select(provider.data.items[0]);
+                    }
+
+                    this.gallery.select(provider.data.items.find(item => item.id == selected.id));
+                    this.meliosSaveAfter(isNewImage, imageName, selected.encoded_id).then(() => {
+                        $('body').trigger('processStop');
+                    });
+                }, 'meliosSaveImage');
+            }
+
+            this.closeModal();
         },
 
         meliosSaveAfter: function (isNewImage, imageName, encodedFilename) {
