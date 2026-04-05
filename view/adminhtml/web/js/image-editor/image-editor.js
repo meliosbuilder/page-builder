@@ -276,7 +276,6 @@ define([
                         zoomOut: false,
                     },
                     cropperOptions: {
-                        autoCrop: false,
                         zoomOnWheel: false,
                         toggleDragModeOnDblclick: false,
                         minCropBoxWidth: 0,
