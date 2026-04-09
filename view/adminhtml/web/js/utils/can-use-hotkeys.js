@@ -4,7 +4,10 @@ define([
     'use strict';
 
     return function (event, allowedInputs) {
-        if (event.target.isContentEditable) {
+        if (event.target.isContentEditable &&
+            document.activeElement === event.target ||
+            document.activeElement?.isContentEditable
+        ) {
             return false;
         }
 
@@ -15,7 +18,9 @@ define([
 
         if ($(event.target).is('input, select, textarea') && $(event.target).css('clip') === 'auto') {
             if (!allowedInputs || allowedInputs && !$(event.target).is(allowedInputs)) {
-                return false
+                if (document.activeElement === event.target) {
+                    return false
+                }
             }
         }
 
