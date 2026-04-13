@@ -158,6 +158,7 @@ define([
                 return;
             }
 
+            $(this.target).css('opacity', 0);
             modalElement.modal('openModal');
 
             (async () => {
@@ -165,6 +166,7 @@ define([
                 const blob = await res.blob();
                 const type = res.headers.get('content-type');
 
+                $(this.target).css('opacity', '');
                 this.image().content_type = type.split('/').at(-1).replace('jpeg', 'jpg');
                 this.image().melios_size = blob.size;
                 this.setBlob(blob);
