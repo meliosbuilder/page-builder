@@ -295,7 +295,15 @@ define([
             if (require.defined('jquery/uppy-core')) {
                 require(['jquery/uppy-core'], () => {
                     /* global Uppy */
-                    prepare(Uppy);
+                    if (Uppy.Uppy.prototype.clear) {
+                        prepare(Uppy);
+                    } else {
+                        // Magento < 2.4.8
+                        (async () => {
+                            var Uppy5 = await import('./uppy-5.2.1.js');
+                            prepare(Uppy5);
+                        })();
+                    }
                 });
             } else {
                 // Magento < 2.4.7
