@@ -10,6 +10,8 @@ use RuntimeException;
 
 class Tailwind
 {
+    private bool $important = false;
+
     public function __construct(
         private ScopeConfigInterface $scopeConfig,
         private DirectoryList $directoryList,
@@ -63,11 +65,12 @@ class Tailwind
     public function input()
     {
         $twConfig = $this->scopeConfig->getValue('melios_builder/tailwind/config');
+        $suffix = $this->important ? 'important' : '';
 
         return <<<CSS
         @import 'tailwindcss/theme.css';
         @scope {
-            @import 'tailwindcss/utilities.css' source(none);
+            @import 'tailwindcss/utilities.css' source(none) {$suffix};
         }
         {$twConfig}
         @source 'content\.html';
@@ -92,5 +95,11 @@ class Tailwind
         }
 
         return explode("\n", $process->getOutput())[0];
+    }
+
+    public function important($flag)
+    {
+        $this->important = $flag;
+        return $this;
     }
 }
