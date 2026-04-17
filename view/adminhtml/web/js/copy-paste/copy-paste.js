@@ -36,11 +36,13 @@ define([
         // Do not copy contents if some modal is opened
         if (cmp.pageBuilder.isFullScreen()) {
             var modals = $('.modals-wrapper > ._show').sort((a, b) => {
-                    return b.style.zIndex - a.style.zIndex;;
+                    return b.style.zIndex - a.style.zIndex;
                 }),
-                topModal = modals.get(0);
+                topModal = modals.get(0),
+                isInstantPreviewModal = $('body').hasClass('melios-instant-preview')
+                    && modals.first().hasClass('pagebuilder_modal_form_pagebuilder_modal_form_modal');
 
-            if (topModal && !topModal.contains(el[0])) {
+            if (topModal && !topModal.contains(el[0]) && !isInstantPreviewModal) {
                 return [el[0], ''];
             }
         }
