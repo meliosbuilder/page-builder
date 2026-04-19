@@ -23,5 +23,15 @@ define([
                 source?.save?.();
             }
         }, 80),
+
+        updateModalData: _.throttle(data => {
+            var topSource = ko.dataFor(topModal().find('[name="appearance"]')[0])?.source;
+
+            _.each(data, (v, k) => {
+                if (typeof v === 'string' && topSource.data[k] !== v) {
+                    topSource.set(`data.${k}`, v);
+                }
+            });
+        }, 80),
     }
 });

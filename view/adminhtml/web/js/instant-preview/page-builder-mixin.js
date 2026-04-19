@@ -1,8 +1,9 @@
 define([
     'jquery',
     'knockout',
-    'Magento_PageBuilder/js/events'
-], function ($, ko, events) {
+    'Magento_PageBuilder/js/events',
+    'Melios_PageBuilder/js/instant-preview/top-modal-utils',
+], function ($, ko, events, topModalUtils) {
     'use strict';
 
     $('body').addClass('melios-instant-preview');
@@ -51,8 +52,11 @@ define([
     });
 
     // Update form when switching view mode
-    var lastEdit;
-    events.on('contentType:editBefore', (data) => { lastEdit = data.contentType; });
+    var lastEdit, prevEdit;
+    events.on('contentType:editBefore', (data) => {
+        prevEdit = lastEdit;
+        lastEdit = data.contentType;
+    });
     events.on('stage:viewportChangeAfter', () => {
         var popup = $('.pagebuilder_modal_form_pagebuilder_modal_form_modal._show');
 
@@ -61,6 +65,15 @@ define([
         }
 
         lastEdit.preview.openEdit();
+    });
+
+    // Update form data when inline editor inside preview stage is used
+    function syncDataToModal(event, data) {
+        topModalUtils.updateModalData(data.state);
+    }
+    events.on('contentType:editBefore', (data) => {
+        prevEdit?.dataStore.events.off('state', syncDataToModal);
+        lastEdit.dataStore.events.on('state', syncDataToModal);
     });
 
     // Close slideout when element is removed
