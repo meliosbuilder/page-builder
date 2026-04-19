@@ -15,7 +15,8 @@ define([
 
         if (target.hasClass('magento-widget') ||
             target.closest('.inline-wysiwyg').length ||
-            target.closest('a').length
+            target.closest('a').length ||
+            target.closest('[contenteditable]').length
         ) {
             return;
         }
