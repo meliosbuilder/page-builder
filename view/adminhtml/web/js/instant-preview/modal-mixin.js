@@ -7,7 +7,7 @@ define([
 ], function ($, ko, utils, storage) {
     'use strict';
 
-    // Close modal when pressing "Save"
+    // Close modal when pressing "Save" inside this modal
     // We need our own listener because original is disabled in "startListen" below.
     $(document).on('click', '#save', (e) => {
         if (!$(e.currentTarget).closest('.pagebuilder_modal_form_pagebuilder_modal_form_modal').length) {

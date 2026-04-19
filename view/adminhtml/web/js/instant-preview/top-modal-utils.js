@@ -14,6 +14,8 @@ define([
 
     return {
         getTopModal: topModal,
+
+        // Update preview on every change inside "Edit" modal
         updateSource: _.throttle(source => {
             var topSource = ko.dataFor(topModal().find('[name="appearance"]')[0])?.source;
 
