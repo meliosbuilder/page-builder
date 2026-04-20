@@ -5,7 +5,8 @@ define([
 ], function ($, _, ko) {
     'use strict';
 
-    var allowUpdateModalSource = true;
+    var allowUpdateModalSource = true,
+        allowUpdateModalSourceTimer;
 
     function topModal() {
         return $('.modals-wrapper > ._show')
@@ -26,7 +27,7 @@ define([
             }
         }, 80),
 
-        updateModalData: _.throttle((data, contentType) => {
+        updateModalData: (data, contentType) => {
             var modal = topModal(),
                 topSource = ko.dataFor(modal.find('[name="appearance"]')[0])?.source;
 
@@ -34,7 +35,8 @@ define([
                 return;
             }
 
-            setTimeout(() => allowUpdateModalSource = true, 100);
+            clearTimeout(allowUpdateModalSourceTimer);
+            allowUpdateModalSourceTimer = setTimeout(() => allowUpdateModalSource = true, 100);
             _.each(data, (v, k) => {
                 if (typeof v === 'string' && topSource.data[k] !== v) {
                     var el = ko.dataFor(modal.find(`[name="${k}"]`).closest('[data-bind]')[0]);
@@ -50,6 +52,6 @@ define([
                     }
                 }
             });
-        }, 80),
+        },
     }
 });
