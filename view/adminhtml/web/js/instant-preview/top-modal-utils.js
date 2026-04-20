@@ -27,6 +27,10 @@ define([
         updateModalData: _.throttle(data => {
             var topSource = ko.dataFor(topModal().find('[name="appearance"]')[0])?.source;
 
+            if (!topSource) {
+                return;
+            }
+
             _.each(data, (v, k) => {
                 if (typeof v === 'string' && topSource.data[k] !== v) {
                     topSource.set(`data.${k}`, v);
