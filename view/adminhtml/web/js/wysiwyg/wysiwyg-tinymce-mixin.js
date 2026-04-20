@@ -17,7 +17,7 @@ define([
         function onSelectionChange(e) {
             var caretRect = editor?.selection.getRng().getBoundingClientRect();
 
-            if (!caretRect.height) {
+            if (!caretRect?.height) {
                 caretRect = editor?.selection.getRng().startContainer?.getBoundingClientRect();
             }
 

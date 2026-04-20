@@ -5,6 +5,9 @@ define([
 ], function ($, _, ko) {
     'use strict';
 
+    var allowUpdateModalSource = true,
+        allowUpdateModalSourceTimer;
+
     function topModal() {
         return $('.modals-wrapper > ._show')
             .sort((a, b) => b.style.zIndex - a.style.zIndex)
@@ -19,9 +22,36 @@ define([
         updateSource: _.throttle(source => {
             var topSource = ko.dataFor(topModal().find('[name="appearance"]')[0])?.source;
 
-            if (topSource?.name === source?.name) {
+            if (allowUpdateModalSource && topSource?.name === source?.name) {
                 source?.save?.();
             }
         }, 80),
+
+        updateModalData: (data, contentType) => {
+            var modal = topModal(),
+                topSource = ko.dataFor(modal.find('[name="appearance"]')[0])?.source;
+
+            if (!topSource || topSource.id !== contentType.id) {
+                return;
+            }
+
+            clearTimeout(allowUpdateModalSourceTimer);
+            allowUpdateModalSourceTimer = setTimeout(() => allowUpdateModalSource = true, 100);
+            _.each(data, (v, k) => {
+                if (typeof v === 'string' && topSource.data[k] !== v) {
+                    var el = ko.dataFor(modal.find(`[name="${k}"]`).closest('[data-bind]')[0]);
+
+                    allowUpdateModalSource = false;
+                    topSource.set(`data.${k}`, v);
+
+                    if (el?.wysiwygId &&
+                        tinyMCE.get(el.wysiwygId) &&
+                        tinyMCE.get(el.wysiwygId).getContent() !== v
+                    ) {
+                        tinyMCE.get(el.wysiwygId).setContent(v);
+                    }
+                }
+            });
+        },
     }
 });
