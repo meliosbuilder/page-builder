@@ -52,7 +52,7 @@ define([
     });
 
     // Update form when switching view mode
-    var lastEdit, prevEdit;
+    var lastEdit, prevEdit, prevSyncFn;
     events.on('contentType:editBefore', (data) => {
         prevEdit = lastEdit;
         lastEdit = data.contentType;
@@ -69,11 +69,12 @@ define([
 
     // Update form data when inline editor inside preview stage is used
     function syncDataToModal(event, data) {
-        topModalUtils.updateModalData(data.state);
+        topModalUtils.updateModalData(data.state, this);
     }
     events.on('contentType:editBefore', (data) => {
-        prevEdit?.dataStore.events.off('state', syncDataToModal);
-        lastEdit.dataStore.events.on('state', syncDataToModal);
+        prevEdit?.dataStore.events.off('state', prevSyncFn);
+        prevSyncFn = syncDataToModal.bind(data.contentType)
+        lastEdit.dataStore.events.on('state', prevSyncFn);
     });
 
     // Close slideout when element is removed

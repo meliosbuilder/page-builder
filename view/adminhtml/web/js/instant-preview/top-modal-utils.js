@@ -26,11 +26,11 @@ define([
             }
         }, 80),
 
-        updateModalData: _.throttle(data => {
+        updateModalData: _.throttle((data, contentType) => {
             var modal = topModal(),
                 topSource = ko.dataFor(modal.find('[name="appearance"]')[0])?.source;
 
-            if (!topSource) {
+            if (!topSource || topSource.id !== contentType.id) {
                 return;
             }
 
@@ -42,7 +42,7 @@ define([
                     allowUpdateModalSource = false;
                     topSource.set(`data.${k}`, v);
 
-                    if (el.wysiwygId &&
+                    if (el?.wysiwygId &&
                         tinyMCE.get(el.wysiwygId) &&
                         tinyMCE.get(el.wysiwygId).getContent() !== v
                     ) {
