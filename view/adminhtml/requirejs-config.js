@@ -18,6 +18,10 @@ var config = {
                 'Melios_PageBuilder/js/image-editor/content-type-preview-mixin': true,
             },
 
+            'Magento_MediaGalleryUi/js/grid/columns/image/insertImageAction': {
+                'Melios_PageBuilder/js/editor/insert-image-mixin': true,
+            },
+
             'Magento_Ui/js/form/element/abstract': {
                 'Melios_PageBuilder/js/instant-preview/abstract-element-mixin': true,
             },
