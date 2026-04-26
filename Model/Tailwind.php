@@ -11,6 +11,7 @@ use RuntimeException;
 class Tailwind
 {
     private bool $important = false;
+    private bool $minify = true;
 
     public function __construct(
         private ScopeConfigInterface $scopeConfig,
@@ -41,13 +42,18 @@ class Tailwind
 
             chmod($twBinary, 0755);
             // exec("{$twBinary} -i {$inputPath} -o {$outputPath} --minify");
-            $process = new Process([
+
+            $args = [
                 $twBinary,
                 '-i', $inputPath,
                 '-o', $outputPath,
-                '--minify'
-            ]);
+            ];
 
+            if ($this->minify) {
+                $args[] = '--minify';
+            }
+
+            $process = new Process($args);
             $process->run();
 
             if (!$process->isSuccessful()) {
@@ -100,6 +106,12 @@ class Tailwind
     public function important($flag)
     {
         $this->important = $flag;
+        return $this;
+    }
+
+    public function minify($flag)
+    {
+        $this->minify = $flag;
         return $this;
     }
 }
