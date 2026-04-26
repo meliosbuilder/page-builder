@@ -32,6 +32,13 @@ define([
 
             addSvgSupport(settings);
 
+            // allow divs as direct children of dl
+            settings.valid_children = settings.valid_children || '';
+            if (settings.valid_children.length) {
+                settings.valid_children += ',';
+            }
+            settings.valid_children += '+dl[div],+div[dt|dd]';
+
             return settings;
         });
 
