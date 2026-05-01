@@ -10,7 +10,7 @@ use RuntimeException;
 
 class Tailwind
 {
-    private bool $important = true;
+    private bool $important = false;
     private bool $minify = true;
 
     public function __construct(
