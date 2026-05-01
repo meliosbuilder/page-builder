@@ -103,6 +103,7 @@ define([
                 }).then(({ x, y }) => {
                     Object.assign(toolbar.style, {
                         top: `${y}px`,
+                        zIndex: 999,
                     });
                 });
             });
