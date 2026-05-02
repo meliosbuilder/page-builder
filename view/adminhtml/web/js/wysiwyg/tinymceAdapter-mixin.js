@@ -32,6 +32,11 @@ define([
 
             addSvgSupport(settings);
 
+            // allow empty spans
+            if (!settings.extended_valid_elements.split(',').includes('span[*]')) {
+                settings.extended_valid_elements += ',span[*]';
+            }
+
             // allow divs as direct children of dl
             settings.valid_children = settings.valid_children || '';
             if (settings.valid_children.length) {
