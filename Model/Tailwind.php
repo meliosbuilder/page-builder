@@ -23,7 +23,7 @@ class Tailwind
     public function run($html): string
     {
         $twBinary = $this->binaryPath();
-        if (!$this->fileDriver->isExists($twBinary)) {
+        if (!$this->exists()) {
             return '';
         }
 
@@ -101,6 +101,11 @@ class Tailwind
         }
 
         return explode("\n", $process->getOutput())[0];
+    }
+
+    public function exists()
+    {
+        return $this->fileDriver->isExists($this->binaryPath());
     }
 
     public function important($flag)
