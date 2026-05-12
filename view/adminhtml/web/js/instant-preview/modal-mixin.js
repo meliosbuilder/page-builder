@@ -19,15 +19,6 @@ define([
         setTimeout(() => button.click(), 20);
     });
 
-    // Update source when nested modal is closed
-    $(document).on('modalclosed', () => {
-        var el = utils.getTopModal().find('[name="appearance"]')[0];
-
-        if (el) {
-            ko.dataFor(el)?.onUpdate?.();
-        }
-    });
-
     // restore panel width from the storage
     if (storage.isSet('layout.slideout-width')) {
         $(':root').css('--mls-slideout-width', storage.get('layout.slideout-width'));
