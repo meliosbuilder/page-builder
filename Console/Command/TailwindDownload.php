@@ -31,7 +31,7 @@ class TailwindDownload extends Command
         parent::configure();
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         try {
             $this->curl->addHeader('User-Agent', 'MeliosBuilder-TailwindDownloader');

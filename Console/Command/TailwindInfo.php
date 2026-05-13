@@ -22,7 +22,7 @@ class TailwindInfo extends Command
         parent::configure();
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         try {
             $bin = $this->tailwind->binaryPath();
