@@ -57,7 +57,7 @@ class ImageEditor extends Template
                 'title' => __('Save'),
                 'handler' => 'meliosSaveImage',
                 'name' => 'save',
-                'classes' => 'action-default scalable save action-primary'
+                'classes' => 'scalable save action-primary'
             ];
         }
 
