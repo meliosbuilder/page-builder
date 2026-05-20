@@ -103,7 +103,6 @@ class TailwindDownload extends Command
         ]);
 
         curl_exec($ch);
-        curl_close($ch);
         fclose($fp);
 
         $this->fileDriver->rename($target . '.tmp', $target);
