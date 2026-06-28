@@ -38,7 +38,7 @@ define([
             var input = $(e.target).nextAll('.colorpicker-input'),
                 cmp = ko.dataFor(input[0]);
 
-            input.val(color?.toHexString() || '');
+            input.val(color?.toString() || '');
             cmp.source.data[cmp.index] = input.val();
             cmp.source.save();
         }
