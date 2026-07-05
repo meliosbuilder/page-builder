@@ -77,6 +77,13 @@ define([
         lastEdit.dataStore.events.on('state', prevSyncFn);
     });
 
+    // Update form data when changing visibility
+    events.on('contentType:visibilityAfter', (data) => {
+        if (lastEdit && lastEdit.id === data.contentType.id) {
+            topModalUtils.updateModalData(data.contentType.dataStore.state, data.contentType);
+        }
+    });
+
     // Close slideout when element is removed
     events.on('contentType:removeAfter', (data) => {
         if (data.contentType.id === lastEdit?.id) {

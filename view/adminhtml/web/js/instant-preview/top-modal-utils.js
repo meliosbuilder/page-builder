@@ -38,13 +38,14 @@ define([
             clearTimeout(allowUpdateModalSourceTimer);
             allowUpdateModalSourceTimer = setTimeout(() => allowUpdateModalSource = true, 100);
             _.each(data, (v, k) => {
-                if (typeof v === 'string' && topSource.data[k] !== v) {
+                if (topSource.data[k] !== v) {
                     var el = ko.dataFor(modal.find(`[name="${k}"]`).closest('[data-bind]')[0]);
 
                     allowUpdateModalSource = false;
                     topSource.set(`data.${k}`, v);
 
-                    if (el?.wysiwygId &&
+                    if (typeof v === 'string' &&
+                        el?.wysiwygId &&
                         tinyMCE.get(el.wysiwygId) &&
                         tinyMCE.get(el.wysiwygId).getContent() !== v
                     ) {
