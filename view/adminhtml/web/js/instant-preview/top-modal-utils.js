@@ -38,7 +38,7 @@ define([
             clearTimeout(allowUpdateModalSourceTimer);
             allowUpdateModalSourceTimer = setTimeout(() => allowUpdateModalSource = true, 100);
             _.each(data, (v, k) => {
-                if (topSource.data[k] !== v) {
+                if (!_.isEqual(topSource.data[k], v)) {
                     var el = ko.dataFor(modal.find(`[name="${k}"]`).closest('[data-bind]')[0]);
 
                     allowUpdateModalSource = false;
