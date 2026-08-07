@@ -135,6 +135,10 @@ define([
                     : false,
                 trueExt = this.image().content_type.toLowerCase();
 
+            if (trueExt.includes('+')) {
+                trueExt = trueExt.split('+').at(0);
+            }
+
             if (!ext || ext === trueExt) {
                 return trueExt;
             }
