@@ -3,6 +3,7 @@ define([], function () {
 
     var extensions = [
         'avif',
+        'svg',
         'webp',
     ];
 

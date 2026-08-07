@@ -6,6 +6,7 @@ define([
 
     var extensions = [
         'avif',
+        'svg',
         'webp',
     ];
 

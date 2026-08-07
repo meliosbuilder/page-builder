@@ -9,6 +9,8 @@ class ImageGd2
 {
     private $callbacks = [];
 
+    private $fileName;
+
     private $fileType;
 
     private $imageHandler;
@@ -40,6 +42,22 @@ class ImageGd2
         $height = imagesy($image);
         $this->imageHandler = imagecreatetruecolor($width, $height);
         imagecopy($this->imageHandler, $image, 0, 0, 0, 0, $width, $height);
+
+        return $result;
+    }
+
+    public function afterGetImageType(Gd2 $subject, $result)
+    {
+        if ($result) {
+            return $result;
+        }
+
+        $this->fileName = (fn () => $this->_fileName)->call($subject);
+        if (str_ends_with(strtolower($this->fileName), '.svg')) {
+            $result = 'svg';
+            (fn () => $this->_fileType = $result)->call($subject);
+            (fn () => $this->_imageSrcWidth = $this->_imageSrcHeight = 1)->call($subject);
+        }
 
         return $result;
     }
@@ -111,6 +129,19 @@ class ImageGd2
                     imageavif($this->imageHandler, $file, $quality, $speed);
                 },
                 'create' => 'imagecreatefromavif',
+            ];
+        }
+
+        if (!isset($existing['svg'])) {
+            $this->callbacks['svg'] = [
+                'output' => function (GdImage $image, $file = null, $quality = -1, $speed = -1) {
+                    if ($file !== null && $this->fileName !== null) {
+                        copy($this->fileName, $file);
+                    }
+                },
+                'create' => function (string $filename) {
+                    return imagecreatetruecolor(1, 1);
+                }
             ];
         }
 

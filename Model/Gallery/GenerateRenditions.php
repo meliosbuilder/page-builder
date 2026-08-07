@@ -4,6 +4,7 @@ namespace Melios\PageBuilder\Model\Gallery;
 
 // Copy of MediaGalleryRenditions/Model/GenerateRenditions.php
 // because of private const with allowed extensions
+// and svg support: see shouldFileBeResized
 
 use Magento\Framework\App\Filesystem\DirectoryList;
 use Magento\Framework\Exception\FileSystemException;
@@ -20,7 +21,7 @@ use Psr\Log\LoggerInterface;
 
 class GenerateRenditions implements GenerateRenditionsInterface
 {
-    private const IMAGE_FILE_NAME_PATTERN = '#\.(jpg|jpeg|gif|png|avif|webp)$# i';
+    private const IMAGE_FILE_NAME_PATTERN = '#\.(jpg|jpeg|gif|png|avif|svg|webp)$# i';
 
     /**
      * @var AdapterFactory
@@ -204,6 +205,9 @@ class GenerateRenditions implements GenerateRenditionsInterface
      */
     private function shouldFileBeResized(string $absolutePath): bool
     {
+        if (str_ends_with(strtolower($absolutePath), '.svg')) {
+            return false;
+        }
         [$width, $height] = getimagesizefromstring($this->getMediaDirectory()->readFile($absolutePath));
         return $width > $this->config->getWidth() || $height > $this->config->getHeight();
     }
