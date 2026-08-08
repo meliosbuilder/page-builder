@@ -138,19 +138,19 @@ define([
                 return;
             }
 
-            var isVector = image[0].file.toLowerCase().endsWith('.svg');
-
             ko.getObservable(image[0], 'previewWidth')?.subscribe(width => {
                 uiRegistry.get(this.paths['width'], input => {
                     setTimeout(() => {
                         var newRatio = image[0].previewWidth / (image[0].previewHeight || 1),
-                            oldRatio = this.width() / (this.height() || 1);
+                            oldRatio = this.width() / (this.height() || 1),
+                            widthFactor = Math.max(this.width(), image[0].previewWidth) / Math.min(this.width(), image[0].previewWidth),
+                            isVector = image[0].type === 'image/svg+xml';
 
                         this.aspectRatio(newRatio);
 
                         if (input.disabled()) {
                             uiRegistry.get(`${this.name}.use_mobile_dimensions`).checked(true);
-                        } else if (newRatio === oldRatio) {
+                        } else if (newRatio === oldRatio && widthFactor < 2) {
                             return;
                         }
 
@@ -166,13 +166,15 @@ define([
                 uiRegistry.get(this.paths['height'], input => {
                     setTimeout(() => {
                         var newRatio = image[0].previewWidth / (image[0].previewHeight || 1),
-                            oldRatio = this.width() / (this.height() || 1);
+                            oldRatio = this.width() / (this.height() || 1),
+                            widthFactor = Math.max(this.width(), image[0].previewWidth) / Math.min(this.width(), image[0].previewWidth),
+                            isVector = image[0].type === 'image/svg+xml';
 
                         this.aspectRatio(newRatio);
 
                         if (input.disabled()) {
                             uiRegistry.get(`${this.name}.use_mobile_dimensions`).checked(true);
-                        } else if (newRatio === oldRatio) {
+                        } else if (newRatio === oldRatio && widthFactor < 2) {
                             return;
                         }
 

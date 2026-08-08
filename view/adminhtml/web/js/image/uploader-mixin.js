@@ -19,7 +19,8 @@ define([
                         var oldWidth = this.dataStore.get('width'),
                             oldHeight = this.dataStore.get('height'),
                             newWidth = img.width,
-                            newHeight = img.height;
+                            newHeight = img.height,
+                            widthFactor = Math.max(oldWidth, newWidth) / Math.min(oldWidth, newWidth);
 
                         if (!isVector) {
                             newWidth /= 2;
@@ -29,7 +30,8 @@ define([
                         if (oldWidth &&
                             oldHeight &&
                             Math.round(oldWidth / oldHeight) === Math.round(newWidth / newHeight) &&
-                            Math.abs(newWidth - oldWidth) / oldWidth <= 0.3
+                            Math.abs(newWidth - oldWidth) / oldWidth <= 0.3 &&
+                            widthFactor < 2
                         ) {
                             return;
                         }
