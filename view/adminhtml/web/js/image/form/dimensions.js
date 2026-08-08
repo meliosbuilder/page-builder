@@ -138,6 +138,8 @@ define([
                 return;
             }
 
+            var isVector = image[0].file.toLowerCase().endsWith('.svg');
+
             ko.getObservable(image[0], 'previewWidth')?.subscribe(width => {
                 uiRegistry.get(this.paths['width'], input => {
                     setTimeout(() => {
@@ -152,7 +154,11 @@ define([
                             return;
                         }
 
-                        this.updateSizeIgnoringAspectRatio('width', width / 2);
+                        if (!isVector) {
+                            width /= 2;
+                        }
+
+                        this.updateSizeIgnoringAspectRatio('width', width);
                     });
                 });
             });
@@ -170,7 +176,11 @@ define([
                             return;
                         }
 
-                        this.updateSizeIgnoringAspectRatio('height', height / 2);
+                        if (!isVector) {
+                            height /= 2;
+                        }
+
+                        this.updateSizeIgnoringAspectRatio('height', height);
                     });
                 });
             });
