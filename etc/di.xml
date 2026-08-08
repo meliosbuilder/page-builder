@@ -22,6 +22,9 @@
     <type name="Magento\Framework\Image\Adapter\Gd2">
         <plugin name="melios_page_builder" type="Melios\PageBuilder\Plugin\ImageGd2" />
     </type>
+    <type name="Magento\MediaGallerySynchronizationApi\Model\CreateAssetFromFileInterface">
+        <plugin name="melios_page_builder" type="Melios\PageBuilder\Plugin\CreateAssetFromFileFixImageDimensions" />
+    </type>
     <type name="Magento\Cms\Model\Wysiwyg\Images\Storage">
         <arguments>
             <argument name="extensions" xsi:type="array">
