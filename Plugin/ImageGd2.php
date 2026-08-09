@@ -46,6 +46,16 @@ class ImageGd2
         return $result;
     }
 
+    public function afterGetMimeType(Gd2 $subject, $result)
+    {
+        if ($result === 'application/octet-stream' && $this->fileType === 'svg') {
+            $result = 'image/svg+xml';
+            (fn () => $this->_fileMimeType = $result)->call($subject);
+        }
+
+        return $result;
+    }
+
     public function afterGetImageType(Gd2 $subject, $result)
     {
         if ($result) {
@@ -55,6 +65,7 @@ class ImageGd2
         $this->fileName = (fn () => $this->_fileName)->call($subject);
         if (str_ends_with(strtolower($this->fileName), '.svg')) {
             $result = 'svg';
+            $this->fileType = $result;
             (fn () => $this->_fileType = $result)->call($subject);
             (fn () => $this->_imageSrcWidth = $this->_imageSrcHeight = 1)->call($subject);
         }
@@ -137,6 +148,7 @@ class ImageGd2
                 'output' => function (GdImage $image, $file = null, $quality = -1, $speed = -1) {
                     if ($file !== null && $this->fileName !== null) {
                         copy($this->fileName, $file);
+                        return file_get_contents($file);
                     }
                 },
                 'create' => function (string $filename) {
