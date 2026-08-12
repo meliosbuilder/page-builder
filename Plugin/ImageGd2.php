@@ -3,7 +3,9 @@
 namespace Melios\PageBuilder\Plugin;
 
 use GdImage;
+use Magento\Framework\App\ObjectManager;
 use Magento\Framework\Image\Adapter\Gd2;
+use Melios\PageBuilder\Model\SvgSanitizer;
 
 class ImageGd2
 {
@@ -147,8 +149,14 @@ class ImageGd2
             $this->callbacks['svg'] = [
                 'output' => function (GdImage $image, $file = null, $quality = -1, $speed = -1) {
                     if ($file !== null && $this->fileName !== null) {
-                        copy($this->fileName, $file);
-                        return file_get_contents($file);
+                        $dirtySvg = file_get_contents($this->fileName);
+                        $cleanSvg = ObjectManager::getInstance()
+                            ->get(SvgSanitizer::class)
+                            ->sanitize($dirtySvg);
+
+                        file_put_contents($file, $cleanSvg);
+
+                        return $cleanSvg;
                     }
                 },
                 'create' => function (string $filename) {
