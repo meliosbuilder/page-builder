@@ -6,6 +6,12 @@
     margin-left: auto;
 }
 
+// Hide edit button for svg images
+.media-gallery-image:has(>.media-gallery-image-block>img[src*=".svg?"]) li:has([data-ui-id="action-edit-image"]),
+.media-gallery-image:has(>.media-gallery-image-block>img[src$=".svg"]) li:has([data-ui-id="action-edit-image"]) {
+    display: none;
+}
+
 // Image editor
 .melios-image-editor .modal-header {
     display: none;
