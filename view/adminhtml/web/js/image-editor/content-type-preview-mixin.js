@@ -16,6 +16,10 @@ define([
             return cmp.meliosEditorOption.isDisabled(true);
         }
 
+        if (value?.[0]?.type === 'image/svg+xml') {
+            return cmp.meliosEditorOption.isDisabled(true);
+        }
+
         cmp.meliosEditorOption.isDisabled(!value || !value.length);
     }
 

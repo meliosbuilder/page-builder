@@ -15,6 +15,7 @@
                 <item name="gif" xsi:type="string">gif</item>
                 <item name="png" xsi:type="string">png</item>
                 <item name="avif" xsi:type="string">avif</item>
+                <item name="svg" xsi:type="string">svg</item>
                 <item name="webp" xsi:type="string">webp</item>
             </argument>
         </arguments>

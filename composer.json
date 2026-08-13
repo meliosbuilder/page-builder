@@ -6,6 +6,7 @@
     "license": "GPL-3.0-or-later",
     "require": {
         "php": "^8.0",
+        "enshrined/svg-sanitize": "^0.22",
         "symfony/process": "*"
     },
     "autoload": {

@@ -37,6 +37,10 @@ define([
             },
 
             editImage: function (record) {
+                if (record.content_type?.toLowerCase() === 'svg') {
+                    return alert('Melios Builder does not support editing SVG images yet.');
+                }
+
                 this.meliosImageEditor()
                     .setInputField($('#image-uploader-form').find('[type="file"]'))
                     .setGalleryModel(this.imageModel())

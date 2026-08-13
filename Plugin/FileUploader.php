@@ -8,6 +8,8 @@ class FileUploader
 {
     private $extensions = [
         'avif',
+        'svg',
+        'svg+xml',
         'webp',
     ];
 

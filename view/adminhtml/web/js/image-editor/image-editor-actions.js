@@ -94,12 +94,17 @@ define([
             if (imageName && imageName.includes('.')) {
                 var maybeExt = imageName.split('.').at(-1);
 
-                if (['jpg', 'jpeg', 'avif', 'webp', 'png', 'gif', 'tiff', 'bmp'].includes(maybeExt)) {
+                if (['jpg', 'jpeg', 'avif', 'webp', 'svg', 'png', 'gif', 'tiff', 'bmp'].includes(maybeExt)) {
                     ext = maybeExt;
                 }
             }
 
             ext = ext || editor.getFileExt() || 'webp';
+            imageName = imageName || editor.getFileName();
+            if (ext === 'svg') {
+                ext = 'webp';
+                imageName = imageName.replace(/\.svg$/, '.webp');
+            }
             type = 'image/' + ext.replace('jpg', 'jpeg');
 
             // cropperjs bugfix: make sure that the canvas size is same as shown in panel
@@ -107,7 +112,6 @@ define([
 
             var canvas = (await editor.getCropper()).getCroppedCanvas();
 
-            imageName = imageName || editor.getFileName();
             if (!imageName.toLowerCase().endsWith('.' + ext)) {
                 imageName += '.' + ext;
             }

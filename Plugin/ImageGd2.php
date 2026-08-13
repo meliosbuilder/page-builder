@@ -3,11 +3,15 @@
 namespace Melios\PageBuilder\Plugin;
 
 use GdImage;
+use Magento\Framework\App\ObjectManager;
 use Magento\Framework\Image\Adapter\Gd2;
+use Melios\PageBuilder\Model\SvgSanitizer;
 
 class ImageGd2
 {
     private $callbacks = [];
+
+    private $fileName;
 
     private $fileType;
 
@@ -40,6 +44,33 @@ class ImageGd2
         $height = imagesy($image);
         $this->imageHandler = imagecreatetruecolor($width, $height);
         imagecopy($this->imageHandler, $image, 0, 0, 0, 0, $width, $height);
+
+        return $result;
+    }
+
+    public function afterGetMimeType(Gd2 $subject, $result)
+    {
+        if ($result === 'application/octet-stream' && $this->fileType === 'svg') {
+            $result = 'image/svg+xml';
+            (fn () => $this->_fileMimeType = $result)->call($subject);
+        }
+
+        return $result;
+    }
+
+    public function afterGetImageType(Gd2 $subject, $result)
+    {
+        if ($result) {
+            return $result;
+        }
+
+        $this->fileName = (fn () => $this->_fileName)->call($subject);
+        if (str_ends_with(strtolower($this->fileName), '.svg')) {
+            $result = 'svg';
+            $this->fileType = $result;
+            (fn () => $this->_fileType = $result)->call($subject);
+            (fn () => $this->_imageSrcWidth = $this->_imageSrcHeight = 1)->call($subject);
+        }
 
         return $result;
     }
@@ -111,6 +142,26 @@ class ImageGd2
                     imageavif($this->imageHandler, $file, $quality, $speed);
                 },
                 'create' => 'imagecreatefromavif',
+            ];
+        }
+
+        if (!isset($existing['svg'])) {
+            $this->callbacks['svg'] = [
+                'output' => function (GdImage $image, $file = null, $quality = -1, $speed = -1) {
+                    if ($file !== null && $this->fileName !== null) {
+                        $dirtySvg = file_get_contents($this->fileName);
+                        $cleanSvg = ObjectManager::getInstance()
+                            ->get(SvgSanitizer::class)
+                            ->sanitize($dirtySvg);
+
+                        file_put_contents($file, $cleanSvg);
+
+                        return $cleanSvg;
+                    }
+                },
+                'create' => function (string $filename) {
+                    return imagecreatetruecolor(1, 1);
+                }
             ];
         }
 

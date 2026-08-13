@@ -14,18 +14,28 @@
     <type name="Magento\Framework\File\Uploader">
         <plugin name="melios_page_builder" type="Melios\PageBuilder\Plugin\FileUploader" />
     </type>
+    <type name="Magento\MediaStorage\Model\File\Uploader">
+        <arguments>
+            <argument name="validator" xsi:type="object">Melios\PageBuilder\Model\Gallery\NotProtectedExtensionValidator</argument>
+        </arguments>
+    </type>
     <type name="Magento\Framework\Image\Adapter\Gd2">
         <plugin name="melios_page_builder" type="Melios\PageBuilder\Plugin\ImageGd2" />
+    </type>
+    <type name="Magento\MediaGallerySynchronizationApi\Model\CreateAssetFromFileInterface">
+        <plugin name="melios_page_builder" type="Melios\PageBuilder\Plugin\CreateAssetFromFileFixImageDimensions" />
     </type>
     <type name="Magento\Cms\Model\Wysiwyg\Images\Storage">
         <arguments>
             <argument name="extensions" xsi:type="array">
                 <item name="allowed" xsi:type="array">
                     <item name="avif" xsi:type="string">image/avif</item>
+                    <item name="svg" xsi:type="string">image/svg+xml</item>
                     <item name="webp" xsi:type="string">image/webp</item>
                 </item>
                 <item name="image_allowed" xsi:type="array">
                     <item name="avif" xsi:type="string">image/avif</item>
+                    <item name="svg" xsi:type="string">image/svg+xml</item>
                     <item name="webp" xsi:type="string">image/webp</item>
                 </item>
             </argument>
@@ -36,6 +46,7 @@
         <arguments>
             <argument name="imageExtensions" xsi:type="array">
                 <item name="avif" xsi:type="string">avif</item>
+                <item name="svg" xsi:type="string">svg</item>
                 <item name="webp" xsi:type="string">webp</item>
             </argument>
         </arguments>
@@ -44,6 +55,7 @@
         <arguments>
             <argument name="fileExtensions" xsi:type="array">
                 <item name="avif" xsi:type="string">avif</item>
+                <item name="svg" xsi:type="string">svg</item>
                 <item name="webp" xsi:type="string">webp</item>
             </argument>
         </arguments>
