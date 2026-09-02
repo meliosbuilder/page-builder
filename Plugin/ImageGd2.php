@@ -65,7 +65,7 @@ class ImageGd2
         }
 
         $this->fileName = (fn () => $this->_fileName)->call($subject);
-        if (str_ends_with(strtolower($this->fileName), '.svg')) {
+        if ($this->fileName && str_ends_with(strtolower($this->fileName), '.svg')) {
             $result = 'svg';
             $this->fileType = $result;
             (fn () => $this->_fileType = $result)->call($subject);
