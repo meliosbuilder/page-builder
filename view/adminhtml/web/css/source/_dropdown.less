@@ -1,0 +1,60 @@
+.mls-options-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    z-index: 10;
+    padding: 4px 0;
+    background: #fff;
+    border: 1px solid rgba(153, 153, 153, 0.7);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+    display: none;
+    max-height: 50vh;
+    overflow: auto;
+
+    &.shown {
+        display: block;
+        z-index: 9999;
+    }
+
+    button {
+        border: 0;
+        margin: 0;
+        display: inline-flex;
+        gap: 5px;
+        align-items: center;
+        justify-content: flex-start;
+        text-align: left;
+        padding: 6px 10px;
+        width: 100%;
+
+        &,
+        &:focus {
+            background: none;
+        }
+
+        &:hover,
+        &:focus-visible {
+            background: #f4f4f4;
+        }
+
+        .mls-option-label {
+            flex: 1;
+        }
+        .mls-option-hint {
+            color: #999;
+            font-size: .85em;
+            white-space: nowrap;
+        }
+    }
+
+    .theme-m137 & {
+        border: 0;
+        border-radius: 19px;
+        padding: 4px;
+        top: ~"calc(100% + 4px)";
+        button {
+            padding: 8px 12px;
+        }
+    }
+}
