@@ -4,6 +4,7 @@ namespace Melios\PageBuilder\Model;
 
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\App\Filesystem\DirectoryList;
+use Magento\Framework\AuthorizationInterface;
 use Magento\Framework\Filesystem\Driver\File;
 use Symfony\Component\Process\Process;
 use RuntimeException;
@@ -16,12 +17,17 @@ class Tailwind
     public function __construct(
         private ScopeConfigInterface $scopeConfig,
         private DirectoryList $directoryList,
-        private File $fileDriver
+        private File $fileDriver,
+        private AuthorizationInterface $authorization
     ) {
     }
 
     public function run($html): string
     {
+        if (!$this->authorization->isAllowed('Magento_Config::config')) {
+            throw new RuntimeException('Not authorized to run Tailwind CSS build.');
+        }
+
         $twBinary = $this->binaryPath();
         if (!$this->exists()) {
             return '';
