@@ -14,6 +14,7 @@ define([
         }
 
         if (target.hasClass('magento-widget') ||
+            target.closest('.mls-options-dropdown').length ||
             target.closest('.inline-wysiwyg').length ||
             target.closest('a').length ||
             target.closest('[contenteditable]').length
