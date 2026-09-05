@@ -13,6 +13,7 @@ foreach ($block->getBreakpointMediaQueries() as $breakpoint => $media) {
 }
 
 if ($css) {
+    $css = "\n" . $css;
     /* @noEscape */ echo isset($secureRenderer)
         ? $secureRenderer->renderTag('style', [], $css, false)
         : '<style>' . $css . '</style>';
