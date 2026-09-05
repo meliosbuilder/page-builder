@@ -7,34 +7,46 @@ use Magento\PageBuilder\Model\Config\ContentType\Reader;
 class ContentTypeReader
 {
     /**
-     * Add background-image loading attributes to all content_types having 'background_images'
+     * Inject extra attributes into content types:
+     *  - background-image loading attributes for elements having a 'background_images' attribute
+     *  - per-breakpoint visibility attribute for elements having a 'display' style
      */
     public function afterRead(Reader $subject, $result)
     {
         $loadingAttributes = $this->getBackgroundLoadingAttributes();
+        $visibilityAttributes = $this->getBreakpointVisibilityAttributes();
 
         foreach ($result['types'] ?? [] as $typeKey => $type) {
             foreach ($type['appearances'] ?? [] as $appearanceKey => $appearance) {
                 foreach ($appearance['elements'] as $elementKey => $element) {
-                    $canAddLoading = false;
+                    $extraAttributes = [];
 
-                    foreach ($element['attributes'] as $attribute) {
+                    foreach ($element['attributes'] ?? [] as $attribute) {
                         if (isset($attribute['var']) && $attribute['var'] === 'background_images') {
-                            $canAddLoading = true;
+                            $extraAttributes = array_merge($extraAttributes, $loadingAttributes);
                             break;
                         }
                     }
 
-                    if ($canAddLoading) {
-                        $result['types'][$typeKey]
-                            ['appearances'][$appearanceKey]
-                            ['elements'][$elementKey]['attributes']
-                            = array_merge(
-                                $result['types'][$typeKey]['appearances'][$appearanceKey]
-                                ['elements'][$elementKey]['attributes'],
-                                $loadingAttributes
-                            );
+                    foreach ($element['style'] ?? [] as $style) {
+                        if (isset($style['var']) && $style['var'] === 'display') {
+                            $extraAttributes = array_merge($extraAttributes, $visibilityAttributes);
+                            break;
+                        }
                     }
+
+                    if (!$extraAttributes) {
+                        continue;
+                    }
+
+                    $result['types'][$typeKey]
+                        ['appearances'][$appearanceKey]
+                        ['elements'][$elementKey]['attributes']
+                        = array_merge(
+                            $result['types'][$typeKey]['appearances'][$appearanceKey]
+                            ['elements'][$elementKey]['attributes'] ?? [],
+                            $extraAttributes
+                        );
                 }
             }
         }
@@ -44,7 +56,7 @@ class ContentTypeReader
 
     private function getBackgroundLoadingAttributes()
     {
-        $attributes = [[
+        return $this->withDefaults([[
             'var' => 'loading_mode',
             'persistence_mode' => 'read',
             'reader' => 'Melios_PageBuilder/js/image-background/content-type/loading-mode-reader',
@@ -75,8 +87,20 @@ class ContentTypeReader
             'name' => 'data-mls-sm-preload',
             'converter' => 'Melios_PageBuilder/js/image/content-type/preload-converter',
             'persistence_mode' => 'write',
-        ]];
+        ]]);
+    }
 
+    private function getBreakpointVisibilityAttributes()
+    {
+        return $this->withDefaults([[
+            'var' => 'mls_hidden',
+            'name' => 'data-mls-hidden',
+            'converter' => 'Melios_PageBuilder/js/hide-show/converter',
+        ]]);
+    }
+
+    private function withDefaults(array $attributes)
+    {
         foreach ($attributes as $key => $values) {
             $attributes[$key] = array_merge([
                 'name' => '',

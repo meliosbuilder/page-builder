@@ -1,0 +1,15 @@
+<?php
+/** @var \Melios\PageBuilder\Block\HideShowCss $block */
+$mediaQueries = $block->getBreakpointMediaQueries();
+?>
+<?php if ($mediaQueries): ?>
+<style>
+<?php foreach ($mediaQueries as $breakpoint => $media): ?>
+    @media <?= /* @noEscape */ $media ?> {
+        [data-mls-hidden~="<?= /* @noEscape */ $breakpoint ?>"] {
+            display: none !important;
+        }
+    }
+<?php endforeach; ?>
+</style>
+<?php endif; ?>
