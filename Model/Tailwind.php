@@ -4,6 +4,7 @@ namespace Melios\PageBuilder\Model;
 
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\App\Filesystem\DirectoryList;
+use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Filesystem\Driver\File;
 use Symfony\Component\Process\Process;
 use RuntimeException;
@@ -70,10 +71,10 @@ class Tailwind
 
     public function input()
     {
-        $twConfig = $this->sanitizeConfig(
-            (string) $this->scopeConfig->getValue('melios_builder/tailwind/config')
-        );
+        $twConfig = (string) $this->scopeConfig->getValue('melios_builder/tailwind/config');
         $suffix = $this->important ? 'important' : '';
+
+        $this->validateConfig($twConfig);
 
         return <<<CSS
         @import 'tailwindcss/theme.css';
@@ -85,12 +86,23 @@ class Tailwind
         CSS;
     }
 
-    private function sanitizeConfig(string $config): string
+    /**
+     * Reject config values that make the tailwindcss binary read or execute
+     * files outside the generated temp directory.
+     *
+     * @throws LocalizedException
+     */
+    private function validateConfig(string $config): void
     {
-        // Strip directives that could let a compromised config perform SSRF
-        // or arbitrary local file disclosure via the tailwindcss binary.
-        $pattern = '/@import\s+(?:url\()?[\'"]?(?:https?:)?\/\/[^\'")\s]*[\'"]?\)?\s*;?/i';
-        return preg_replace($pattern, '', $config);
+        if (preg_match('/@(import|source|plugin|config|reference)\b/i', $config, $matches)) {
+            throw new LocalizedException(
+                __(
+                    'Tailwind config may not use the @%1 directive. '
+                    . 'Only theme declarations are supported here.',
+                    strtolower($matches[1])
+                )
+            );
+        }
     }
 
     public function binaryPath()
