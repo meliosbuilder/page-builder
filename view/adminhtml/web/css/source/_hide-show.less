@@ -21,3 +21,21 @@
         opacity: 0.5;
     }
 }
+
+// Dim the invisible content
+.desktop-viewport [data-mls-hidden~="desktop"],
+.mobile-viewport [data-mls-hidden~="mobile"] {
+    position: relative;
+
+    &:after {
+        content: '';
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        background: rgba(238, 238, 238, 0.6);
+        pointer-events: none;
+        z-index: 20;
+    }
+}
