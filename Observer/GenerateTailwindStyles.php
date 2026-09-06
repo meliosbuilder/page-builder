@@ -2,6 +2,7 @@
 
 namespace Melios\PageBuilder\Observer;
 
+use Magento\Backend\Model\Auth\Session;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Message\ManagerInterface;
 use Melios\PageBuilder\Model\Tailwind;
@@ -11,12 +12,17 @@ class GenerateTailwindStyles implements \Magento\Framework\Event\ObserverInterfa
 {
     public function __construct(
         private Tailwind $tailwind,
-        private ManagerInterface $messageManager
+        private ManagerInterface $messageManager,
+        private Session $backendSession
     ) {
     }
 
     public function execute(Observer $observer)
     {
+        if (!$this->backendSession->isLoggedIn()) {
+            return;
+        }
+
         $request = $observer->getEvent()->getControllerAction()->getRequest();
         if (!$request->isPost()) {
             return;
