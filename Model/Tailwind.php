@@ -70,7 +70,9 @@ class Tailwind
 
     public function input()
     {
-        $twConfig = $this->scopeConfig->getValue('melios_builder/tailwind/config');
+        $twConfig = $this->sanitizeConfig(
+            (string) $this->scopeConfig->getValue('melios_builder/tailwind/config')
+        );
         $suffix = $this->important ? 'important' : '';
 
         return <<<CSS
@@ -81,6 +83,14 @@ class Tailwind
         {$twConfig}
         @source 'content\.html';
         CSS;
+    }
+
+    private function sanitizeConfig(string $config): string
+    {
+        // Strip directives that could let a compromised config perform SSRF
+        // or arbitrary local file disclosure via the tailwindcss binary.
+        $pattern = '/@import\s+(?:url\()?[\'"]?(?:https?:)?\/\/[^\'")\s]*[\'"]?\)?\s*;?/i';
+        return preg_replace($pattern, '', $config);
     }
 
     public function binaryPath()
