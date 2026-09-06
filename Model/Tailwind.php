@@ -63,6 +63,7 @@ class Tailwind
             }
 
             $css = $this->fileDriver->fileGetContents($outputPath);
+            $css = str_ireplace('</style', '\\3c /style', $css);
         } finally {
             $this->fileDriver->deleteDirectory($tmpDir);
         }
