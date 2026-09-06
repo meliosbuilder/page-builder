@@ -5,6 +5,7 @@ namespace Melios\PageBuilder\Model;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\App\Filesystem\DirectoryList;
 use Magento\Framework\Filesystem\Driver\File;
+use Melios\PageBuilder\Model\Tailwind\ConfigValidator;
 use Symfony\Component\Process\Process;
 use RuntimeException;
 
@@ -16,7 +17,8 @@ class Tailwind
     public function __construct(
         private ScopeConfigInterface $scopeConfig,
         private DirectoryList $directoryList,
-        private File $fileDriver
+        private File $fileDriver,
+        private ConfigValidator $configValidator
     ) {
     }
 
@@ -70,8 +72,10 @@ class Tailwind
 
     public function input()
     {
-        $twConfig = $this->scopeConfig->getValue('melios_builder/tailwind/config');
+        $twConfig = (string) $this->scopeConfig->getValue('melios_builder/tailwind/config');
         $suffix = $this->important ? 'important' : '';
+
+        $this->configValidator->validate($twConfig);
 
         return <<<CSS
         @import 'tailwindcss/theme.css';
