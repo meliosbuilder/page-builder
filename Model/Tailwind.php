@@ -4,8 +4,8 @@ namespace Melios\PageBuilder\Model;
 
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\App\Filesystem\DirectoryList;
-use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Filesystem\Driver\File;
+use Melios\PageBuilder\Model\Tailwind\ConfigValidator;
 use Symfony\Component\Process\Process;
 use RuntimeException;
 
@@ -17,7 +17,8 @@ class Tailwind
     public function __construct(
         private ScopeConfigInterface $scopeConfig,
         private DirectoryList $directoryList,
-        private File $fileDriver
+        private File $fileDriver,
+        private ConfigValidator $configValidator
     ) {
     }
 
@@ -74,7 +75,7 @@ class Tailwind
         $twConfig = (string) $this->scopeConfig->getValue('melios_builder/tailwind/config');
         $suffix = $this->important ? 'important' : '';
 
-        $this->validateConfig($twConfig);
+        $this->configValidator->validate($twConfig);
 
         return <<<CSS
         @import 'tailwindcss/theme.css';
@@ -84,25 +85,6 @@ class Tailwind
         {$twConfig}
         @source 'content\.html';
         CSS;
-    }
-
-    /**
-     * Reject config values that make the tailwindcss binary read or execute
-     * files outside the generated temp directory.
-     *
-     * @throws LocalizedException
-     */
-    private function validateConfig(string $config): void
-    {
-        if (preg_match('/@(import|source|plugin|config|reference)\b/i', $config, $matches)) {
-            throw new LocalizedException(
-                __(
-                    'Tailwind config may not use the @%1 directive. '
-                    . 'Only theme declarations are supported here.',
-                    strtolower($matches[1])
-                )
-            );
-        }
     }
 
     public function binaryPath()

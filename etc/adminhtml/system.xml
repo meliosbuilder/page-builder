@@ -11,6 +11,7 @@
                         <label>Config</label>
                         <comment>https://tailwindcss.com/docs/theme#default-theme-variable-reference</comment>
                         <config_path>melios_builder/tailwind/config</config_path>
+                        <backend_model>Melios\PageBuilder\Model\Config\Backend\TailwindConfig</backend_model>
                     </field>
                 </group>
             </group>
