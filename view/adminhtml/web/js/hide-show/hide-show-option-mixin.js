@@ -71,23 +71,16 @@ define([
     document.addEventListener('mouseover', function (event) {
         var trigger = triggerFor(event);
 
-        if (trigger) {
-            trigger.option.mlsShowMenu(trigger.anchor);
-        }
+        trigger?.option.mlsShowMenu(trigger.anchor);
     }, true);
 
     document.addEventListener('mouseout', function (event) {
-        var trigger = triggerFor(event);
-
-        if (trigger) {
-            trigger.option.mlsScheduleHide();
-        }
+        triggerFor(event)?.option.mlsScheduleHide();
     }, true);
 
     return function (HideShowOption) {
         function MlsHideShowOption(config) {
             HideShowOption.call(this, config);
-
             this.mlsInit();
         }
 
@@ -137,17 +130,9 @@ define([
 
         MlsHideShowOption.prototype.mlsToggle = function (breakpoint) {
             var hidden = normalize(this.preview.contentType.dataStore.get(DATA_KEY)),
-                next;
-
-            if (!hidden.includes(breakpoint.name)) {
-                hidden.push(breakpoint.name);
-            } else {
-                hidden = _.without(hidden, breakpoint.name);
-            }
-
-            next = _.pluck(this.mlsBreakpoints, 'name').filter(function (name) {
-                return hidden.includes(name);
-            });
+                next = _.pluck(this.mlsBreakpoints, 'name').filter(function (name) {
+                    return name === breakpoint.name ? !hidden.includes(name) : hidden.includes(name);
+                });
 
             this.preview.contentType.dataStore.set(DATA_KEY, next);
         };
@@ -174,12 +159,8 @@ define([
                 };
             });
 
-            menu.on('mouseenter', () => {
-                clearTimeout(this.mlsHideTimer);
-            });
-            menu.on('mouseleave', () => {
-                this.mlsScheduleHide();
-            });
+            menu.on('mouseenter', () => clearTimeout(this.mlsHideTimer));
+            menu.on('mouseleave', () => this.mlsScheduleHide());
 
             return menu;
         };
@@ -227,9 +208,7 @@ define([
         MlsHideShowOption.prototype.mlsScheduleHide = function () {
             clearTimeout(this.mlsHideTimer);
             this.mlsHideTimer = setTimeout(() => {
-                if (this.mlsMenu) {
-                    this.mlsMenu.removeClass('shown');
-                }
+                this.mlsMenu?.removeClass('shown');
             }, 300);
         };
 
@@ -237,10 +216,7 @@ define([
             HideShowOption.prototype.onDisplayChange,
             function (o, state) {
                 o();
-
-                if (this.mlsMenu) {
-                    this.mlsMenu.toggleClass('mls-globally-hidden', !state.display);
-                }
+                this.mlsMenu?.toggleClass('mls-globally-hidden', !state.display);
             }
         );
 
