@@ -3,6 +3,7 @@
 namespace Melios\PageBuilder\Plugin;
 
 use Magento\Framework\File\Uploader;
+use Melios\PageBuilder\Model\SvgSanitizer;
 
 class FileUploader
 {
@@ -12,6 +13,11 @@ class FileUploader
         'svg+xml',
         'webp',
     ];
+
+    public function __construct(
+        private SvgSanitizer $svgSanitizer
+    ) {
+    }
 
     public function beforeSetAllowedExtensions(Uploader $subject, $extensions)
     {
@@ -38,5 +44,21 @@ class FileUploader
         $validTypes = array_unique(array_merge($validTypes, $mimeTypes));
 
         return [$validTypes];
+    }
+
+    public function beforeSave(Uploader $subject, $destinationFolder, $newFileName = null)
+    {
+        if (!$this->isSvg($subject->getFileExtension()) &&
+            !($newFileName && $this->isSvg(pathinfo($newFileName, PATHINFO_EXTENSION)))
+        ) {
+            return;
+        }
+
+        $subject->addValidateCallback('melios_svg_sanitizer', $this->svgSanitizer, 'sanitizeFile');
+    }
+
+    private function isSvg($extension): bool
+    {
+        return strtolower((string) $extension) === 'svg';
     }
 }
