@@ -1,0 +1,20 @@
+<?php
+/** @var \Melios\PageBuilder\Block\HideShowCss $block */
+/** @var \Magento\Framework\View\Helper\SecureHtmlRenderer $secureRenderer */
+
+$css = '';
+
+foreach ($block->getBreakpointMediaQueries() as $breakpoint => $media) {
+    $css .= sprintf(
+        '@media %s{[data-mls-hidden~="%s"]{display:none!important}}' . "\n",
+        $media,
+        $breakpoint
+    );
+}
+
+if ($css) {
+    $css = "\n" . $css;
+    /* @noEscape */ echo isset($secureRenderer)
+        ? $secureRenderer->renderTag('style', [], $css, false)
+        : '<style>' . $css . '</style>';
+}

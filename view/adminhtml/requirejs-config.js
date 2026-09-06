@@ -18,6 +18,11 @@ var config = {
                 'Melios_PageBuilder/js/image-editor/content-type-preview-mixin': true,
             },
 
+            // Hide/Show: per-breakpoint visibility dropdown on the eye icon
+            'Magento_PageBuilder/js/content-type-menu/hide-show-option': {
+                'Melios_PageBuilder/js/hide-show/hide-show-option-mixin': true,
+            },
+
             'Magento_MediaGalleryUi/js/grid/columns/image/insertImageAction': {
                 'Melios_PageBuilder/js/editor/insert-image-mixin': true,
             },

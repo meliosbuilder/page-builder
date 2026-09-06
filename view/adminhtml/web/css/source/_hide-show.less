@@ -1,0 +1,41 @@
+.pagebuilder-options-links .hide-show-content-type {
+    position: relative;
+    &.mls-has-hidden:after {
+        content: '';
+        position: absolute;
+        right: 4px;
+        top: 4px;
+        width: 7px;
+        height: 7px;
+        background: #eb5202;
+        border: 1px solid #fff;
+        border-radius: 50%;
+    }
+}
+
+.mls-hide-show-options {
+    &.shown.mls-globally-hidden {
+        display: none;
+    }
+    button.mls-selected {
+        opacity: 0.5;
+    }
+}
+
+// Dim the invisible content
+.desktop-viewport [data-mls-hidden~="desktop"],
+.mobile-viewport [data-mls-hidden~="mobile"] {
+    position: relative;
+
+    &:after {
+        content: '';
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        background: rgba(238, 238, 238, 0.6);
+        pointer-events: none;
+        z-index: 20;
+    }
+}

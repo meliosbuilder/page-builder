@@ -2,6 +2,11 @@
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
       xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
+        <referenceContainer name="head.additional">
+            <block name="melios.hide-show-css"
+                   class="Melios\PageBuilder\Block\HideShowCss"
+                   template="Melios_PageBuilder::hide-show-css.phtml"/>
+        </referenceContainer>
         <referenceContainer name="before.body.end">
             <block class="Magento\Framework\View\Element\Text" name="melios.lazy-backgrounds">
                 <arguments>
