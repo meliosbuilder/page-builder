@@ -3,6 +3,7 @@
 namespace Melios\PageBuilder\Observer;
 
 use Magento\Backend\Model\Auth\Session;
+use Magento\Framework\AuthorizationInterface;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Message\ManagerInterface;
 use Melios\PageBuilder\Model\Tailwind;
@@ -13,7 +14,8 @@ class GenerateTailwindStyles implements \Magento\Framework\Event\ObserverInterfa
     public function __construct(
         private Tailwind $tailwind,
         private ManagerInterface $messageManager,
-        private Session $backendSession
+        private Session $backendSession,
+        private AuthorizationInterface $authorization
     ) {
     }
 
@@ -23,8 +25,14 @@ class GenerateTailwindStyles implements \Magento\Framework\Event\ObserverInterfa
             return;
         }
 
-        $request = $observer->getEvent()->getControllerAction()->getRequest();
+        $controllerAction = $observer->getEvent()->getControllerAction();
+
+        $request = $controllerAction->getRequest();
         if (!$request->isPost()) {
+            return;
+        }
+
+        if (!$this->authorization->isAllowed($this->adminResource($controllerAction))) {
             return;
         }
 
@@ -69,5 +77,12 @@ class GenerateTailwindStyles implements \Magento\Framework\Event\ObserverInterfa
         }
 
         $request->setPostValue($postData);
+    }
+
+    private function adminResource($controllerAction): string
+    {
+        return defined(get_class($controllerAction) . '::ADMIN_RESOURCE')
+            ? $controllerAction::ADMIN_RESOURCE
+            : 'Magento_Backend::admin';
     }
 }
