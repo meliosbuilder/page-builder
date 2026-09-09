@@ -32,9 +32,6 @@ class GenerateTailwindStyles implements \Magento\Framework\Event\ObserverInterfa
             return;
         }
 
-        // controller_action_predispatch is dispatched before the action runs its
-        // own _isAllowed() check, so any logged in user reaches this observer.
-        // Only run tailwind for users allowed to reach the posted action.
         if (!$this->authorization->isAllowed($this->adminResource($controllerAction))) {
             return;
         }
@@ -82,8 +79,6 @@ class GenerateTailwindStyles implements \Magento\Framework\Event\ObserverInterfa
         $request->setPostValue($postData);
     }
 
-    // Every backend action inherits ADMIN_RESOURCE from Magento\Backend\App\AbstractAction
-    // and most override it. The fallback covers actions that are not AbstractAction.
     private function adminResource($controllerAction): string
     {
         return defined(get_class($controllerAction) . '::ADMIN_RESOURCE')
