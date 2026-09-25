@@ -142,6 +142,25 @@ var config = {
             'Magento_PageBuilder/js/converter/style/min-height': {
                 'Melios_PageBuilder/js/bugfixes/converter-style-min-height-mixin': true
             },
+            // Fixed hidden banner/slide button and overlay on mobile when only some mobile values are set (e.g. min height)
+            'Magento_PageBuilder/js/content-type/banner/converter/style/button-visibility': {
+                'Melios_PageBuilder/js/bugfixes/converter-style-viewport-inherit-mixin': true
+            },
+            'Magento_PageBuilder/js/content-type/banner/converter/style/button-opacity': {
+                'Melios_PageBuilder/js/bugfixes/converter-style-viewport-inherit-mixin': true
+            },
+            'Magento_PageBuilder/js/content-type/banner/converter/style/overlay-background-color': {
+                'Melios_PageBuilder/js/bugfixes/converter-style-viewport-inherit-mixin': true
+            },
+            'Magento_PageBuilder/js/content-type/slide/converter/style/button-visibility': {
+                'Melios_PageBuilder/js/bugfixes/converter-style-viewport-inherit-mixin': true
+            },
+            'Magento_PageBuilder/js/content-type/slide/converter/style/button-opacity': {
+                'Melios_PageBuilder/js/bugfixes/converter-style-viewport-inherit-mixin': true
+            },
+            'Magento_PageBuilder/js/content-type/slide/converter/style/overlay-background-color': {
+                'Melios_PageBuilder/js/bugfixes/converter-style-viewport-inherit-mixin': true
+            },
             // Do not close modal on Escape, if nested pagebuilder is opened
             'Magento_Ui/js/modal/modal': {
                 'Melios_PageBuilder/js/bugfixes/modal-mixin': true
