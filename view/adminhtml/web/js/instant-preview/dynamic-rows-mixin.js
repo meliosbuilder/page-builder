@@ -13,6 +13,16 @@ define([
                 }
 
                 return result;
+            },
+
+            deleteRecord: function () {
+                var result = this._super.apply(this, arguments);
+
+                if (this.name.startsWith('pagebuilder_')) {
+                    utils.updateSource(this.source);
+                }
+
+                return result;
             }
         });
     };
