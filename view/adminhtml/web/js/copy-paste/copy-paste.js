@@ -52,26 +52,47 @@ define([
         return [el[0], cmp.value?.()];
     }
 
-    function tryPasteImage(e) {
-        var file = [...e.originalEvent.clipboardData.files].find(f => f.type.startsWith('image/')),
-            el = $('.pagebuilder-content-type-active'),
-            preview = el.length ? ko.dataFor(el[0]) : null,
-            input, dt;
+    function getUploader() {
+        var el, preview, input,
+            gallery = $('.media-gallery-image-uploader-container:visible').filter((i, container) => {
+                var modal = $(container).closest('.modal-slide, .modal-popup');
 
-        if (!file || !preview?.contentType || !preview.config?.additional_data?.uploaderConfig) {
-            return false;
+                return !modal.length || modal.hasClass('_show');
+            }).last();
+
+        // Media gallery
+        if (gallery.length) {
+            input = gallery.find('#image-uploader-form [type="file"]')[0];
+
+            return input ? { input, multiple: true } : undefined;
+        }
+
+        // Hovered content type with uploader (Image, Banner, Slide, etc.)
+        el = $('.pagebuilder-content-type-active');
+        preview = el.length ? ko.dataFor(el[0]) : null;
+
+        if (!preview?.contentType || !preview.config?.additional_data?.uploaderConfig) {
+            return;
         }
 
         input = $('#' + preview.contentType.id).find('input[type="file"]')[0];
 
-        if (!input) {
+        return input ? { input, multiple: false } : undefined;
+    }
+
+    function tryPasteImage(e) {
+        var files = [...e.originalEvent.clipboardData.files].filter(f => f.type.startsWith('image/')),
+            uploader = files.length ? getUploader() : null,
+            dt;
+
+        if (!uploader) {
             return false;
         }
 
         dt = new DataTransfer();
-        dt.items.add(file);
-        input.files = dt.files;
-        input.dispatchEvent(new Event('change', { bubbles: true }));
+        (uploader.multiple ? files : files.slice(0, 1)).forEach(file => dt.items.add(file));
+        uploader.input.files = dt.files;
+        uploader.input.dispatchEvent(new Event('change', { bubbles: true }));
 
         return true;
     }
