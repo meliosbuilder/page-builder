@@ -52,6 +52,30 @@ define([
         return [el[0], cmp.value?.()];
     }
 
+    function tryPasteImage(e) {
+        var file = [...e.originalEvent.clipboardData.files].find(f => f.type.startsWith('image/')),
+            el = $('.pagebuilder-content-type-active'),
+            preview = el.length ? ko.dataFor(el[0]) : null,
+            input, dt;
+
+        if (!file || !preview?.contentType || !preview.config?.additional_data?.uploaderConfig) {
+            return false;
+        }
+
+        input = $('#' + preview.contentType.id).find('input[type="file"]')[0];
+
+        if (!input) {
+            return false;
+        }
+
+        dt = new DataTransfer();
+        dt.items.add(file);
+        input.files = dt.files;
+        input.dispatchEvent(new Event('change', { bubbles: true }));
+
+        return true;
+    }
+
     $(document).on('copy', async e => {
         if (!canUseHotkeys(e) || window.getSelection().toString().length) {
             return;
@@ -115,6 +139,11 @@ define([
             }
 
             return $(document).trigger('melios:paste', { json: data });
+        }
+
+        if (tryPasteImage(e)) {
+            e.preventDefault();
+            return;
         }
 
         if ($('.pagebuilder-content-type-active').length) {
