@@ -52,18 +52,23 @@ define([
         });
     }
 
-    async function createItem(parent, config) {
+    async function createItem(parent, config, index) {
         var [createContentType] = await requireAsync(['Magento_PageBuilder/js/content-type-factory']),
             item = await createContentType(config, parent, parent.stageId);
 
-        parent.addChild(item, parent.children().length);
+        parent.addChild(item, index);
 
         return item;
     }
 
-    async function uploadItems(parent, itemConfig, start, files) {
+    /**
+     * Upload first image into the target item (if any), and create new items for the rest
+     */
+    async function uploadItems(target, files) {
+        var index = target.index;
+
         for (var i = 0; i < files.length; i++) {
-            var item = parent.children()[start + i] || await createItem(parent, itemConfig),
+            var item = i === 0 && target.item || await createItem(target.parent, target.itemConfig, index++),
                 input = await waitForInput(item);
 
             if (input) {
@@ -73,25 +78,26 @@ define([
     }
 
     /**
-     * Find the parent, item type and position to start pasting from
+     * Find the parent, item type, item to replace and position to insert new items at
      *
-     * @returns {{parent: Object, itemConfig: Object, start: Number}|undefined}
+     * @returns {{parent: Object, itemConfig: Object, item: Object|undefined, index: Number}|undefined}
      */
     function resolveItemsTarget(preview) {
         var contentType = preview.contentType,
             parent = contentType.parentContentType,
-            itemConfig;
+            itemConfig, item;
 
-        // Hovered item: start from it
+        // Hovered item: replace it and insert new items after it
         if (parent && isChildOf(contentType.config, parent.config.name)) {
             return {
                 parent,
                 itemConfig: contentType.config,
-                start: parent.children().indexOf(contentType)
+                item: contentType,
+                index: parent.children().indexOf(contentType) + 1
             };
         }
 
-        // Hovered parent: start from active item (Slider), or append new items
+        // Hovered parent: same as hovered active item (Slider), or append new items
         itemConfig = Object.values(require('Magento_PageBuilder/js/config').getConfig('content_types'))
             .find(config => isChildOf(config, contentType.config.name));
 
@@ -99,17 +105,20 @@ define([
             return;
         }
 
+        item = contentType.children()[preview.activeSlide?.()];
+
         return {
             parent: contentType,
             itemConfig,
-            start: preview.activeSlide?.() ?? contentType.children().length
+            item,
+            index: item ? contentType.children().indexOf(item) + 1 : contentType.children().length
         };
     }
 
     /**
      * Upload images from clipboard into:
      *  - opened media gallery
-     *  - hovered item (Slide, Marquee Item) and all following items. Create new items if needed.
+     *  - hovered item (Slide, Marquee Item). Create new items after it for the rest of images.
      *  - hovered content type with uploader (Image, Banner, etc.)
      *
      * @param {File[]} files
@@ -139,7 +148,7 @@ define([
         // check if hovered element has children with uploaders (slider, marquee)
         target = resolveItemsTarget(preview);
         if (target) {
-            uploadItems(target.parent, target.itemConfig, Math.max(target.start, 0), files);
+            uploadItems(target, files);
             return true;
         }
 
