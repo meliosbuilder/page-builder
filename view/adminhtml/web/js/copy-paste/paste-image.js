@@ -19,10 +19,7 @@ define([
         return !!config?.additional_data?.uploaderConfig;
     }
 
-    /**
-     * Content type with uploader, that can be placed into single parent type only.
-     * Eg: Slide (Slider), Marquee Item (Marquee)
-     */
+    // Eg: Slide in Slider, Marquee Item in Marquee
     function isChildOf(config, parentName) {
         return hasUploader(config) &&
             config.allowed_parents?.length === 1 &&
@@ -33,9 +30,7 @@ define([
         return $('#' + contentType.id).find('input[type="file"]')[0];
     }
 
-    /**
-     * Wait until uploader of the newly created item is rendered
-     */
+    // Wait for uploader of newly created item
     function waitForInput(contentType, timeout = 5000) {
         var start = Date.now();
 
@@ -61,9 +56,7 @@ define([
         return item;
     }
 
-    /**
-     * Upload first image into the target item (if any), and create new items for the rest
-     */
+    // Replace image in target item (if any), create new items for the rest
     async function uploadItems(target, files) {
         var index = target.index;
 
@@ -78,16 +71,14 @@ define([
     }
 
     /**
-     * Find the parent, item type, item to replace and position to insert new items at
-     *
      * @returns {{parent: Object, itemConfig: Object, item: Object|undefined, index: Number}|undefined}
      */
     function resolveItemsTarget(preview) {
         var contentType = preview.contentType,
             parent = contentType.parentContentType,
-            itemConfig, item;
+            contentTypes, itemConfig, item;
 
-        // Hovered content type with uploader (Image, Banner, Slide, etc.): replace it and insert new items after it
+        // Image, Banner, Slide, etc.: replace it, insert the rest after it
         if (parent && hasUploader(contentType.config) && getInput(contentType)) {
             return {
                 parent,
@@ -97,32 +88,52 @@ define([
             };
         }
 
-        // Hovered parent: same as hovered active item (Slider), or append new items
-        itemConfig = Object.values(require('Magento_PageBuilder/js/config').getConfig('content_types'))
-            .find(config => isChildOf(config, contentType.config.name));
+        contentTypes = require('Magento_PageBuilder/js/config').getConfig('content_types');
 
-        if (!itemConfig) {
-            return;
+        // Slider: same as hovering active slide. Marquee: append
+        itemConfig = Object.values(contentTypes).find(config => isChildOf(config, contentType.config.name));
+
+        if (itemConfig) {
+            item = contentType.children()[preview.activeSlide?.()];
+
+            return {
+                parent: contentType,
+                itemConfig,
+                item,
+                index: item ? contentType.children().indexOf(item) + 1 : contentType.children().length
+            };
         }
 
-        item = contentType.children()[preview.activeSlide?.()];
+        // Column, Row, Tab Item: append images
+        itemConfig = contentTypes.image;
 
-        return {
-            parent: contentType,
-            itemConfig,
-            item,
-            index: item ? contentType.children().indexOf(item) + 1 : contentType.children().length
-        };
+        if (itemConfig.allowed_parents.includes(contentType.config.name)) {
+            return {
+                parent: contentType,
+                itemConfig,
+                index: contentType.children().length
+            };
+        }
+
+        // Text, Buttons, etc.: insert images after it
+        for (item = contentType; item.parentContentType; item = item.parentContentType) {
+            parent = item.parentContentType;
+
+            if (itemConfig.allowed_parents.includes(parent.config.name)) {
+                return {
+                    parent,
+                    itemConfig,
+                    index: parent.children().indexOf(item) + 1
+                };
+            }
+        }
     }
 
     /**
-     * Upload images from clipboard into:
-     *  - opened media gallery
-     *  - hovered content type with uploader (Image, Banner, Slide, etc.). Create new items after it for the rest of images.
-     *  - hovered parent of items (Slider, Marquee). Same as hovering active item, or append new items.
+     * Upload images into opened media gallery or hovered element
      *
      * @param {File[]} files
-     * @returns {Boolean} false if there is no target to paste into
+     * @returns {Boolean} false if there is no target
      */
     return function (files) {
         var el, preview, target, fileUploadInput;
