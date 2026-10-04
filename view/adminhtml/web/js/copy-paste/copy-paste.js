@@ -7,8 +7,6 @@ define([
     'Melios_PageBuilder/js/utils/can-use-hotkeys',
     'Melios_PageBuilder/js/utils/release-pagebuilder-locks',
     'Magento_PageBuilder/js/master-format/validator',
-    'Magento_PageBuilder/js/stage-builder',
-    'Magento_Ui/js/modal/confirm',
     'Melios_PageBuilder/js/copy-paste/paste-image',
 ], function (
     $,
@@ -19,8 +17,6 @@ define([
     canUseHotkeys,
     releasePagebuilderLocks,
     isValidHtml,
-    buildStage,
-    confirm,
     pasteImage
 ) {
     'use strict';
@@ -152,20 +148,27 @@ define([
 
         e.preventDefault();
 
-        function setContent() {
-            component.pageBuilder.stage.rootContainer.children([]);
-            buildStage(component.pageBuilder.stage, text);
-        }
+        require([
+            'Magento_PageBuilder/js/stage-builder',
+            'Magento_Ui/js/modal/confirm'
+        ], (buildStage, confirm) => {
+            var stage = component.pageBuilder.stage;
 
-        if (!component.pageBuilder.stage.rootContainer.children().length) {
-            setContent();
-        } else {
-            confirm({
-                content: 'Replace entire Page Builder content with clipboard content?',
-                actions: {
-                    confirm: setContent
-                }
-            });
-        }
+            function setContent() {
+                stage.rootContainer.children([]);
+                buildStage(stage, text);
+            }
+
+            if (!stage.rootContainer.children().length) {
+                setContent();
+            } else {
+                confirm({
+                    content: 'Replace entire Page Builder content with clipboard content?',
+                    actions: {
+                        confirm: setContent
+                    }
+                });
+            }
+        });
     });
 });
