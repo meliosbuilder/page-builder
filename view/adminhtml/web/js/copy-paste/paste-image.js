@@ -87,8 +87,8 @@ define([
             parent = contentType.parentContentType,
             itemConfig, item;
 
-        // Hovered item: replace it and insert new items after it
-        if (parent && isChildOf(contentType.config, parent.config.name)) {
+        // Hovered content type with uploader (Image, Banner, Slide, etc.): replace it and insert new items after it
+        if (parent && hasUploader(contentType.config) && getInput(contentType)) {
             return {
                 parent,
                 itemConfig: contentType.config,
@@ -118,8 +118,8 @@ define([
     /**
      * Upload images from clipboard into:
      *  - opened media gallery
-     *  - hovered item (Slide, Marquee Item). Create new items after it for the rest of images.
-     *  - hovered content type with uploader (Image, Banner, etc.)
+     *  - hovered content type with uploader (Image, Banner, Slide, etc.). Create new items after it for the rest of images.
+     *  - hovered parent of items (Slider, Marquee). Same as hovering active item, or append new items.
      *
      * @param {File[]} files
      * @returns {Boolean} false if there is no target to paste into
@@ -145,17 +145,9 @@ define([
             return false;
         }
 
-        // check if hovered element has children with uploaders (slider, marquee)
         target = resolveItemsTarget(preview);
         if (target) {
             uploadItems(target, files);
-            return true;
-        }
-
-        // check if hovered element has uploader
-        fileUploadInput = hasUploader(preview.config) && getInput(preview.contentType);
-        if (fileUploadInput) {
-            setInputFiles(fileUploadInput, files.slice(0, 1));
             return true;
         }
 
