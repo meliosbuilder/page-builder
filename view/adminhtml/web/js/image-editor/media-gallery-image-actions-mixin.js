@@ -1,18 +1,12 @@
 define([
     'jquery',
-    'mage/translate'
-], function ($, $t) {
+    'mage/translate',
+    'Melios_PageBuilder/js/image-editor/load-editor'
+], function ($, $t, loadEditor) {
     'use strict';
 
     return function (target) {
         return target.extend({
-            defaults: {
-                meliosImageEditorName: 'meliosImageEditor',
-                modules: {
-                    meliosImageEditor: '${ $.meliosImageEditorName }'
-                }
-            },
-
             initialize: function () {
                 this._super();
 
@@ -41,12 +35,12 @@ define([
                     return alert('Melios Builder does not support editing SVG images yet.');
                 }
 
-                this.meliosImageEditor()
+                loadEditor().then(editor => editor
                     .setInputField($('#image-uploader-form').find('[type="file"]'))
                     .setGalleryModel(this.imageModel())
                     .showImageDetailsById(
                         this.imageModel().getId(record)
-                    );
+                    ));
             }
         });
     };

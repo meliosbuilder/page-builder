@@ -23,7 +23,38 @@ class ImageEditor extends Template
         parent::__construct($context, $data, $jsonHelper, $directoryHelper);
     }
 
-    public function getActionsJson(): string
+    public function getConfigJson(): string
+    {
+        $selectors = [
+            'modalSelector' => '.melios-image-editor-modal',
+            'modalWindowSelector' => '.melios-image-editor',
+        ];
+
+        return $this->json->serialize([
+            'modal' => [
+                'type' => 'slide',
+                'buttons' => [],
+                'modalClass' => 'melios-image-editor',
+                'title' => __('Image Editor'),
+            ],
+            'components' => [
+                'meliosImageEditor' => $selectors + [
+                    'component' => 'Melios_PageBuilder/js/image-editor/image-editor',
+                    'imageDetailsUrl' => $this->getData('imageDetailsUrl'),
+                ],
+                'meliosImageEditorActions' => $selectors + [
+                    'component' => 'Melios_PageBuilder/js/image-editor/image-editor-actions',
+                    'mediaGalleryImageDetailsName' => 'mediaGalleryImageDetails',
+                    'editorImageName' => 'meliosImageEditor',
+                    'onInsertUrl' => $this->getUrl('media_gallery/image/oninsert'),
+                    'storeId' => $this->storeManager->getStore()->getId(),
+                    'actionsList' => $this->getActions(),
+                ],
+            ],
+        ]);
+    }
+
+    private function getActions(): array
     {
         $actions = [
             [
@@ -61,16 +92,6 @@ class ImageEditor extends Template
             ];
         }
 
-        return $this->json->serialize($actions);
-    }
-
-    public function getOnInsertUrl(): string
-    {
-        return $this->getUrl('media_gallery/image/oninsert');
-    }
-
-    public function getStoreId(): int
-    {
-        return $this->storeManager->getStore()->getId();
+        return $actions;
     }
 }

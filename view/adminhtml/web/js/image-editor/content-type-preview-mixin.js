@@ -2,11 +2,11 @@ define([
     'jquery',
     'knockout',
     'underscore',
-    'uiRegistry',
     'mage/utils/wrapper',
     'mage/translate',
-    'Magento_PageBuilder/js/content-type-menu/option'
-], function ($, ko, _, registry, wrapper, $t, MenuOption) {
+    'Magento_PageBuilder/js/content-type-menu/option',
+    'Melios_PageBuilder/js/image-editor/load-editor'
+], function ($, ko, _, wrapper, $t, MenuOption, loadEditor) {
     'use strict';
 
     function updateEditorOptionState(cmp) {
@@ -43,7 +43,7 @@ define([
                                     ? urlObj.pathname.split('/.renditions/').at(-1)
                                     : urlObj.pathname.split('/media/').at(-1);
 
-                            registry.get('meliosImageEditor', editor => {
+                            loadEditor().then(editor => {
                                 editor
                                     .setInputField($('#' + this.contentType.id).find('input[type="file"]'))
                                     .setGalleryModel(false)
