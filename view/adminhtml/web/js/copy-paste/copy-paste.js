@@ -9,7 +9,20 @@ define([
     'Magento_PageBuilder/js/master-format/validator',
     'Magento_PageBuilder/js/stage-builder',
     'Magento_Ui/js/modal/confirm',
-], function ($, ko, serializer, clipboard, toast, canUseHotkeys, releasePagebuilderLocks, isValidHtml, buildStage, confirm) {
+    'Melios_PageBuilder/js/copy-paste/paste-image',
+], function (
+    $,
+    ko,
+    serializer,
+    clipboard,
+    toast,
+    canUseHotkeys,
+    releasePagebuilderLocks,
+    isValidHtml,
+    buildStage,
+    confirm,
+    pasteImage
+) {
     'use strict';
 
     async function getElementAndTextToCopy(e) {
@@ -50,51 +63,6 @@ define([
         await releasePagebuilderLocks([cmp.pageBuilder]);
 
         return [el[0], cmp.value?.()];
-    }
-
-    function getUploader() {
-        var el, preview, input,
-            gallery = $('.media-gallery-image-uploader-container:visible').filter((i, container) => {
-                var modal = $(container).closest('.modal-slide, .modal-popup');
-
-                return !modal.length || modal.hasClass('_show');
-            }).last();
-
-        // Media gallery
-        if (gallery.length) {
-            input = gallery.find('#image-uploader-form [type="file"]')[0];
-
-            return input ? { input, multiple: true } : undefined;
-        }
-
-        // Hovered content type with uploader (Image, Banner, Slide, etc.)
-        el = $('.pagebuilder-content-type-active');
-        preview = el.length ? ko.dataFor(el[0]) : null;
-
-        if (!preview?.contentType || !preview.config?.additional_data?.uploaderConfig) {
-            return;
-        }
-
-        input = $('#' + preview.contentType.id).find('input[type="file"]')[0];
-
-        return input ? { input, multiple: false } : undefined;
-    }
-
-    function tryPasteImage(e) {
-        var files = [...e.originalEvent.clipboardData.files].filter(f => f.type.startsWith('image/')),
-            uploader = files.length ? getUploader() : null,
-            dt;
-
-        if (!uploader) {
-            return false;
-        }
-
-        dt = new DataTransfer();
-        (uploader.multiple ? files : files.slice(0, 1)).forEach(file => dt.items.add(file));
-        uploader.input.files = dt.files;
-        uploader.input.dispatchEvent(new Event('change', { bubbles: true }));
-
-        return true;
     }
 
     $(document).on('copy', async e => {
@@ -162,7 +130,9 @@ define([
             return $(document).trigger('melios:paste', { json: data });
         }
 
-        if (tryPasteImage(e)) {
+        var files = [...e.originalEvent.clipboardData.files].filter(f => f.type.startsWith('image/'));
+
+        if (files.length && pasteImage(files)) {
             e.preventDefault();
             return;
         }
