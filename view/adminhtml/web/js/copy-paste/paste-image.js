@@ -60,9 +60,17 @@ define([
     async function uploadItems(target, files) {
         var index = target.index;
 
+        if (target.parentConfig) {
+            target.parent = await createItem(target.parent, target.parentConfig, target.parent.children().length);
+        }
+
         for (var i = 0; i < files.length; i++) {
             var item = i === 0 && target.item || await createItem(target.parent, target.itemConfig, index++),
                 input = await waitForInput(item);
+
+            if (i === 0) {
+                $('#' + item.id)[0]?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
 
             if (input) {
                 setInputFiles(input, [files[i]]);
@@ -129,8 +137,30 @@ define([
         }
     }
 
+    // Empty stage or no hovered element: append images wrapped into new row
+    function resolveStageTarget() {
+        var el = $('.pagebuilder-wysiwyg-overlay._hover').add(
+                $('.pagebuilder-stage-wrapper.stage-full-screen').parent()
+            ),
+            root = el.length ? ko.dataFor(el[0])?.pageBuilder?.stage?.rootContainer : null,
+            contentTypes;
+
+        if (!root) {
+            return;
+        }
+
+        contentTypes = require('Magento_PageBuilder/js/config').getConfig('content_types');
+
+        return {
+            parent: root,
+            parentConfig: contentTypes.row,
+            itemConfig: contentTypes.image,
+            index: 0
+        };
+    }
+
     /**
-     * Upload images into opened media gallery or hovered element
+     * Upload images into opened media gallery, hovered element, or the end of the stage
      *
      * @param {File[]} files
      * @returns {Boolean} false if there is no target
@@ -152,11 +182,7 @@ define([
         // get hovered element
         el = $('.pagebuilder-content-type-active');
         preview = el.length ? ko.dataFor(el[0]) : null;
-        if (!preview?.contentType) {
-            return false;
-        }
-
-        target = resolveItemsTarget(preview);
+        target = preview?.contentType ? resolveItemsTarget(preview) : resolveStageTarget();
         if (target) {
             uploadItems(target, files);
             return true;
