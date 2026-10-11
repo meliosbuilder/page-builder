@@ -36,6 +36,12 @@
     }
 }
 
+// Move header over pagebuilder-options to prevent
+// accidental clicks in pagebuilder-options when wanted to click the header.
+.pagebuilder-stage-wrapper.stage-full-screen .pagebuilder-header {
+    z-index: 1001;
+}
+
 // Move element options a bit higher so it doesn't overlap the content.
 // Critical for "text" element.
 .pagebuilder-options {
