@@ -45,6 +45,13 @@ define([
             var meta = this.getState().meta,
                 folder = meta.target_folder;
 
+            // Failed files are kept in the queue and re-sent with every next upload
+            this.getFiles().filter(file => file.error).forEach(file => this.removeFile(file.id));
+            // Do not repeat requests that will fail again (413, 403, etc.)
+            this.getPlugin('XHRUpload')?.setOptions({
+                shouldRetry: xhr => !xhr.status || xhr.status >= 500
+            });
+
             if (uploadData) {
                 this.setMeta({
                     melios_allow_overwrite: +!uploadData.isNewImage
