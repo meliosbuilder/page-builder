@@ -26,6 +26,18 @@ define([
             if (['upload-success', 'upload-error', 'complete'].includes(params[0])) {
                 $(document).trigger(`melios:uppy:${params[0]}`, params.slice(1));
             }
+
+            // Magento logs upload errors to the console only
+            if (params[0] === 'upload-error') {
+                var status = params[2]?.request?.status || params[3]?.status;
+
+                require(['Melios_PageBuilder/js/utils/toast', 'mage/translate'], (toast, $t) => {
+                    toast.error(status === 413 ?
+                        $t('The file is too large. Increase the server upload limit or use a smaller file.') :
+                        $t('Unable to upload the file.') + (status ? ` (${status})` : ''));
+                });
+            }
+
             o(...params);
         });
 
