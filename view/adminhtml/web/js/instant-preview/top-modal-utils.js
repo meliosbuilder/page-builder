@@ -1,8 +1,9 @@
 define([
     'jquery',
     'underscore',
-    'knockout'
-], function ($, _, ko) {
+    'knockout',
+    'uiRegistry'
+], function ($, _, ko, registry) {
     'use strict';
 
     var allowUpdateModalSource = true,
@@ -43,6 +44,11 @@ define([
 
                     allowUpdateModalSource = false;
                     topSource.set(`data.${k}`, v);
+
+                    // Dynamic rows (e.g. map locations) render records once and don't follow their data
+                    registry
+                        .filter(cmp => cmp.provider === topSource.name && cmp.index === k && cmp.recordData && cmp.reload)
+                        .forEach(cmp => cmp.reload());
 
                     if (typeof v === 'string' &&
                         el?.wysiwygId &&
