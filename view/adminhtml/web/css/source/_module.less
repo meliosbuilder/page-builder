@@ -75,3 +75,12 @@
         }
     }
 }
+
+// Speedup renderer in 2.4.6
+iframe[id^="render_frame_"] {
+    display: block !important;
+    position: absolute;
+    width:0;
+    height:0;
+    border: none;
+}
