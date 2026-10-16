@@ -49,6 +49,10 @@ define([
                 loaded = null;
                 loader(config, element);
             },
+            save = pairs => {
+                _.each(pairs, (value, name) => source.set('data.' + name, value));
+                source.save();
+            },
             apply = _.debounce(() => {
                 var pairs = element.isConnected ? collect(element) : {},
                     conditions;
@@ -65,8 +69,7 @@ define([
                 }
 
                 loaded = conditions;
-                _.each(pairs, (value, name) => source.set('data.' + name, value));
-                source.save();
+                save(pairs);
             }, 400);
 
         new MutationObserver(apply).observe(element, { childList: true, subtree: true, characterData: true });
@@ -76,6 +79,16 @@ define([
             if (loaded !== null && element.isConnected && (value || '') !== loaded) {
                 apply.cancel();
                 reload();
+            }
+        });
+
+        // Products: another filter (e.g. SKU) replaced the conditions, switching back must restore them from the tree
+        source.on('data.condition_option', value => {
+            var pairs = element.isConnected ? collect(element) : {};
+
+            if (value === 'condition' && loaded !== null && !_.isEmpty(pairs)) {
+                apply.cancel();
+                save(pairs);
             }
         });
 
