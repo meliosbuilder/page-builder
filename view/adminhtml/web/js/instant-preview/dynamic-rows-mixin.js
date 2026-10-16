@@ -8,7 +8,8 @@ define([
             _updateCollection: function () {
                 var result = this._super();
 
-                if (this.name.startsWith('pagebuilder_')) {
+                // Destroying removes records one by one: the closed form would save its stale rows
+                if (this.name.startsWith('pagebuilder_') && !this.mlsDestroying) {
                     utils.updateSource(this.source);
                 }
 
@@ -23,6 +24,12 @@ define([
                 }
 
                 return result;
+            },
+
+            destroy: function () {
+                this.mlsDestroying = true;
+
+                return this._super.apply(this, arguments);
             }
         });
     };
