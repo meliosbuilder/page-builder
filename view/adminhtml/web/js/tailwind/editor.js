@@ -1,6 +1,7 @@
 define([
+    'knockout',
     'Magento_Ui/js/lib/view/utils/async',
-], function ($) {
+], function (ko, $) {
     'use strict';
 
     async function createEditor(input) {
@@ -48,6 +49,12 @@ define([
                 cm.setValue(input.value);
                 cm.on('changes', () => {
                     $(input).val(cm.getValue().replaceAll("\n", ' ')).change();
+                });
+                // Values set from outside (undo/redo, inline editing) don't fire change on the input
+                ko.dataFor(input)?.value?.subscribe(value => {
+                    if ((value || '') !== cm.getValue().replaceAll("\n", ' ')) {
+                        cm.setValue(value || '');
+                    }
                 });
 
                 requestAnimationFrame(() => $('.mls-css-editor').addClass('ready'));
