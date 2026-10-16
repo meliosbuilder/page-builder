@@ -61,6 +61,11 @@ var config = {
                 'Melios_PageBuilder/js/instant-preview/page-builder-mixin': true,
             },
 
+            'Magento_PageBuilder/js/form/element/conditions-loader': {
+                // Instant Preview: apply conditions tree edits live, reload it on outside changes (undo/redo)
+                'Melios_PageBuilder/js/instant-preview/conditions-loader-mixin': true,
+            },
+
             'Magento_PageBuilder/js/form/element/html-code': {
                 // Html Editor
                 'Melios_PageBuilder/js/editor/html-code-mixin': true,
