@@ -34,6 +34,12 @@ define([
         return result;
     }
 
+    var restoring = false;
+
+    $(document)
+        .on('melios:history:restoreBefore', () => restoring = true)
+        .on('melios:history:restoreAfter', () => restoring = false);
+
     function watch(config, element, loader) {
         var source = registry.get(config.formNamespace + '.' + config.formNamespace).source,
             // The tree's conditions as loaded: only edits made after loading are applied
@@ -86,7 +92,8 @@ define([
         source.on('data.condition_option', value => {
             var pairs = element.isConnected ? collect(element) : {};
 
-            if (value === 'condition' && loaded !== null && !_.isEmpty(pairs)) {
+            // Undo/redo syncs fields one by one: saving midway would write the rest back stale
+            if (value === 'condition' && !restoring && loaded !== null && !_.isEmpty(pairs)) {
                 apply.cancel();
                 save(pairs);
             }

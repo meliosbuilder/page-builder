@@ -2,12 +2,41 @@ define([
     'jquery',
     'underscore',
     'knockout',
-    'uiRegistry'
-], function ($, _, ko, registry) {
+    'uiRegistry',
+    'mageUtils',
+    'Magento_PageBuilder/js/config'
+], function ($, _, ko, registry, utils, Config) {
     'use strict';
 
     var allowUpdateModalSource = true,
-        allowUpdateModalSourceTimer;
+        allowUpdateModalSourceTimer,
+        restoring = false;
+
+    $(document)
+        .on('melios:history:restoreBefore', () => restoring = true)
+        .on('melios:history:restoreAfter', () => restoring = false);
+
+    // Like Magento's edit.js open(): a viewport field equal to the desktop value is inherited and shown empty
+    function blankInheritedFields(data, contentType) {
+        var viewport = Config.getConfig('viewport'),
+            defaultViewport = Config.getConfig('defaultViewport');
+
+        if (!viewport || viewport === defaultViewport) {
+            return data;
+        }
+
+        data = Object.assign({}, data);
+        _.each(contentType.getViewportFields(viewport, data), (field, key) => {
+            var desktopValue = contentType.dataStores[defaultViewport].get(key);
+
+            if (utils.compare(data[key], desktopValue).equal) {
+                // Not undefined for text like edit.js: the field already exists here and validators call value.trim()
+                data[key] = typeof desktopValue === 'string' ? '' : undefined;
+            }
+        });
+
+        return data;
+    }
 
     function topModal() {
         return $('.modals-wrapper > ._show')
@@ -34,6 +63,11 @@ define([
 
             if (!topSource || topSource.id !== contentType.id) {
                 return;
+            }
+
+            // Only for undo/redo: while typing, a value equal to desktop must stay in the field
+            if (restoring) {
+                data = blankInheritedFields(data, contentType);
             }
 
             clearTimeout(allowUpdateModalSourceTimer);
