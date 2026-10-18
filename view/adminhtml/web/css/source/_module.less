@@ -76,6 +76,12 @@
     }
 }
 
+// remove grey bg from banner and slider to reveal row bg underneath
+.pagebuilder-banner .pagebuilder-banner-wrapper,
+.pagebuilder-slide .pagebuilder-slide-wrapper {
+    background-color: transparent;
+}
+
 // Speedup renderer in 2.4.6
 iframe[id^="render_frame_"] {
     display: block !important;
