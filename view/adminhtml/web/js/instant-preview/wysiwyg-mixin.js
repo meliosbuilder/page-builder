@@ -1,8 +1,58 @@
 define([
-    'jquery',
-    'tinymce'
-], function ($, tinyMCE) {
+    'tinymce',
+    'Magento_PageBuilder/js/events',
+    'Melios_PageBuilder/js/instant-preview/top-modal-utils'
+], function (tinyMCE, events, topModalUtils) {
     'use strict';
+
+    var props = ['backgroundImage', 'backgroundPosition', 'backgroundSize', 'backgroundRepeat', 'backgroundAttachment'];
+
+    // Computed color is always "rgb(...)" or "rgba(...)"
+    function getAlpha(color) {
+        var match = color.match(/rgba\(.*,\s*([\d.]+)\)/);
+
+        return match ? parseFloat(match[1]) : 1;
+    }
+
+    function colorLayer(color) {
+        return [`linear-gradient(${color}, ${color})`, '0 0', 'auto', 'repeat', 'scroll'];
+    }
+
+    function getBackground(element, root) {
+        var layers = [],
+            color = '';
+
+        for (let el = element; el; el = el.parentElement) {
+            let style = getComputedStyle(el),
+                alpha = getAlpha(style.backgroundColor);
+
+            // Banner overlay shown on hover only. Show it, since mouse is over the form.
+            if (!alpha && el.dataset.overlayColor &&
+                el.closest('[data-show-overlay]')?.dataset.showOverlay === 'hover'
+            ) {
+                layers.push(colorLayer(el.dataset.overlayColor));
+            }
+
+            if (root.contains(el) && style.backgroundImage !== 'none') {
+                layers.push(props.map(prop => style[prop]));
+            }
+
+            if (alpha >= 1) {
+                color = style.backgroundColor;
+                break;
+            }
+
+            if (alpha > 0) {
+                layers.push(colorLayer(style.backgroundColor));
+            }
+        }
+
+        return props.reduce((result, prop, i) => {
+            result[prop] = layers.map(layer => layer[i]).join(', ');
+
+            return result;
+        }, { backgroundColor: color });
+    }
 
     return function (target) {
         return target.extend({
@@ -16,65 +66,70 @@ define([
                 return this;
             },
 
-            // Use element's background in the editor so white text stays readable
             initElementBackground: function () {
-                var apply = () => {
-                    var iframe = tinyMCE.get(this.wysiwygId)?.iframeElement,
-                        data = this.source?.get('data') || {},
-                        image = data.background_image?.[0]?.url,
-                        // Same rule as banner's overlay-background-color converter
-                        overlay = data.show_overlay === 'always' && data.overlay_color;
+                var contentType,
+                    frame,
+                    apply = () => {
+                        var editor = tinyMCE.get(this.wysiwygId),
+                            wrapper = contentType?.preview?.wrapperElement;
 
-                    if (!iframe) {
-                        return;
-                    }
+                        cancelAnimationFrame(frame);
 
-                    // Values are plain css, layer lists repeat for overlay too
-                    Object.assign(iframe.style, {
-                        backgroundColor: data.background_color || '',
-                        backgroundImage: [
-                            overlay && `linear-gradient(${overlay}, ${overlay})`,
-                            image && `url("${image}")`
-                        ].filter(Boolean).join(', '),
-                        backgroundPosition: data.background_position || '',
-                        backgroundSize: data.background_size || '',
-                        backgroundRepeat: data.background_repeat || '',
-                        backgroundAttachment: data.background_attachment || ''
-                    });
+                        if (!editor?.iframeElement || !wrapper || contentType.id !== this.source?.id) {
+                            return;
+                        }
+
+                        // Start from the element where text is rendered, so banner overlay is included
+                        Object.assign(
+                            editor.iframeElement.style,
+                            getBackground(
+                                wrapper.querySelector('.inline-wysiwyg') || wrapper,
+                                wrapper
+                            )
+                        );
+                        editor.getBody().style.backgroundColor = 'transparent';
+                    },
+                    applyLater = () => {
+                        cancelAnimationFrame(frame);
+                        frame = requestAnimationFrame(apply);
+                    },
+                    bind = () => {
+                        contentType?.dataStore.events.off('state', applyLater);
+                        contentType = topModalUtils.getEditedContentType();
+                        contentType?.dataStore.events.on('state', applyLater);
+                        applyLater();
+                    },
+                    onAddEditor = e => {
+                        if (e.editor.id === this.wysiwygId) {
+                            e.editor.on('init', apply);
+                        }
+                    },
+                    // Computed style is in the middle of transition when read right after change (banner overlay)
+                    onTransitionEnd = e => {
+                        if (e.propertyName.startsWith('background') &&
+                            contentType?.preview?.wrapperElement?.contains(e.target)
+                        ) {
+                            applyLater();
+                        }
+                    };
+
+                tinyMCE.on('AddEditor', onAddEditor);
+                document.addEventListener('transitionend', onTransitionEnd);
+                events.on('contentType:editBefore', () => setTimeout(bind), this.uid);
+
+                this.unbindElementBackground = () => {
+                    cancelAnimationFrame(frame);
+                    tinyMCE.off('AddEditor', onAddEditor);
+                    document.removeEventListener('transitionend', onTransitionEnd);
+                    events.off(this.uid);
+                    contentType?.dataStore.events.off('state', applyLater);
                 };
 
-                this.onAddEditor = e => {
-                    if (e.editor.id === this.wysiwygId) {
-                        e.editor.on('init', apply);
-                    }
-                };
-                tinyMCE.on('AddEditor', this.onAddEditor);
-
-                [
-                    'background_color',
-                    'background_image',
-                    'background_position',
-                    'background_size',
-                    'background_repeat',
-                    'background_attachment',
-                    'overlay_color',
-                    'show_overlay'
-                ].forEach(key => this.source?.on(`data.${key}`, apply, this.name));
-
-                // Colorpicker preview writes to source.data directly, see page-builder-mixin
-                $(document).on(`move.spectrum.${this.uid} hide.spectrum.${this.uid}`, () => setTimeout(apply));
-
-                // Editor could be already created when form is rendered again
-                if (tinyMCE.get(this.wysiwygId)?.initialized) {
-                    apply();
-                }
+                bind();
             },
 
             destroy: function () {
-                if (this.onAddEditor) {
-                    tinyMCE.off('AddEditor', this.onAddEditor);
-                    $(document).off(`.${this.uid}`);
-                }
+                this.unbindElementBackground?.();
                 this._super();
             },
 

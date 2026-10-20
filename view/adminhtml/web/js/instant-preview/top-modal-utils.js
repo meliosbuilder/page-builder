@@ -4,13 +4,18 @@ define([
     'knockout',
     'uiRegistry',
     'mageUtils',
-    'Magento_PageBuilder/js/config'
-], function ($, _, ko, registry, utils, Config) {
+    'Magento_PageBuilder/js/config',
+    'Magento_PageBuilder/js/events'
+], function ($, _, ko, registry, utils, Config, events) {
     'use strict';
 
     var allowUpdateModalSource = true,
         allowUpdateModalSourceTimer,
-        restoring = false;
+        restoring = false,
+        editedContentType;
+
+    // Tracked here because this module is loaded with page builder, before any form component
+    events.on('contentType:editBefore', (data) => editedContentType = data.contentType);
 
     $(document)
         .on('melios:history:restoreBefore', () => restoring = true)
@@ -47,6 +52,8 @@ define([
 
     return {
         getTopModal: topModal,
+
+        getEditedContentType: () => editedContentType,
 
         // Update preview on every change inside "Edit" modal
         updateSource: _.throttle(source => {
