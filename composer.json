@@ -5,9 +5,9 @@
     "version": "1.18.1",
     "license": "GPL-3.0-or-later",
     "require": {
-        "php": "^8.0",
+        "php": "^8.2",
         "enshrined/svg-sanitize": "^0.22 || ^1.0",
-        "symfony/process": "*"
+        "tailwindphp/tailwindphp": "^1.8"
     },
     "autoload": {
         "files": [
