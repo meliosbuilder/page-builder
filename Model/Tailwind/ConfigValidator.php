@@ -9,8 +9,8 @@ class ConfigValidator
     private const DISALLOWED_DIRECTIVES = '/@(import|source|plugin|config|reference)\b/i';
 
     /**
-     * Reject config values that make the tailwindcss binary read or execute
-     * files outside the generated temp directory.
+     * Reject config values that make the tailwind compiler read or execute
+     * files from disk.
      *
      * @throws LocalizedException
      */
