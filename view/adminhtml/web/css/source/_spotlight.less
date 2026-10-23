@@ -31,7 +31,8 @@
 
     .spotlight-faux-input {
         cursor: text;
-        color: ~"rgb(255 255 255 / 50%)";
+        white-space: nowrap;
+        color: var(--mls-header-island-color);
         padding: 4px 6px 4px 8px;
         border-radius: 6px;
         background: #4a4542;
@@ -41,10 +42,11 @@
             display: inline-flex;
             margin-left: 25px;
             padding: 0px 7px;
-            border: 1px solid ~"rgb(239 233 228 / 20%)";
+            border: 1px solid var(--mls-header-island-active-bg);
             border-radius: 5px;
             font-size: 12px;
-            background: ~"rgb(255 255 255 / 5%)";
+            background: var(--mls-header-island-active-bg);
+            opacity: .6;
         }
     }
     .theme-m137 & {
@@ -59,7 +61,9 @@
             opacity: .85 !important;
         }
         .spotlight-faux-input {
-            padding: 10px 15px;
+            height: var(--mls-header-island-height);
+            border-radius: var(--mls-header-island-radius);
+            padding-inline: 15px;
             border-radius: 999px;
             color: inherit;
             background: ~"rgb(0 0 0 / 7%)";

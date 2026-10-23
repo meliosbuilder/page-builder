@@ -93,7 +93,7 @@ define([
         }
     });
 
-    // Confirm page upload when needed
+    // Confirm page unload when needed
     (() => {
         var lastScroll = new Date(),
             lastDelta = 0;
