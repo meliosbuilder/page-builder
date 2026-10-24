@@ -120,6 +120,7 @@ define([
             canOpen: (e) => true,
             onSelect: (id, event) => true,
             items: [],
+            context: () => null,
             markup: `
                 <div class="mls-overlay"></div>
                 <div class="mls-popup">
@@ -194,10 +195,11 @@ define([
                 if (!this.opened()) {
                     return;
                 }
-                this.run($(e.target).data('id'), e);
+                this.run($(e.target).closest('.item').data('id'), e);
             });
         },
-        open: function () {
+        open: function (context) {
+            this.context = context || this.options.context() || null;
             this.element.addClass('melios-spotlight');
 
             if (!this.input) {
@@ -213,10 +215,9 @@ define([
                 });
 
                 this.element.find('.mls-close').click(this.close.bind(this));
-
-                this.renderItems();
             }
 
+            this.renderItems();
             this.element.show();
             this.input.focus().select();
         },
@@ -224,7 +225,11 @@ define([
             return this.element.is(':visible');
         },
         close: function () {
+            var context = this.context;
+
+            this.context = null;
             this.element.hide();
+            context?.onClose?.();
         },
         clear: function () {
             this.input.val('').trigger('input');
@@ -234,7 +239,7 @@ define([
             this.input.focus();
         },
         run: function (id, e) {
-            if (id && this.options.onSelect(id, e)) {
+            if (id && (this.context?.onSelect || this.options.onSelect)(id, e)) {
                 this.close();
                 setTimeout(() => this.clear(), 50);
             }
@@ -257,8 +262,10 @@ define([
                 return;
             }
 
-            if (typeof this.options.items === 'function') {
-                return this.options.items(this.input.val());
+            var source = this.context?.items || this.options.items;
+
+            if (typeof source === 'function') {
+                return source(this.input.val());
             }
 
             function fuzzyMatch(pattern, str) {
@@ -270,7 +277,7 @@ define([
 
             var pattern = this.input.val().toLowerCase();
 
-            return this.options.items
+            return source
                 .filter(item => fuzzyMatch(pattern, item.label.toLowerCase()))
                 .sort((a, b) => {
                     var aObj = {
