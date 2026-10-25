@@ -4,11 +4,20 @@ define([
     'underscore',
     'mage/translate',
     'Magento_MediaGalleryUi/js/image/image-actions',
-    'Magento_Ui/js/modal/prompt'
-], function ($, ko, _, $t, ImageActions, prompt) {
+    'Magento_Ui/js/modal/prompt',
+    'Magento_PageBuilder/js/config'
+], function ($, ko, _, $t, ImageActions, prompt, Config) {
     'use strict';
 
     var bgWatchers = new WeakMap();
+
+    // Id of a media file as the media gallery encodes it
+    function encodeId(path) {
+        return btoa(new TextEncoder().encode(path).reduce((data, byte) => data + String.fromCharCode(byte), ''))
+            .replace(/\+/g, ':')
+            .replace(/\//g, '_')
+            .replace(/=/g, '-');
+    }
 
     return ImageActions.extend({
         defaults: {
@@ -137,6 +146,12 @@ define([
                 file = new File([blob], imageName, { type: blob.type }),
                 dt = new DataTransfer();
 
+            if (editor.saveHandler) {
+                this.meliosUpload(file, isNewImage, editor.saveHandler);
+                this.closeModal();
+                return;
+            }
+
             $(document).trigger('melios:image-editor:upload-before', {
                 isNewImage,
                 file,
@@ -147,7 +162,7 @@ define([
                 $('body').trigger('processStop');
             });
             $(document).one('melios:uppy:upload-success.meliosImageEditorSave', (e, f, response) => {
-                var encodedId, fileName = response.body?.name;
+                var fileName = response.body?.name;
 
                 $(document).off('.meliosImageEditorSave');
 
@@ -159,18 +174,7 @@ define([
                     return;
                 }
 
-                encodedId = btoa(
-                        new TextEncoder()
-                            .encode(editor.getFolderPath() + '/' + fileName)
-                            .reduce((data, byte) => {
-                                return data + String.fromCharCode(byte);
-                            }, '')
-                    )
-                    .replace(/\+/g, ':')
-                    .replace(/\//g, '_')
-                    .replace(/=/g, '-');
-
-                this.meliosSaveAfter(isNewImage, fileName, encodedId).then(() => {
+                this.meliosSaveAfter(isNewImage, fileName, encodeId(editor.getFolderPath() + '/' + fileName)).then(() => {
                     $('body').trigger('processStop');
                 });
             });
@@ -214,6 +218,47 @@ define([
             }
 
             this.closeModal();
+        },
+
+        /**
+         * Without an upload field (setSaveHandler): uploaded with the Image content type uploader,
+         * then the handler gets {path, url, isNewImage}. path: of the saved file in the media folder.
+         */
+        meliosUpload: function (file, isNewImage, handler) {
+            var editor = this.meliosEditor(),
+                folder = editor.getFolderPath(),
+                url = Config.getContentTypeConfig('image')?.additional_data?.uploaderConfig?.uploaderConfig?.url,
+                data = new FormData();
+
+            data.append('image', file);
+            data.append('param_name', 'image');
+            data.append('form_key', window.FORM_KEY);
+            data.append('isAjax', 'true');
+            data.append('melios_allow_overwrite', +!isNewImage);
+            data.append('target_folder', folder);
+
+            $.ajax({
+                url,
+                type: 'POST',
+                data,
+                processData: false,
+                contentType: false,
+                dataType: 'json',
+            }).then(body => {
+                if (body.error || !body.name) {
+                    return $.Deferred().reject(body.error);
+                }
+
+                return this.meliosSaveAfter(isNewImage, body.name, encodeId(folder + '/' + body.name)).then(() => {
+                    handler({ path: folder + '/' + body.name, url: body.url, isNewImage });
+                });
+            }).fail(error => {
+                require(['Melios_PageBuilder/js/utils/toast'], toast => {
+                    toast.error(typeof error === 'string' ? error : $t('Unable to upload the file.'));
+                });
+            }).always(() => {
+                $('body').trigger('processStop');
+            });
         },
 
         meliosSaveAfter: function (isNewImage, imageName, encodedFilename) {

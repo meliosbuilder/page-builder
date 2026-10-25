@@ -322,6 +322,17 @@ define([
 
         setInputField: function (input) {
             this.inputField = input[0];
+            this.saveHandler = null;
+            return this;
+        },
+
+        /**
+         * Saving uploads the image itself and passes it to the handler, instead of an upload field
+         * (images of AI Composer markup in Live view): see image-editor-actions.meliosUpload
+         */
+        setSaveHandler: function (handler) {
+            this.saveHandler = handler;
+            this.inputField = null;
             return this;
         },
 
