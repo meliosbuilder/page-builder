@@ -80,9 +80,14 @@ define([
             }
 
             require(['@floating-ui/dom'], (floatingUI) => {
-                var { computePosition, shift, limitShift } = floatingUI;
+                var { computePosition, shift, limitShift } = floatingUI,
+                    floating = toolbar;
 
-                computePosition(toolbarAnchor, toolbar, {
+                if (!floating || !toolbarAnchor?.isConnected || !floating.isConnected) {
+                    return;
+                }
+
+                computePosition(toolbarAnchor, floating, {
                     middleware: [shift({
                         padding: {
                             top: 50,
@@ -101,7 +106,7 @@ define([
                     })],
                     placement: placement,
                 }).then(({ x, y }) => {
-                    Object.assign(toolbar.style, {
+                    Object.assign(floating.style, {
                         top: `${y}px`,
                         zIndex: 999,
                     });
