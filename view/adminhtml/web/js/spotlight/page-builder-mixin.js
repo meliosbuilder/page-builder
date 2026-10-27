@@ -30,7 +30,7 @@ define([
             return;
         }
 
-        currentDraggable.helper.css('opacity', 1);
+        currentDraggable.helper.css('opacity', '');
         currentDraggable._mouseDrag(e);
     });
 
