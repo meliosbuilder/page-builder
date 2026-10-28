@@ -182,18 +182,17 @@ define([
                 action: () => this.duplicate(contentType),
             },
             { id: 'copy', label: $t('Copy'), action: () => this.copy(contentType) },
-            // Pro version replaces these (copy-paste/tree-commands-mixin.js)
             {
                 id: 'cut',
                 label: $t('Cut'),
                 pro: true,
-                action: () => toast.show($t('Melios Page Builder Pro version is required for cut operations.')),
+                action: () => toast.show($t('Cut is available in Page Builder Pro')),
             },
             {
                 id: 'paste',
                 label: $t('Paste'),
                 pro: true,
-                action: () => toast.show($t('Melios Page Builder Pro version is required to paste copied section.')),
+                action: () => toast.show($t('Paste is available in Page Builder Pro')),
             },
             '-',
             {

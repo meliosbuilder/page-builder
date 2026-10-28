@@ -100,7 +100,7 @@ define([
         var el = promise.then(([el]) => el);
 
         if (!require.defined('Melios_PageBuilderPro/js/copy-paste/copy-paste')) {
-            toast.show('Melios Page Builder Pro version is required for cut operations.');
+            toast.show('Cut is available in Page Builder Pro');
         }
 
         $(document).trigger('melios:cut', { el, text });
@@ -120,7 +120,7 @@ define([
             e.preventDefault();
 
             if (!require.defined('Melios_PageBuilderPro/js/copy-paste/copy-paste')) {
-                toast.show('Melios Page Builder Pro version is required to paste copied section.');
+                toast.show('Paste is available in Page Builder Pro');
             }
 
             return $(document).trigger('melios:paste', { json: data });
