@@ -1,4 +1,5 @@
 :root {
+    --mls-header-height: 46px;
     --mls-header-island-height: 30px;
     --mls-header-island-radius: 6px;
     --mls-header-island-inset: 2px;
@@ -7,7 +8,19 @@
     --mls-header-island-color: ~"rgba(255,255,255,.6)";
     --mls-header-island-active-color: ~"rgba(255,255,255,1)";
 }
+.theme-m137 {
+    --mls-header-height: auto;
+    --mls-header-island-height: 36px;
+    --mls-header-island-radius: 99px;
+    --mls-header-island-inset: 4px;
+    --mls-header-island-bg: ~"rgba(0,0,0,.07)";
+    --mls-header-island-active-bg: ~"rgba(255,255,255,.5)";
+    --mls-header-island-color: ~"rgba(0,0,0,.65)";
+    --mls-header-island-active-color: ~"rgba(0,0,0,1)";
+}
+
 .pagebuilder-header {
+    height: var(--mls-header-height);
     .viewport-buttons {
         align-self: center;
         height: var(--mls-header-island-height);
@@ -43,14 +56,4 @@
             display: none;
         }
     }
-}
-
-.theme-m137 {
-    --mls-header-island-height: 36px;
-    --mls-header-island-radius: 99px;
-    --mls-header-island-inset: 4px;
-    --mls-header-island-bg: ~"rgba(0,0,0,.07)";
-    --mls-header-island-active-bg: ~"rgba(255,255,255,.5)";
-    --mls-header-island-color: ~"rgba(0,0,0,.65)";
-    --mls-header-island-active-color: ~"rgba(0,0,0,1)";
 }
