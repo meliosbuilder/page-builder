@@ -14,9 +14,10 @@
 :root {
     --mls-search-height: auto;
     --mls-tree-rail-width: 44px;
+    --mls-tree-rail-padding: 8px 0;
     --mls-tree-flyout-width: 240px;
     --mls-tree-flyout-padding: 0px;
-    --mls-tree-panel-color: @color-ivory;
+    --mls-tree-panel-color: #f7f3eb;
     --mls-tree-panel-accent: #2563eb;
     --mls-tree-panel-width: var(--mls-tree-rail-width);
     --mls-tree-padding: 4px var(--mls-tree-item-inset) 40px;
@@ -27,6 +28,7 @@
 }
 
 .theme-m137 {
+    --mls-tree-rail-padding: 20px 0;
     --mls-tree-flyout-padding: 0 0 0 12px;
     --mls-tree-panel-color: #111;
     --mls-tree-padding: 0 0 40px;
@@ -105,7 +107,7 @@ body .pagebuilder-stage-wrapper.stage-full-screen {
     align-items: center;
     gap: 4px;
     width: var(--mls-tree-rail-width);
-    padding: 8px 0;
+    padding: var(--mls-tree-rail-padding);
     box-sizing: border-box;
     border-right: 1px solid ~"color-mix(in srgb, currentColor 12%, transparent)";
 
