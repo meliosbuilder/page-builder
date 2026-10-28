@@ -59,6 +59,8 @@ var config = {
                 'Melios_PageBuilder/js/simple-save/page-builder-mixin': true,
                 // Instant Preview
                 'Melios_PageBuilder/js/instant-preview/page-builder-mixin': true,
+                // Tree
+                'Melios_PageBuilder/js/tree/page-builder-mixin': true,
             },
 
             'Magento_PageBuilder/js/form/element/conditions-loader': {

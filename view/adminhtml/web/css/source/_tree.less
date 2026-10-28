@@ -1,0 +1,462 @@
+.mls-panel-icon(@icon, @size) {
+    content: '';
+    flex: none;
+    width: @size;
+    height: @size;
+    background-color: currentColor;
+    forced-color-adjust: none;
+    mask: url('data:image/svg+xml,@{icon}') no-repeat 50% 50%;
+    -webkit-mask: url('data:image/svg+xml,@{icon}') no-repeat 50% 50%;
+    mask-size: contain;
+    -webkit-mask-size: contain;
+}
+
+:root {
+    --mls-search-height: auto;
+    --mls-tree-rail-width: 44px;
+    --mls-tree-flyout-width: 240px;
+    --mls-tree-flyout-padding: 0px;
+    --mls-tree-panel-color: @color-ivory;
+    --mls-tree-panel-accent: #2563eb;
+    --mls-tree-panel-width: var(--mls-tree-rail-width);
+    --mls-tree-padding: 4px var(--mls-tree-item-inset) 40px;
+    --mls-tree-item-height: 26px;
+    --mls-tree-item-indent: 12px;
+    --mls-tree-item-border-radius: 4px;
+    --mls-tree-item-inset: 4px;
+}
+
+.theme-m137 {
+    --mls-tree-flyout-padding: 0 0 0 12px;
+    --mls-tree-panel-color: #111;
+    --mls-tree-padding: 0 0 40px;
+    --mls-tree-item-height: 28px;
+    --mls-tree-item-border-radius: 99px;
+    --mls-tree-item-inset: 8px;
+}
+
+.pagebuilder-stage-wrapper {
+
+    &.mls-panel-open {
+        --mls-tree-panel-width: ~"calc(var(--mls-tree-rail-width) + var(--mls-tree-flyout-width))";
+    }
+
+    .pagebuilder-panel-wrapper {
+        width: var(--mls-tree-panel-width);
+        padding: 0;
+    }
+}
+
+// body: above Magento's rules of the same selectors, wherever its styles load.
+// No margin transition: the width changes at once, and the Live frame is fitted once.
+body .pagebuilder-wysiwyg-snapshot .pagebuilder-stage-wrapper.stage-full-screen,
+body .pagebuilder-stage-wrapper.stage-full-screen {
+    .pagebuilder-header {
+        left: var(--mls-tree-panel-width);
+        width: ~"calc(100% - var(--mls-tree-panel-width))";
+    }
+
+    .pagebuilder-stage {
+        margin-left: var(--mls-tree-panel-width);
+        width: ~"calc(100% - var(--mls-tree-panel-width))";
+        transition: none;
+    }
+}
+
+// Magento colors each part of the panel: the rail, head and tree get the color of its texts, on its background.
+// As specific as Magento's full screen panel, which scrolls (the body does here).
+.pagebuilder-stage-wrapper .pagebuilder-panel-wrapper .pagebuilder-panel.mls-panel {
+    display: flex;
+    overflow: hidden;
+    color: var(--mls-tree-panel-color);
+}
+
+// Icon buttons. Magento's admin styles every button:hover, :focus and :active (light gray, dark text),
+// more specific than a class: they keep their colors, their own hover and active backgrounds below win.
+// The menu's buttons don't need it: as specific as Magento's rules, and after them.
+.mls-panel-rail button,
+.mls-tree-eye,
+.mls-tree-more {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    box-shadow: none;
+    color: inherit;
+
+    &:focus,
+    &:active {
+        background-color: transparent;
+    }
+
+    &:hover,
+    &:focus,
+    &:active {
+        color: inherit;
+    }
+}
+
+.mls-panel-rail {
+    flex: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    width: var(--mls-tree-rail-width);
+    padding: 8px 0;
+    box-sizing: border-box;
+    border-right: 1px solid ~"color-mix(in srgb, currentColor 12%, transparent)";
+
+    button {
+        width: 34px;
+        height: 34px;
+        border-radius: 8px;
+        opacity: .7;
+
+        &:hover {
+            opacity: 1;
+            background: ~"color-mix(in srgb, currentColor 10%, transparent)";
+        }
+
+        &.active {
+            opacity: 1;
+            background: ~"color-mix(in srgb, currentColor 18%, transparent)";
+        }
+    }
+
+    [data-tab="elements"]::before {
+        .mls-panel-icon('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8v8M8 12h8"/><circle cx="12" cy="12" r="9"/></svg>', 20px);
+    }
+
+    [data-tab="layers"]::before {
+        .mls-panel-icon('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3 9 5-9 5-9-5 9-5z"/><path d="m3 13 9 5 9-5"/></svg>', 20px);
+    }
+}
+
+.mls-panel-body {
+    display: none;
+    flex: none;
+    width: var(--mls-tree-flyout-width);
+    height: 100%;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding: var(--mls-tree-flyout-padding);
+
+    .mls-panel-open & {
+        display: block;
+        animation: mls-panel-in .16s ease-out;
+    }
+}
+
+@keyframes mls-panel-in {
+    from {
+        opacity: 0;
+        transform: translateX(-12px);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .mls-panel-open .mls-panel-body {
+        animation: none;
+    }
+}
+
+.mls-show-layers .mls-panel-elements {
+    display: none;
+}
+
+.mls-tree-label {
+    flex: 1 1 auto;
+    min-width: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    mask-image: ~"linear-gradient(to right, #000 calc(100% - 20px), transparent)";
+}
+
+.mls-tree {
+    display: none;
+    position: relative;
+    padding: var(--mls-tree-padding);
+
+    .mls-show-layers & {
+        display: block;
+    }
+}
+
+// More specific than Magento's rule of its position, wherever its styles load
+.mls-tree-search {
+    display: none;
+    .mls-show-layers & {
+        display: block;
+    }
+}
+
+.pagebuilder-panel-wrapper .pagebuilder-panel.mls-panel .search-content-types {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    input {
+        box-sizing: border-box;
+        height: var(--mls-search-height, auto);
+    }
+    a.close {
+        top: 50%;
+        transform: translateY(-50%);
+    }
+}
+
+.mls-searched .mls-tree-toggle {
+    cursor: default;
+}
+
+.mls-tree-row {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    outline: none;
+    height: var(--mls-tree-item-height);
+    padding-right: var(--mls-tree-item-inset);
+    padding-left: ~"calc(var(--mls-tree-item-inset) + var(--mls-depth) * var(--mls-tree-item-indent))";
+    border-radius: var(--mls-tree-item-border-radius);
+    font-size: 12px;
+    white-space: nowrap;
+    cursor: pointer;
+    user-select: none;
+
+    > i {
+        display: flex;
+        flex-grow: 0;
+        flex-shrink: 0;
+        width: 16px;
+        font-size: 16px;
+        text-align: center;
+        justify-content: center;
+        align-items: center;
+        opacity: .8;
+        &::before {
+            display: flex;
+        }
+    }
+
+    .mls-tree-preview {
+        margin-left: 2px;
+        opacity: .55;
+    }
+
+    &.mls-hovered {
+        background: ~"color-mix(in srgb, currentColor 12%, transparent)";
+    }
+
+    &.mls-selected {
+        background: var(--mls-tree-panel-accent);
+        color: #fff;
+    }
+
+    &.mls-dimmed {
+        > i,
+        .mls-tree-label {
+            opacity: .45;
+        }
+    }
+
+    &:focus-visible {
+        box-shadow: inset 0 0 0 2px var(--mls-tree-panel-accent);
+    }
+
+    &:hover,
+    &:focus-visible,
+    &.mls-menu-open {
+        .mls-tree-eye,
+        .mls-tree-more {
+            display: flex;
+            visibility: visible;
+        }
+    }
+
+    &.mls-dragged {
+        opacity: .4;
+    }
+
+    // Container the dragged element goes into: marked lighter than the line, so the line shows the place
+    &.mls-drop-inside {
+        background: ~"color-mix(in srgb, var(--mls-tree-panel-accent) 18%, transparent)";
+        box-shadow: inset 0 0 0 1px ~"color-mix(in srgb, var(--mls-tree-panel-accent) 70%, transparent)";
+    }
+}
+
+.mls-tree-toggle {
+    flex: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 14px;
+    height: 14px;
+
+    [aria-expanded] > &::before {
+        .mls-panel-icon('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg>', 12px);
+        transition: transform .15s ease-out;
+    }
+
+    [aria-expanded="true"] > &::before {
+        transform: rotate(90deg);
+    }
+}
+
+.mls-tree-actions {
+    flex: none;
+    display: flex;
+    align-items: center;
+    gap: 1px;
+}
+
+.mls-tree-eye,
+.mls-tree-more {
+    width: 20px;
+    height: 20px;
+    border-radius: 4px;
+    opacity: .65;
+    display: none;
+
+    &.mls-on {
+        display: flex;
+    }
+
+    &:is(button):hover,
+    &[aria-expanded="true"] {
+        background: transparent;
+        opacity: 1;
+    }
+}
+
+.mls-tree-eye::before {
+    .mls-panel-icon('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>', 14px);
+}
+.mls-tree-eye.mls-on::before {
+    .mls-panel-icon('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.7 5.1A10 10 0 0 1 22 12a14 14 0 0 1-2.2 3.2M6.6 6.6A14 14 0 0 0 2 12s3.5 7 10 7a9.7 9.7 0 0 0 5.4-1.6M9.9 9.9a3 3 0 0 0 4.2 4.2M2 2l20 20"/></svg>', 14px);
+}
+.mls-tree-more::before {
+    .mls-panel-icon('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="5" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/></svg>', 14px);
+}
+
+.mls-on + .mls-tree-more {
+    display: flex;
+    visibility: hidden;
+}
+
+.mls-tree-empty {
+    padding: 12px 8px;
+    font-size: 12px;
+    opacity: .6;
+}
+
+// Drop line: drawn over the rows, indented to the level it goes to
+.mls-tree.mls-drop::after {
+    content: '';
+    position: absolute;
+    z-index: 1;
+    top: ~"calc(var(--mls-drop-y) - 1px)";
+    right: var(--mls-tree-item-inset);
+    left: ~"calc(20px + var(--mls-drop-depth) * var(--mls-tree-item-indent))";
+    height: 2px;
+    border-radius: 1px;
+    background: var(--mls-tree-panel-accent);
+    pointer-events: none;
+}
+
+.mls-tree-ghost {
+    position: fixed;
+    z-index: 10001;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    border-radius: 6px;
+    background: var(--mls-tree-panel-accent);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, .25);
+    color: #fff;
+    font-size: 12px;
+    white-space: nowrap;
+    pointer-events: none;
+}
+
+body.mls-tree-dragging {
+    user-select: none;
+
+    .mls-tree-row {
+        cursor: grabbing;
+    }
+
+    &.mls-tree-no-drop .mls-tree-row {
+        cursor: not-allowed;
+    }
+}
+
+.mls-tree-menu {
+    position: fixed;
+    z-index: 10000;
+    min-width: 200px;
+    padding: 4px;
+    border-radius: 8px;
+    background: #fff;
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, .08), 0 8px 24px rgba(0, 0, 0, .18);
+    color: #303030;
+
+    button {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        width: 100%;
+        padding: 6px 10px;
+        border: 0;
+        border-radius: 5px;
+        background: transparent;
+        box-shadow: none;
+        color: inherit;
+        font-size: 13px;
+        line-height: 18px;
+        text-align: left;
+
+        &:focus {
+            outline: none;
+        }
+
+        // The first item has focus when the menu opens, highlighted only when it's opened with the keyboard
+        &:hover:not(:disabled),
+        &:focus-visible {
+            background: #f1f1f1;
+        }
+
+        &:disabled {
+            opacity: .4;
+            cursor: default;
+        }
+
+        &.mls-danger {
+            color: #c00;
+        }
+    }
+}
+
+.mls-tree-menu-pro {
+    padding: 0 5px;
+    border-radius: 4px;
+    background: ~"rgba(0,0,0,.1)";
+    color: #666;
+    font-size: 10px;
+    font-weight: 600;
+    line-height: 16px;
+}
+
+.mls-tree-menu-separator {
+    height: 1px;
+    margin: 4px 6px;
+    background: rgba(0, 0, 0, .08);
+}
+
+.mls-tree-hover {
+    outline: 2px dashed var(--mls-tree-panel-accent) !important;
+    outline-offset: -2px;
+}
