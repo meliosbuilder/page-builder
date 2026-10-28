@@ -1,8 +1,17 @@
 .media-gallery-container {
+    .admin__data-grid-outer-wrap::after {
+        content: '';
+        display: table;
+        clear: both;
+    }
     .page-main-actions {
         position: sticky;
         top: 0;
         z-index: 300;
+    }
+    .masonry-image-grid {
+        position: sticky;
+        top: 90px;
     }
 
     // Prevent gallery layout shift caused by added/removed message
