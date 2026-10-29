@@ -86,23 +86,35 @@ define([], function () {
     const PREVIEW_LENGTH = 80;
     const texts = new Map();
 
-    function plainText(html) {
-        var text = texts.get(html),
+    // Media or code counts as content even without text
+    const CONTENT_TAGS = 'img, svg, picture, video, audio, iframe, object, embed, canvas, form, input, select, '
+        + 'textarea, button, hr, script, style, link, template';
+
+    function parse(html) {
+        var parsed = texts.get(html),
             doc;
 
-        if (text === undefined) {
-            doc = new DOMParser().parseFromString(String(html), 'text/html');
+        if (parsed === undefined) {
+            html = String(html);
+            doc = new DOMParser().parseFromString(html, 'text/html');
+            parsed = {
+                blank: !doc.body.textContent.trim() && !html.includes('{{') && !doc.querySelector(CONTENT_TAGS),
+            };
             doc.querySelectorAll('script, style, template').forEach(el => el.remove());
-            text = doc.body.textContent.replace(/\{\{[^}]*\}\}/g, ' ').replace(/\s+/g, ' ').trim();
+            parsed.text = doc.body.textContent.replace(/\{\{[^}]*\}\}/g, ' ').replace(/\s+/g, ' ').trim();
 
             if (texts.size > 500) {
                 texts.clear();
             }
 
-            texts.set(html, text);
+            texts.set(html, parsed);
         }
 
-        return text;
+        return parsed;
+    }
+
+    function plainText(html) {
+        return parse(html).text;
     }
 
     function videoHost(url) {
@@ -148,8 +160,38 @@ define([], function () {
         return fieldTexts(contentType).filter(Boolean).join(' ').toLowerCase();
     }
 
+    // Containers without children, and elements without the content they are made for
+    function empty(contentType) {
+        var name = contentType.config.name,
+            data = contentType.dataStore,
+            fields = TEXT_FIELDS[name];
+
+        if (contentType.getChildren && /master-collection$/.test(contentType.config.master_component || '')) {
+            return !contentType.getChildren()().length;
+        }
+
+        if (isImage(contentType)) {
+            return !data.get('image')?.[0] && !data.get('mobile_image')?.[0];
+        }
+
+        if (name === 'video') {
+            return !data.get('video_source');
+        }
+
+        if (name === 'melios-marquee-item') {
+            return parse(data.get('content') || '').blank;
+        }
+
+        if (!fields || name === 'melios-icon' || name === 'slide' || name === 'banner') {
+            return false;
+        }
+
+        return [].concat(fields).every(field => parse(data.get(field) || '').blank);
+    }
+
     return {
         find,
+        empty,
         contains,
         stageElement,
         option,

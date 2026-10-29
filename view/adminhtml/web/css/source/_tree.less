@@ -248,6 +248,15 @@ body .pagebuilder-stage-wrapper.stage-full-screen {
         opacity: .55;
     }
 
+    .mls-blank {
+        &::before {
+            content: '[';
+        }
+        &::after {
+            content: ']';
+        }
+    }
+
     &.mls-hovered {
         background: ~"color-mix(in srgb, currentColor 12%, transparent)";
     }

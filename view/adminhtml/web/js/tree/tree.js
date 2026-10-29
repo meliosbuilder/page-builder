@@ -180,6 +180,7 @@ define([
                         depth,
                         label: contentType.config.label,
                         preview: types.preview(contentType),
+                        empty: types.empty(contentType),
                         icon: contentType.config.icon || '',
                         hidden,
                         dimmed: !!hidden || parentDimmed,
@@ -199,8 +200,11 @@ define([
                         }
                     }
 
-                    if (query && !row.parent
-                        && !`${row.label.toLowerCase()} ${types.searchText(contentType)}`.includes(query)) {
+                    if (query && !row.parent && ![
+                        row.label.toLowerCase(),
+                        types.searchText(contentType),
+                        row.empty ? $t('Empty').toLowerCase() : '',
+                    ].join(' ').includes(query)) {
                         rows.pop();
                     }
                 });
@@ -251,7 +255,8 @@ define([
             toggle = document.createElement('span'),
             typeIcon = document.createElement('i'),
             label = document.createElement('span'),
-            preview;
+            preview,
+            empty;
 
         el.className = 'mls-tree-row';
         el.classList.toggle('mls-dimmed', row.dimmed);
@@ -277,6 +282,14 @@ define([
             preview.className = 'mls-tree-preview';
             preview.textContent = row.preview;
             label.append(' ', preview);
+        }
+
+        if (row.empty) {
+            empty = document.createElement('span');
+            empty.className = 'mls-tree-preview mls-blank';
+            empty.textContent = $t('Empty');
+            label.append(' ', empty);
+            el.title += ` (${empty.textContent})`;
         }
 
         el.append(toggle, typeIcon, label, this.renderActions(row));
