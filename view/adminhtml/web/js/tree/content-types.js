@@ -1,4 +1,6 @@
-define([], function () {
+define([
+    'Magento_PageBuilder/js/config'
+], function (config) {
     'use strict';
 
     function find(container, id) {
@@ -117,6 +119,19 @@ define([], function () {
         return parse(html).text;
     }
 
+    function widgetType(html) {
+        var type = String(html).match(/{{widget.*\stype="(.+?)".*}}/);
+
+        return type ? type[1].replace(/\\\\/g, '\\') : '';
+    }
+
+    // Label of the widget type in the Insert Widget dialog, the widget class if there is none
+    function widgetName(html) {
+        var type = widgetType(html);
+
+        return type && (config.getConfig('tinymce')?.widgets?.types?.[type] || type);
+    }
+
     function videoHost(url) {
         try {
             return new URL(url).hostname.replace(/^www\./, '');
@@ -140,6 +155,10 @@ define([], function () {
 
         if (contentType.config.name === 'melios-marquee-item') {
             return [plainText(data.get('content') || '')];
+        }
+
+        if (contentType.config.name === 'melios-widget') {
+            return [widgetName(data.get('html') || '')];
         }
 
         if (contentType.config.name === 'video') {
@@ -176,6 +195,10 @@ define([], function () {
 
         if (name === 'video') {
             return !data.get('video_source');
+        }
+
+        if (name === 'melios-widget') {
+            return !widgetType(data.get('html') || '');
         }
 
         if (name === 'melios-marquee-item') {
