@@ -31,11 +31,12 @@ define([
         return _.extend({
             id,
             name: type.name,
-            label: type.label,
-            group: type.group || '',
+            // In a group of its own (Sections), it's named by itself: "Hero", not "Row Hero"
+            label: preset?.group ? preset.label : type.label,
+            group: preset?.group || type.group || '',
             fallback: fallbacks[type.name] || null,
             popular: popular[id] ?? null,
-            note: preset?.label || '',
+            note: !preset?.group && preset?.label || '',
             preset: preset || null,
         }, icon(preset?.icon || type.icon));
     }
@@ -47,6 +48,7 @@ define([
          *     label: $t('Full Width'),  // shown after the element label
          *     icon: 'Magento_PageBuilder/css/images/content-type/row/appearance/full-width.svg', // or <svg>, or a class
          *     sortOrder: 20,
+         *     group: $t('Sections'),    // Spotlight group instead of the element's one, named without the element
          *     default: true,            // shown as the element itself, instead of plain "Row"
          *     data: { appearance: 'full-width' },                    // field values, or a function returning them
          *     children: [{ name: 'column', data: {}, children: [] }], // instead of its default ones, or a function
@@ -101,7 +103,7 @@ define([
          * @return {Object[]} [{id, name, label, group, fallback, popular, note, icon, image, preset}]
          */
         items: function (types) {
-            return types.flatMap(type => {
+            var list = types.flatMap(type => {
                 var presets = get(type.name),
                     own = presets.find(preset => preset.default);
 
@@ -111,6 +113,9 @@ define([
                     return item(type, preset, !preset || preset === own ? type.name : type.name + '/' + preset.code);
                 });
             });
+
+            // Groups of their own (Sections) after the elements' ones
+            return list.filter(entry => !entry.preset?.group).concat(list.filter(entry => entry.preset?.group));
         },
 
         // The preset of the element dragged from Spotlight, for its drop to take
