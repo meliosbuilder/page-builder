@@ -7,7 +7,7 @@
     "require": {
         "php": "^8.2",
         "enshrined/svg-sanitize": "^0.22 || ^1.0",
-        "tailwindphp/tailwindphp": "^1.8"
+        "tailwindphp/tailwindphp": "^1.8.2"
     },
     "autoload": {
         "files": [

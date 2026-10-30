@@ -8,6 +8,9 @@ use TailwindPHP\tw;
 
 class Tailwind
 {
+    private bool $important = true;
+    private bool $minify = true;
+
     public function __construct(
         private ScopeConfigInterface $scopeConfig,
         private ConfigValidator $configValidator
@@ -28,15 +31,34 @@ class Tailwind
     public function input()
     {
         $twConfig = (string) $this->scopeConfig->getValue('melios_builder/tailwind/config');
+        $suffix = $this->important ? 'important' : '';
 
         $this->configValidator->validate($twConfig);
 
         return <<<CSS
         @import 'tailwindcss/theme.css';
         @scope {
-            @import 'tailwindcss/utilities.css' source(none) important;
+            @import 'tailwindcss/utilities.css' source(none) {$suffix};
         }
         {$twConfig}
         CSS;
+    }
+
+    /** @deprecated */
+    public function exists()
+    {
+        return true;
+    }
+
+    public function important($flag)
+    {
+        $this->important = $flag;
+        return $this;
+    }
+
+    public function minify($flag)
+    {
+        $this->minify = $flag;
+        return $this;
     }
 }
