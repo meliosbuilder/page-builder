@@ -2,13 +2,15 @@ define([
     'jquery',
     'underscore',
     'ko',
+    'mage/translate',
     'mage/utils/wrapper',
     'Magento_PageBuilder/js/events',
     'Magento_PageBuilder/js/drag-drop/matrix',
     'Melios_PageBuilder/js/spotlight/spotlight',
+    'Melios_PageBuilder/js/spotlight/presets',
     'Melios_PageBuilder/js/utils/can-use-hotkeys',
     'Melios_PageBuilder/js/utils/is-in-viewport'
-], function ($, _, ko, wrapper, events, matrix, spotlight, canUseHotkeys, isInViewport) {
+], function ($, _, ko, $t, wrapper, events, matrix, spotlight, presets, canUseHotkeys, isInViewport) {
     'use strict';
 
     var mouseCoords = {
@@ -244,6 +246,26 @@ define([
         }
     }
 
+    function empty(query, hint) {
+        var base = $.melios.spotlight.prototype.options.empty;
+
+        if (require.defined('Melios_PageBuilderPro/js/copy-paste/copy-paste')) {
+            return base(query, hint);
+        }
+
+        return base(query, $t('Check the spelling, or build it with AI Composer.')) + `
+            <div class="mls-group">
+                <a class="item mls-wide" href="https://meliosbuilder.com/pricing" target="_blank" rel="noopener" tabindex="0">
+                    <span class="mls-image"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 30" fill="none"><circle cx="15" cy="15" r="15" fill="#3d3530"/><path d="M13.5 7.5l1.6 4.9 4.9 1.6-4.9 1.6-1.6 4.9-1.6-4.9L7 14l4.9-1.6z" fill="#fff"/><path d="M20 17.5l.8 2.2 2.2.8-2.2.8-.8 2.2-.8-2.2-2.2-.8 2.2-.8z" fill="#d3ccc5"/></svg></span>
+                    <span class="mls-label">
+                        <span>${$t('Compose “%1” with AI').replace('%1', $('<div>').text(query).html())} <span class="mls-pro">PRO</span></span>
+                        <span class="mls-note">${$t('AI Composer builds it from your search. Available in Melios Builder Pro.')}</span>
+                    </span>
+                    <span class="mls-cta">${$t('Upgrade')}</span>
+                </a>
+            </div>`;
+    }
+
     function deactivateFocusTrap() {
         $('.mls-focusable')
             .removeClass('mls-focusable')
@@ -269,15 +291,16 @@ define([
                 this.createSpotlight();
 
                 this.panel.menuSections.subscribe(_.debounce(items => {
-                    this.spotlight.spotlight('items', items.flatMap(menu => {
+                    this.spotlight.spotlight('items', presets.items(items.flatMap(menu => {
                         return menu.contentTypes().map(type => {
                             return {
-                                id: type.config.name,
+                                name: type.config.name,
                                 label: type.label(),
                                 icon: type.icon(),
+                                group: menu.label(),
                             };
                         })
-                    }));
+                    })));
                 }, 500));
 
                 this.isFullScreen.subscribe(flag => {
@@ -306,7 +329,8 @@ define([
                 .addClass('pb-' + this.id)
                 .appendTo('body')
                 .spotlight({
-                    items: Object.values(this.config.content_types)
+                    empty,
+                    items: presets.items(Object.values(this.config.content_types)
                         .filter(item => item.is_system && this.config.menu_sections[item.menu_section])
                         .sort((a, b) => {
                             return this.config.menu_sections[a.menu_section].sortOrder -
@@ -314,13 +338,15 @@ define([
                         })
                         .map(item => {
                             return {
-                                id: item.name,
+                                name: item.name,
                                 label: item.label,
                                 icon: item.icon,
+                                group: this.config.menu_sections[item.menu_section].label,
                             };
-                        }),
-                    onSelect: (id, event) => {
-                        var config = Object.values(this.config.content_types).filter(item => item.name === id)[0];
+                        })),
+                    onSelect: (id, event, item) => {
+                        var name = item?.name || id,
+                            config = Object.values(this.config.content_types).filter(type => type.name === name)[0];
 
                         event.preventDefault();
 
@@ -360,6 +386,8 @@ define([
                                 pageX: offset.left + width / 2,
                                 pageY: offset.top + height / 2,
                             }));
+                            // Taken by its drop: spotlight/sortable-mixin, tree/drag
+                            presets.drag(config.name, item?.preset);
                             draggable._mouseDrag(jQuery.Event('mousemove', {
                                 pageX: mouseCoords.x + $('html').scrollLeft(),
                                 pageY: mouseCoords.y + $('html').scrollTop(),

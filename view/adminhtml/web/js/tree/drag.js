@@ -3,8 +3,9 @@ define([
     'knockout',
     'Melios_PageBuilder/js/utils/struct',
     'Melios_PageBuilder/js/utils/add',
-    'Melios_PageBuilder/js/tree/content-types'
-], function ($, ko, struct, add, types) {
+    'Melios_PageBuilder/js/tree/content-types',
+    'Melios_PageBuilder/js/spotlight/presets'
+], function ($, ko, struct, add, types, presets) {
     'use strict';
 
     const THRESHOLD = 4,
@@ -347,7 +348,8 @@ define([
                 }
             });
         } else {
-            add.create(state.name, target);
+            // Dragged from Spotlight: with its preset
+            add.create(state.name, target, presets.take(state.name));
         }
     };
 

@@ -12,7 +12,7 @@ define([
             return [];
         }
 
-        return parent ? all.filter(item => struct.accepts(parent, item.id)) : all;
+        return parent ? all.filter(item => struct.accepts(parent, item.name || item.id)) : all;
     }
 
     /**
@@ -31,9 +31,9 @@ define([
         } : null;
     }
 
-    // Its form opens, unless it opened it itself on drop (AI Composer)
-    async function create(name, target) {
-        var contentType = await struct.create(name, target.parent, target.index);
+    // Its form opens, unless it opened it itself on drop (AI Composer). Preset: spotlight/presets
+    async function create(name, target, preset) {
+        var contentType = await struct.create(name, target.parent, target.index, preset);
 
         if (!contentType) {
             return null;
@@ -60,9 +60,9 @@ define([
 
         return {
             items: list,
-            onSelect: (id, event) => {
+            onSelect: (id, event, item) => {
                 event.preventDefault();
-                create(id, target);
+                create(item?.name || id, target, item?.preset);
 
                 return true;
             },

@@ -1,4 +1,5 @@
 define([
+    'underscore',
     'mage/translate',
     'Magento_Ui/js/modal/alert',
     'Magento_PageBuilder/js/config',
@@ -6,7 +7,7 @@ define([
     'Magento_PageBuilder/js/content-type-factory',
     'Magento_PageBuilder/js/content-type/column/resize',
     'Magento_PageBuilder/js/drag-drop/move-content-type'
-], function ($t, alert, Config, events, contentTypeFactory, resize, moveContentType) {
+], function (_, $t, alert, Config, events, contentTypeFactory, resize, moveContentType) {
     'use strict';
 
     function allows(parentName, name) {
@@ -55,25 +56,58 @@ define([
         return child;
     }
 
+    // Preset elements are {name, data, children}, copied ones {config: {name}, states, children}
+    function tree(element) {
+        return element.config ? element : {
+            config: { name: element.name },
+            states: { [Config.getConfig('defaultViewport')]: element.data || {} },
+            children: (element.children || []).map(tree),
+        };
+    }
+
+    function copy(data) {
+        return JSON.parse(JSON.stringify(data));
+    }
+
     return {
         accepts: function (parent, name) {
             return allows(parent.config.name, name) || allowsWrapped(parent, name);
         },
 
-        /** @return {Promise<Object|null>} the new element, null when the parent doesn't accept it */
-        create: async function (name, parent, index) {
+        /**
+         * @param {Object} [preset] Spotlight preset (spotlight/presets): its data, and its children instead of the default ones.
+         *                          Passed on in dropAfter events
+         * @return {Promise<Object|null>} the new element, null when the parent doesn't accept it
+         */
+        create: async function (name, parent, index, preset) {
             var target = await place(name, parent, index),
+                data = _.result(preset, 'data') || {},
+                children = _.result(preset, 'children'),
                 child;
 
             if (!target) {
                 return null;
             }
 
-            child = await contentTypeFactory(Config.getContentTypeConfig(name), target.parent, target.parent.stageId);
+            // Built as pasted: its own dropAfter would add the default children (column group: a column line)
+            if (children) {
+                child = await build(copy(tree({ name, data, children })), target.parent, target.index);
+                child.dropped = true;
+                events.trigger('contentType:dropAfter', { id: child.id, contentType: child, preset });
+
+                return child;
+            }
+
+            child = await contentTypeFactory(
+                Config.getContentTypeConfig(name),
+                target.parent,
+                target.parent.stageId,
+                copy(data)
+            );
             child.dropped = true;
             target.parent.addChild(child, target.index);
-            events.trigger('contentType:dropAfter', { id: child.id, contentType: child });
-            events.trigger(name + ':dropAfter', { id: child.id, contentType: child });
+            events.trigger('contentType:dropAfter', { id: child.id, contentType: child, preset });
+            events.trigger(name + ':dropAfter', { id: child.id, contentType: child, preset });
 
             return child;
         },

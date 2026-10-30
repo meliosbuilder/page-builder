@@ -120,6 +120,13 @@ var config = {
             },
             'Magento_PageBuilder/js/drag-drop/sortable': {
                 'Melios_PageBuilder/js/make-droppable/sortable-mixin': true,
+                // Spotlight: drop an element with its preset. Listed last: its receive runs first
+                'Melios_PageBuilder/js/spotlight/sortable-mixin': true,
+            },
+
+            // Spotlight: presets of Magento elements
+            'Melios_PageBuilder/js/spotlight/presets': {
+                'Melios_PageBuilder/js/spotlight/presets-mixin': true,
             },
 
             // Tailwind

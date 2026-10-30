@@ -1,6 +1,7 @@
 define([
-    'jquery'
-], function ($) {
+    'jquery',
+    'mage/translate'
+], function ($, $t) {
     'use strict';
 
     document.head.appendChild(document.createElement('style')).innerHTML = `
@@ -20,28 +21,35 @@ define([
                 flex-direction: column;
                 position: absolute;
                 top: 5vh;
-                left: calc(50% - min(90vw, 750px) / 2);
+                left: calc(50% - min(90vw, 784px) / 2);
                 width: 90vw;
-                max-width: 750px;
-                height: 476px;
-                background: #f6f6f6;
-                border-radius: 10px;
+                max-width: 784px;
+                max-height: 90vh;
+                overflow: hidden;
+                color: #3d3530;
+                background: #f6f6f5;
+                border-radius: 18px;
                 box-shadow: 0 0 0 .5px rgba(0,0,0,.15),
-                            0 15px 35px -5px rgba(0,0,0,.3);
+                            0 30px 80px rgba(0,0,0,.35);
             }
 
             .mls-head {
                 display: flex;
+                flex-shrink: 0;
                 align-items: center;
-                border-bottom: 1px solid #e1e1e1;
+                gap: 16px;
+                height: 76px;
+                padding: 0 24px 0 30px;
+                border-bottom: 1px solid #e2e0dd;
 
                 input {
+                    flex: 1;
+                    min-width: 0;
                     border: 0;
-                    border-radius: 10px 10px 0 0;
                     background: none;
-                    width: 100%;
-                    padding: 14px 40px 14px 15px;
-                    font-size: 16px;
+                    padding: 0;
+                    color: inherit;
+                    font-size: 22px;
                     &:focus {
                         box-shadow: none;
                     }
@@ -49,17 +57,17 @@ define([
 
                 .mls-close {
                     display: flex;
+                    flex-shrink: 0;
                     align-items: center;
                     justify-content: center;
-                    margin-left: -40px;
                     cursor: pointer;
                     border-radius: 6px;
-                    width: 30px;
-                    height: 30px;
+                    width: 40px;
+                    height: 40px;
                     svg {
                         opacity: .6;
-                        width: 24px;
-                        height: 24px;
+                        width: 26px;
+                        height: 26px;
                     }
                     &:hover {
                         background: rgba(0,0,0,.035);
@@ -71,32 +79,166 @@ define([
             }
 
             .mls-body {
-                flex-grow: 1;
+                display: flex;
+                flex-direction: column;
+                gap: 28px;
+                min-height: 0;
                 overflow: auto;
-                border-radius: 0 0 10px 10px;
-                padding: 6px 8px;
+                padding: 24px 30px 32px;
                 user-select: none;
+
+                .mls-group {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 12px;
+                }
+                .mls-title {
+                    font-size: 13px;
+                    letter-spacing: .08em;
+                    text-transform: uppercase;
+                    color: #6f665f;
+                }
+                .mls-grid {
+                    display: flex;
+                    flex-wrap: wrap;
+                    gap: 10px;
+                }
+                .mls-empty {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 6px;
+                    padding-top: 4px;
+                }
+                .mls-empty-title {
+                    font-size: 18px;
+                    font-weight: 500;
+                }
+                .mls-empty-hint {
+                    font-size: 14px;
+                    color: #6f665f;
+                }
 
                 .item {
                     cursor: pointer;
-                    border-radius: 6px;
-                    padding: 8px;
-                    margin-bottom: 1px;
                     display: flex;
+                    flex-direction: column;
                     align-items: center;
-                    gap: 6px;
+                    gap: 9px;
+                    box-sizing: border-box;
+                    width: 112px;
+                    height: 96px;
+                    padding: 17px 6px 0;
+                    background: #fff;
+                    border: 1px solid #e4e1dd;
+                    border-radius: 8px;
+                    font-size: 14px;
+                    line-height: 1.2;
+                    text-align: center;
 
                     &:focus {
                         box-shadow: none;
                     }
                     &.active {
-                        background: rgba(0,0,0,.07);
+                        border-color: #3d3530;
+                        box-shadow: inset 0 0 0 1px #3d3530;
+                    }
+
+                    > i,
+                    .mls-image {
+                        display: flex;
+                        flex: none;
+                        align-items: center;
+                        justify-content: center;
+                        width: 44px;
+                        height: 30px;
+                        font-size: 28px;
+                    }
+                    .mls-image > * {
+                        width: 44px;
+                        height: 30px;
+                    }
+                    .mls-label {
+                        display: flex;
+                        flex-direction: column;
+                        gap: 2px;
+                        max-width: 100%;
+                    }
+                    .mls-note {
+                        font-size: 12px;
+                        color: #7a716a;
+                    }
+
+                    &.mls-wide {
+                        flex-direction: row;
+                        gap: 16px;
+                        width: 100%;
+                        height: auto;
+                        padding: 16px 20px;
+                        border-radius: 12px;
+                        color: inherit;
+                        text-align: left;
+                        text-decoration: none;
+
+                        > i,
+                        .mls-image {
+                            width: 44px;
+                            height: 44px;
+                        }
+                        .mls-image > * {
+                            width: 30px;
+                            height: 30px;
+                        }
+                        .mls-label {
+                            flex: 1;
+                            min-width: 0;
+                            gap: 3px;
+                            > :first-child {
+                                display: flex;
+                                align-items: center;
+                                gap: 8px;
+                                font-size: 16px;
+                                font-weight: 500;
+                            }
+                        }
+                        .mls-note {
+                            font-size: 13px;
+                            color: #6f665f;
+                        }
+                    }
+                    .mls-kbd {
+                        flex: none;
+                        padding: 2px 7px;
+                        border: 1px solid #d9d5d0;
+                        border-bottom-width: 2px;
+                        border-radius: 5px;
+                        background: #fafaf9;
+                        color: #6f665f;
+                        font-family: 'Fira Mono', monospace;
+                        font-size: 12px;
+                    }
+                    .mls-pro {
+                        padding: 2px 5px;
+                        border-radius: 4px;
+                        background: #3d3530;
+                        color: #fff;
+                        font-size: 10px;
+                        font-weight: 500;
+                        letter-spacing: .06em;
+                    }
+                    .mls-cta {
+                        flex: none;
+                        padding: 8px 14px;
+                        border-radius: 8px;
+                        background: #3d3530;
+                        color: #fff;
+                        font-size: 14px;
+                        font-weight: 500;
                     }
                 }
             }
         }
         .mls-mouse .melios-spotlight .mls-body .item:hover {
-            background: rgba(0,0,0,.035);
+            border-color: #3d3530;
         }
     `;
 
@@ -111,6 +253,62 @@ define([
         })
     }
 
+    // Label with its note, e.g. "Row Full Width"
+    function text(item) {
+        return (item.label + (item.note ? ' ' + item.note : '')).toLowerCase();
+    }
+
+    // Image: <svg> markup or a URL, otherwise an icon class
+    function icon(item) {
+        if (!item.image) {
+            return `<i class="${item.icon || ''}"></i>`;
+        }
+
+        return `<span class="mls-image">${item.image.startsWith('<') ? item.image : `<img src="${item.image}" alt="">`}</span>`;
+    }
+
+    function escape(value) {
+        return $('<div>').text(value).html();
+    }
+
+    // Items under their group titles, groups in the order of their first item
+    function groups(items) {
+        var list = [];
+
+        items.forEach(item => {
+            var group = list.find(group => group.title === (item.group || ''));
+
+            if (!group) {
+                list.push(group = { title: item.group || '', items: [] });
+            }
+            group.items.push(item);
+        });
+
+        return list;
+    }
+
+    // Fallback item as a card: "Compose “hero banner” with AI"
+    function wide(item, query) {
+        return `<div class="item mls-wide" tabindex="0" data-id="${item.id}">
+            ${icon(item)}
+            <span class="mls-label">
+                <span>${item.fallback.label.replace('%1', escape(query))}</span>
+                ${item.fallback.note ? `<span class="mls-note">${item.fallback.note}</span>` : ''}
+            </span>
+            <span class="mls-kbd">↵ Enter</span>
+        </div>`;
+    }
+
+    function tile(item) {
+        return `<div class="item ${item.class || ''}" tabindex="0" data-id="${item.id}">
+            ${icon(item)}
+            <span class="mls-label">
+                <span>${item.label}</span>
+                ${item.note ? `<span class="mls-note">${item.note}</span>` : ''}
+            </span>
+        </div>`;
+    }
+
     $.widget('melios.spotlight', {
         options: {
             hotkeys: {
@@ -121,6 +319,11 @@ define([
             onSelect: (id, event) => true,
             items: [],
             context: () => null,
+            // Heading when nothing matches. hint: from the fallback item, if any
+            empty: (query, hint) => `<div class="mls-empty">
+                <div class="mls-empty-title">${$t('No results for “%1”').replace('%1', escape(query))}</div>
+                <div class="mls-empty-hint">${hint || $t('Check the spelling, or try another name.')}</div>
+            </div>`,
             markup: `
                 <div class="mls-overlay"></div>
                 <div class="mls-popup">
@@ -149,7 +352,14 @@ define([
                 }
 
                 if (e.key === 'Enter' && !e.metaKey && !e.ctrlKey && this.opened()) {
-                    this.run(this.body.find('.item.active').data('id'), e);
+                    var active = this.body.find('.item.active');
+
+                    // A link card (upgrade)
+                    if (active.is('a')) {
+                        e.preventDefault();
+                        return active[0].click();
+                    }
+                    this.run(active.attr('data-id'), e);
                 }
 
                 if (eventMatchesHotkeys(e, this.options.hotkeys.toggle)) {
@@ -180,11 +390,13 @@ define([
                     ['Space', 'Backspace'].includes(e.code)
                 ) {
                     this.input.focus();
-                } else if (e.code === 'ArrowDown') {
-                    this.selectNext();
+                } else if (e.code === 'ArrowDown' || e.code === 'ArrowUp') {
+                    this.selectRow(e.code === 'ArrowDown' ? 1 : -1);
                     e.preventDefault();
-                } else if (e.code === 'ArrowUp') {
-                    this.selectPrev();
+                } else if (['ArrowLeft', 'ArrowRight'].includes(e.code) &&
+                    !(this.input.is(document.activeElement) && this.input.val())
+                ) {
+                    this[e.code === 'ArrowRight' ? 'selectNext' : 'selectPrev']();
                     e.preventDefault();
                 } else if (e.code === 'Tab') {
                     this[e.shiftKey ? 'selectPrev' : 'selectNext']();
@@ -195,7 +407,7 @@ define([
                 if (!this.opened()) {
                     return;
                 }
-                this.run($(e.target).closest('.item').data('id'), e);
+                this.run($(e.target).closest('.item').attr('data-id'), e);
             });
         },
         open: function (context) {
@@ -210,7 +422,7 @@ define([
                 this.body = this.element.find('.mls-body');
                 this.body.on('focusin', '.item', (e) => {
                     if (!$(e.target).hasClass('active')) {
-                        this.select($(e.target).index());
+                        this.select(this.body.find('.item').index(e.target));
                     }
                 });
 
@@ -239,19 +451,49 @@ define([
             this.input.focus();
         },
         run: function (id, e) {
-            if (id && (this.context?.onSelect || this.options.onSelect)(id, e)) {
+            var item = this.rendered?.find(rendered => String(rendered.id) === id);
+
+            if (id && (this.context?.onSelect || this.options.onSelect)(id, e, item)) {
                 this.close();
                 setTimeout(() => this.clear(), 50);
             }
         },
         renderItems: function () {
-            this.body.html(this.items().map(item => {
-                return `<div class="item ${item.class || ''}" tabindex="0" data-id="${item.id}">
-                    <i class="${item.icon}"></i>
-                    ${item.label}
+            var query = this.input.val(),
+                found = this.items(),
+                source = this.context?.items || this.options.items,
+                fallbacks = [],
+                popular = [];
+
+            // Nothing matches: the items that can make anything (AI Composer), then the popular ones
+            if (!found.length && Array.isArray(source)) {
+                fallbacks = source
+                    .filter(item => item.fallback)
+                    .map(item => $.extend({}, item, { preset: item.fallback.preset?.(query) || item.preset }));
+                popular = source
+                    .filter(item => item.popular !== null && item.popular !== undefined)
+                    .sort((a, b) => a.popular - b.popular)
+                    .map(item => $.extend({}, item, { group: $t('Popular') }));
+            }
+
+            this.rendered = found.length ? found : fallbacks.concat(popular);
+            this.body.html(found.length ? '' : this.options.empty(query, fallbacks[0]?.fallback.hint));
+
+            if (fallbacks.length) {
+                this.body.append(`<div class="mls-group">${fallbacks.map(item => wide(item, query)).join('')}</div>`);
+            }
+
+            this.body.append(groups(found.length ? found : popular).map(group => {
+                return `<div class="mls-group">
+                    ${group.title ? `<div class="mls-title">${escape(group.title)}</div>` : ''}
+                    <div class="mls-grid">${group.items.map(tile).join('')}</div>
                 </div>`;
-            }) || '');
-            this.select(0);
+            }).join(''));
+
+            // The best match, which may come in a later group. Nothing matches: the first card
+            this.select(found.length ?
+                this.body.find('.item').index(this.body.find(`.item[data-id="${found[0].id}"]`)) :
+                0);
         },
         items: function (items) {
             if (items) {
@@ -278,15 +520,15 @@ define([
             var pattern = this.input.val().toLowerCase();
 
             return source
-                .filter(item => fuzzyMatch(pattern, item.label.toLowerCase()))
+                .filter(item => fuzzyMatch(pattern, text(item)))
                 .sort((a, b) => {
                     var aObj = {
                             score: 0,
-                            label: a.label.toLowerCase(),
+                            label: text(a),
                         },
                         bObj = {
                             score: 0,
-                            label: b.label.toLowerCase(),
+                            label: text(b),
                         };
 
                     // the more letters matches the start of the label the higher the rank
@@ -305,7 +547,7 @@ define([
         },
         selectNext: function () {
             var items = this.body.find('.item'),
-                index = items.filter('.active').index();
+                index = items.index(items.filter('.active'));
 
             index = index < items.length - 1 ? index : -1;
 
@@ -313,11 +555,43 @@ define([
         },
         selectPrev: function () {
             var items = this.body.find('.item'),
-                index = items.filter('.active').index();
+                index = items.index(items.filter('.active'));
 
             index = index > 0 ? index : items.length;
 
             this.select(index - 1).focus();
+        },
+        // The nearest item in the next row (dir: 1) or the previous one (-1)
+        selectRow: function (dir) {
+            var items = this.body.find('.item').get(),
+                active = items.find(item => $(item).hasClass('active')),
+                from = active?.getBoundingClientRect(),
+                rows,
+                row;
+
+            if (!from) {
+                return this.select(dir > 0 ? 0 : items.length - 1).focus();
+            }
+
+            rows = items
+                .map(item => ({ item, rect: item.getBoundingClientRect() }))
+                .filter(({ rect }) => dir > 0 ? rect.top > from.bottom - 1 : rect.bottom < from.top + 1);
+
+            if (!rows.length) {
+                return this.select(dir > 0 ? 0 : items.length - 1).focus();
+            }
+
+            row = rows.reduce((top, { rect }) => dir > 0 ? Math.min(top, rect.top) : Math.max(top, rect.top), dir * Infinity);
+
+            row = rows
+                .filter(({ rect }) => rect.top === row)
+                .reduce((nearest, entry) => {
+                    var distance = Math.abs(entry.rect.left - from.left);
+
+                    return !nearest || distance < nearest.distance ? { item: entry.item, distance } : nearest;
+                }, null);
+
+            this.select(items.indexOf(row.item)).focus();
         },
         select: function (index) {
             return this.body.find('.item').removeClass('active')
