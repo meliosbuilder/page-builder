@@ -22,7 +22,7 @@ class Tailwind
         $css = tw::generate([
             'content' => $html,
             'css' => $this->input(),
-            'minify' => true,
+            'minify' => $this->minify,
         ]);
 
         return str_ireplace('</style', '\\3c /style', $css);
