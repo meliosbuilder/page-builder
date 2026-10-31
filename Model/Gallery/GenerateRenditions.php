@@ -130,13 +130,25 @@ class GenerateRenditions implements GenerateRenditionsInterface
 
         $absolutePath = $this->getMediaDirectory()->getAbsolutePath($path);
 
-        if ($this->shouldFileBeResized($absolutePath)) {
-            $this->createResizedRendition(
-                $absolutePath,
-                $this->getMediaDirectory()->getAbsolutePath($renditionPath)
-            );
-        } else {
-            $this->getMediaDirectory()->copyFile($path, $renditionPath);
+        // Write to a temp file and rename it, so concurrent readers never get a partially written
+        // rendition (it's regenerated on every insert while the page may be rendering it)
+        $tmpPath = $this->driver->getParentDirectory($renditionPath) . '/.tmp-' . uniqid() . '-'
+            . basename($renditionPath);
+
+        try {
+            if ($this->shouldFileBeResized($absolutePath)) {
+                $this->createResizedRendition(
+                    $absolutePath,
+                    $this->getMediaDirectory()->getAbsolutePath($tmpPath)
+                );
+            } else {
+                $this->getMediaDirectory()->copyFile($path, $tmpPath);
+            }
+            $this->getMediaDirectory()->renameFile($tmpPath, $renditionPath);
+        } finally {
+            if ($this->getMediaDirectory()->isExist($tmpPath)) {
+                $this->getMediaDirectory()->delete($tmpPath);
+            }
         }
     }
 
