@@ -3,11 +3,8 @@
 namespace Melios\PageBuilder\Model;
 
 use Magento\Framework\App\Config\ScopeConfigInterface;
-use Magento\Framework\App\Filesystem\DirectoryList;
-use Magento\Framework\Filesystem\Driver\File;
 use Melios\PageBuilder\Model\Tailwind\ConfigValidator;
-use Symfony\Component\Process\Process;
-use RuntimeException;
+use TailwindPHP\tw;
 
 class Tailwind
 {
@@ -16,59 +13,21 @@ class Tailwind
 
     public function __construct(
         private ScopeConfigInterface $scopeConfig,
-        private DirectoryList $directoryList,
-        private File $fileDriver,
         private ConfigValidator $configValidator
     ) {
     }
 
     public function run($html): string
     {
-        $twBinary = $this->binaryPath();
-        if (!$this->exists()) {
-            return '';
-        }
+        // Also pick up classes from quoted strings (scripts, data-* attributes, etc.)
+        $candidates = array_values(array_unique([
+            ...tw::extractCandidates($html),
+            ...tw::extractCandidatesFromStrings($html),
+        ]));
 
-        do {
-            $tmpDir = dirname($twBinary) . '/' . bin2hex(random_bytes(4));
-        } while ($this->fileDriver->isExists($tmpDir));
+        $css = tw::compile($this->input())->css($candidates, $this->minify);
 
-        $inputPath = $tmpDir . '/input.css';
-        $outputPath = $tmpDir . '/output.css';
-
-        try {
-            $this->fileDriver->createDirectory($tmpDir);
-            $this->fileDriver->filePutContents($inputPath, $this->input());
-            $this->fileDriver->filePutContents($outputPath, '');
-            $this->fileDriver->filePutContents($tmpDir . '/content.html', $html);
-
-            chmod($twBinary, 0755);
-            // exec("{$twBinary} -i {$inputPath} -o {$outputPath} --minify");
-
-            $args = [
-                $twBinary,
-                '-i', $inputPath,
-                '-o', $outputPath,
-            ];
-
-            if ($this->minify) {
-                $args[] = '--minify';
-            }
-
-            $process = new Process($args);
-            $process->run();
-
-            if (!$process->isSuccessful()) {
-                throw new RuntimeException($process->getErrorOutput());
-            }
-
-            $css = $this->fileDriver->fileGetContents($outputPath);
-            $css = str_ireplace('</style', '\\3c /style', $css);
-        } finally {
-            $this->fileDriver->deleteDirectory($tmpDir);
-        }
-
-        return $css;
+        return str_ireplace('</style', '\\3c /style', $css);
     }
 
     public function input()
@@ -84,33 +43,13 @@ class Tailwind
             @import 'tailwindcss/utilities.css' source(none) {$suffix};
         }
         {$twConfig}
-        @source 'content\.html';
         CSS;
     }
 
-    public function binaryPath()
-    {
-        return $this->directoryList->getPath(DirectoryList::VAR_DIR)
-            . '/melios/tailwind/tailwindcss';
-    }
-
-    public function version()
-    {
-        // exec("{$this->binaryPath()} --help", $output);
-        // return $output[0];
-        $process = new Process([$this->binaryPath(), '--help']);
-        $process->run();
-
-        if (!$process->isSuccessful()) {
-            throw new RuntimeException($process->getErrorOutput());
-        }
-
-        return explode("\n", $process->getOutput())[0];
-    }
-
+    /** @deprecated */
     public function exists()
     {
-        return $this->fileDriver->isExists($this->binaryPath());
+        return true;
     }
 
     public function important($flag)

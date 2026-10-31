@@ -7,7 +7,7 @@
     "require": {
         "php": "^8.0",
         "enshrined/svg-sanitize": "^0.22 || ^1.0",
-        "symfony/process": "*"
+        "tailwindphp/tailwindphp": "^1.8.2"
     },
     "autoload": {
         "files": [
