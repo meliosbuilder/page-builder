@@ -79,7 +79,8 @@ body .pagebuilder-stage-wrapper.stage-full-screen {
 // The menu's buttons don't need it: as specific as Magento's rules, and after them.
 .mls-panel-rail button,
 .mls-tree-eye,
-.mls-tree-more {
+.mls-tree-more,
+.mls-tree-insert {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -375,6 +376,71 @@ body .pagebuilder-stage-wrapper.stage-full-screen {
     border-radius: 1px;
     background: var(--mls-tree-panel-accent);
     pointer-events: none;
+}
+
+// Inserter: a plus on a line like the drop line, where the pointer is between two rows.
+// Shown after a moment, so it doesn't flash while the pointer passes over the rows; hidden at once.
+.mls-tree .mls-tree-insert {
+    position: absolute;
+    z-index: 1;
+    top: ~"calc(var(--mls-insert-y) - 8px)";
+    right: var(--mls-tree-item-inset);
+    left: ~"calc(20px + var(--mls-depth) * var(--mls-tree-item-indent))";
+    height: 16px;
+    color: var(--mls-tree-panel-accent);
+    cursor: pointer;
+    visibility: hidden;
+    opacity: 0;
+
+    // Magento's admin buttons have a gray background, more specific than the reset of the icon buttons
+    &, &:hover, &:focus, &:active {
+        border: 0;
+        background: transparent;
+        box-shadow: none;
+        color: var(--mls-tree-panel-accent);
+    }
+
+    // The plus in the middle of the line
+    &::before {
+        content: '';
+        position: relative;
+        z-index: 1;
+        flex: none;
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        background: currentColor url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="none" stroke="white" stroke-width="2" stroke-linecap="round"><path d="M8 4.5v7M4.5 8h7"/></svg>') no-repeat 50% 50%;
+        transition: transform .1s ease-out;
+        box-shadow: 0 0 0 1px rgba(0,0,0,.1);
+    }
+
+    &::after {
+        content: '';
+        position: absolute;
+        top: 7px;
+        right: 0;
+        left: 0;
+        height: 2px;
+        border-radius: 1px;
+        background: currentColor;
+        box-shadow: 0 0 0 1px rgba(0,0,0,.1);
+    }
+
+    &.mls-on {
+        visibility: visible;
+        opacity: 1;
+        transition: opacity .1s .15s, visibility 0s .15s;
+    }
+
+    body.mls-tree-dragging & {
+        display: none;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .mls-tree .mls-tree-insert.mls-on {
+        transition: visibility 0s .15s;
+    }
 }
 
 .mls-tree-ghost {

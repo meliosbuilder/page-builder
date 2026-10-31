@@ -195,7 +195,8 @@ define([
             return parent === moving.parentContentType;
         }
 
-        return !!parent && struct.accepts(parent, this.state.name) && !(moving && types.contains(moving, parent));
+        // A moved element isn't wrapped into a new row, an added one is
+        return !!parent && struct.accepts(parent, this.state.name, !moving) && !(moving && types.contains(moving, parent));
     };
 
     /**
@@ -226,7 +227,29 @@ define([
             target = { parent: root, index: root.getChildren()().length, row: last, edge: 'bottom', depth: 0 };
         }
 
+        target = target && this.outer(target);
+
         return target && this.accepts(target.parent) ? target : null;
+    };
+
+    /**
+     * Under the last element of a container that doesn't accept it: after the container, and so on up.
+     * Rows of containers without a form aren't shown, their children are on their level.
+     */
+    Drag.prototype.outer = function (target) {
+        var child = target.parent,
+            parent = child.parentContentType,
+            depth = target.depth;
+
+        while (parent && target.edge === 'bottom' && !this.accepts(target.parent) &&
+            target.index === target.parent.getChildren()().length) {
+            depth -= child.config.form ? 1 : 0;
+            target = { ...target, parent, index: parent.getChildren()().indexOf(child) + 1, depth };
+            child = parent;
+            parent = child.parentContentType;
+        }
+
+        return target;
     };
 
     /**

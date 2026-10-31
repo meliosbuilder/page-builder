@@ -10,6 +10,9 @@ define([
 ], function ($, $t, events, openEdit, types, Commands, menu, scrollIntoStage) {
     'use strict';
 
+    // Distance from the line between two rows where the pointer shows the inserter
+    const INSERT_GAP = 4;
+
     function Tree(pageBuilder, panel) {
         var edited = openEdit.currentEl();
 
@@ -22,6 +25,8 @@ define([
         this.focused = null;
         this.collapsed = new Set();
         this.search = null;
+        this.inserter = null;
+        this.insertAt = null;
         this.query = '';
         this.signature = null;
         this.renderTimer = null;
@@ -92,11 +97,24 @@ define([
                 }
             })
             .on('mouseover', '.mls-tree-row', e => this.hover(e.currentTarget.dataset.id))
+            .on('mousemove', e => this.onMouseMove(e))
             .on('mouseleave', () => {
+                this.showInserter(null);
+
                 if (!this.el.children('.mls-menu-open').length) {
                     this.hover(null);
                 }
             });
+
+        this.inserter = $('<button type="button" class="mls-tree-insert" tabindex="-1">')
+            .attr({ title: $t('Add'), 'aria-label': $t('Add') })
+            .on('click', e => {
+                var action = this.insertAt?.action;
+
+                e.stopPropagation();
+                this.showInserter(null);
+                action?.();
+            })[0];
 
         ['copy', 'cut', 'paste'].forEach(type => document.addEventListener(type, e => this.onClipboard(e), true));
     };
@@ -232,8 +250,10 @@ define([
             focusedIndex = this.el.children('.mls-tree-row').index(document.activeElement);
             this.el.toggleClass('mls-searched', !!this.query);
 
+            this.showInserter(null);
+
             if (rows.length) {
-                this.el[0].replaceChildren(...rows.map(row => this.renderRow(row)));
+                this.el[0].replaceChildren(...rows.map(row => this.renderRow(row)), this.inserter);
             } else {
                 empty = document.createElement('div');
                 empty.className = 'mls-tree-empty';
@@ -419,6 +439,64 @@ define([
         }
 
         this.commands.edit(contentType);
+    };
+
+    Tree.prototype.onMouseMove = function (e) {
+        if (e.target !== this.inserter) {
+            this.showInserter(this.query || e.buttons ? null : this.gapAt(e.clientY));
+        }
+    };
+
+    /**
+     * The line between two rows adds before the lower one, the line under the last row after the last
+     * top level element.
+     *
+     * @return {{row, edge: 'top'|'bottom', contentType, where: 'before'|'after', depth}|null}
+     */
+    Tree.prototype.gapAt = function (y) {
+        var rows = this.el.children('.mls-tree-row').get(),
+            last = rows[rows.length - 1],
+            row,
+            top;
+
+        row = rows.find(el => Math.abs(y - el.getBoundingClientRect().top) <= INSERT_GAP);
+
+        if (row) {
+            return {
+                row,
+                edge: 'top',
+                contentType: this.rowContentType(row),
+                where: 'before',
+                depth: +row.getAttribute('aria-level') - 1,
+            };
+        }
+
+        if (last && Math.abs(y - last.getBoundingClientRect().bottom) <= INSERT_GAP) {
+            top = rows.filter(el => el.getAttribute('aria-level') === '1').pop();
+
+            return top ? { row: last, edge: 'bottom', contentType: this.rowContentType(top), where: 'after', depth: 0 } :
+                null;
+        }
+
+        return null;
+    };
+
+    Tree.prototype.showInserter = function (gap) {
+        var key = gap?.contentType && `${gap.contentType.id}:${gap.where}`,
+            action;
+
+        if (key !== this.insertAt?.key) {
+            action = key && this.commands.addAction(gap.contentType, gap.where);
+            this.insertAt = action ? { key, action: action.action } : null;
+
+            if (action) {
+                this.inserter.style.setProperty('--mls-insert-y',
+                    gap.row.offsetTop + (gap.edge === 'top' ? 0 : gap.row.offsetHeight) + 'px');
+                this.inserter.style.setProperty('--mls-depth', gap.depth);
+            }
+        }
+
+        this.inserter?.classList.toggle('mls-on', !!this.insertAt);
     };
 
     Tree.prototype.openMenu = function (row, at, button) {

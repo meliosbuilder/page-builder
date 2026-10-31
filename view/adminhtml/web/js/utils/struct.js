@@ -70,8 +70,9 @@ define([
     }
 
     return {
-        accepts: function (parent, name) {
-            return allows(parent.config.name, name) || allowsWrapped(parent, name);
+        /** @param {Boolean} [wrapped] Also into a new row added for it */
+        accepts: function (parent, name, wrapped = true) {
+            return allows(parent.config.name, name) || wrapped && allowsWrapped(parent, name);
         },
 
         /**
