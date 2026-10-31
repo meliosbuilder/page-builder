@@ -41,8 +41,7 @@ define([
     // Image and text side by side, 2 columns on tablets too
     function imageText() {
         var text = [
-                { name: 'heading', data: { heading_type: 'h2', heading_text: $t('Tell your story') } },
-                { name: 'text', data: { content: `<p>${$t('Show what you offer next to a picture of it.')}</p>` } },
+                { name: 'text', data: { content: `<h2>${$t('Tell your story')}</h2><p>${$t('Show what you offer next to a picture of it.')}</p>` } },
                 { name: 'buttons', data: { appearance: 'inline' }, children: [button($t('Learn more'))] },
             ],
             image = [{ name: 'image' }],
@@ -92,8 +91,7 @@ define([
                 sortOrder: 40,
                 data: { appearance: 'full-width', min_height: '400px', justify_content: 'center', text_align: 'center' },
                 children: [
-                    { name: 'heading', data: { heading_type: 'h1', heading_text: $t('Your headline goes here') } },
-                    { name: 'text', data: { content: `<p>${$t('Tell visitors what you offer and why it matters.')}</p>` } },
+                    { name: 'text', data: { content: `<h1>${$t('Your headline goes here')}</h1><p>${$t('Tell visitors what you offer and why it matters.')}</p>` } },
                     {
                         name: 'buttons',
                         data: { appearance: 'inline' },
@@ -113,8 +111,7 @@ define([
                 data: { appearance: 'contained', text_align: 'center' },
                 children: () => {
                     var group = columns([1, 1, 1], { content: i => [
-                        { name: 'heading', data: { heading_type: 'h3', heading_text: $t('Feature %1').replace('%1', i + 1) } },
-                        { name: 'text', data: { content: `<p>${$t('Describe what makes it useful.')}</p>` } },
+                        { name: 'text', data: { content: `<h3>${$t('Feature %1').replace('%1', i + 1)}</h3><p>${$t('Describe what makes it useful.')}</p>` } },
                     ] });
 
                     return [{ name: 'column-group', data: group.data(), children: group.children() }];
