@@ -19,11 +19,13 @@ class Tailwind
 
     public function run($html): string
     {
-        $css = tw::generate([
-            'content' => $html,
-            'css' => $this->input(),
-            'minify' => $this->minify,
-        ]);
+        // Also pick up classes from quoted strings (scripts, data-* attributes, etc.)
+        $candidates = array_values(array_unique([
+            ...tw::extractCandidates($html),
+            ...tw::extractCandidatesFromStrings($html),
+        ]));
+
+        $css = tw::compile($this->input())->css($candidates, $this->minify);
 
         return str_ireplace('</style', '\\3c /style', $css);
     }
