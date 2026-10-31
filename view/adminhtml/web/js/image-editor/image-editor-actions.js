@@ -211,7 +211,7 @@ define([
                     }
 
                     this.gallery.select(provider.data.items.find(item => item.id == selected.id));
-                    this.meliosSaveAfter(isNewImage, imageName, selected.encoded_id).then(() => {
+                    this.meliosSaveAfter(isNewImage, file.name, selected.encoded_id).then(() => {
                         $('body').trigger('processStop');
                     });
                 }, 'meliosSaveImage');
