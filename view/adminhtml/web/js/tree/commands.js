@@ -170,7 +170,7 @@ define([
             },
             ...contentType.getChildren ? [{
                 id: 'add-inside',
-                label: addInside?.label || $t('Add inside'),
+                label: $t('Add inside'),
                 disabled: !addInside,
                 action: () => addInside.action(),
             }] : [],
