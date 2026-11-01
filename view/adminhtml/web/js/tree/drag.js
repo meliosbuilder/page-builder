@@ -11,6 +11,7 @@ define([
     const THRESHOLD = 4,
         EDGE = 32,
         EXPAND_DELAY = 600,
+        LEVEL_STEP = 16,
         OWN_PARENT = ['column', 'tab-item'];
 
     function within(rect, x, y) {
@@ -35,6 +36,7 @@ define([
         this.state = null; // {name, moving, ghost}: moving is the element of a dragged row, null from Elements
         this.target = null;
         this.pointer = null;
+        this.gap = null; // {id, x, level}: the gap between rows under the pointer, id is the row above it
         this.returnTab = undefined;
         this.expandTimer = null;
         this.expandId = null;
@@ -229,7 +231,84 @@ define([
 
         target = target && this.outer(target);
 
-        return target && this.accepts(target.parent) ? target : null;
+        return target && this.accepts(target.parent) ? this.atLevel(target, rows, x) : null;
+    };
+
+    /**
+     * Moving the pointer left takes the target out of the containers that end at this gap, moving it right back in.
+     * Until then the target stays as it is under the pointer. Coming to another gap starts over.
+     */
+    Drag.prototype.atLevel = function (target, rows, x) {
+        var above = target.edge === 'top' ? rows[rows.indexOf(target.row) - 1] : target.row,
+            gap = this.gap,
+            levels,
+            steps,
+            level;
+
+        if (target.edge === 'inside' || !above || this.tree.query) {
+            this.gap = null;
+            return target;
+        }
+
+        if (gap?.id !== above.dataset.id) {
+            gap = this.gap = { id: above.dataset.id, x, level: null };
+        }
+
+        levels = this.levels(above);
+        level = gap.level ?? levels.findIndex(item => item.depth === target.depth);
+        steps = Math.trunc((x - gap.x) / LEVEL_STEP);
+
+        if (level === -1) {
+            return target;
+        }
+
+        if (steps) {
+            gap.x = x;
+            gap.level = Math.max(0, Math.min(level - steps, levels.length - 1));
+        }
+
+        return gap.level === null ? target : levels[Math.min(gap.level, levels.length - 1)];
+    };
+
+    /**
+     * Targets at the gap under the row, the deepest first: one for each level.
+     * Rows of containers without a form aren't shown, their children are on their level.
+     */
+    Drag.prototype.levels = function (row) {
+        var moving = this.state.moving,
+            child = this.tree.rowContentType(row),
+            depth = +row.getAttribute('aria-level') - 1,
+            levels = [],
+            addLevel = (parent, index, level) => {
+                if (this.accepts(parent) && !levels.some(item => item.depth === level)) {
+                    levels.push({ parent, index, row, edge: 'bottom', depth: level });
+                }
+            },
+            parent,
+            index;
+
+        if (child && row.getAttribute('aria-expanded') === 'true') {
+            addLevel(child, 0, depth + 1);
+
+            if (child.getChildren()().some(item => item !== moving)) {
+                return levels;
+            }
+        }
+
+        for (parent = child?.parentContentType; parent; parent = child.parentContentType) {
+            index = parent.getChildren()().indexOf(child) + 1;
+            addLevel(parent, index, depth);
+
+            // The moved element leaves its place: what's before it can be the last one
+            if (parent.getChildren()().slice(index).some(item => item !== moving)) {
+                break;
+            }
+
+            depth -= parent.config.form ? 1 : 0;
+            child = parent;
+        }
+
+        return levels;
     };
 
     /**
@@ -391,6 +470,7 @@ define([
         this.state = null;
         this.target = null;
         this.pointer = null;
+        this.gap = null;
         this.returnTab = undefined;
         this.tree.el.removeClass('mls-drop')
             .children('.mls-dragged, .mls-drop-inside').removeClass('mls-dragged mls-drop-inside');
