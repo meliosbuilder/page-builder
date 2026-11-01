@@ -1,5 +1,6 @@
 define([
     'jquery',
+    'knockout',
     'mage/translate',
     'Magento_PageBuilder/js/events',
     'Melios_PageBuilder/js/utils/open-edit',
@@ -7,13 +8,15 @@ define([
     'Melios_PageBuilder/js/tree/commands',
     'Melios_PageBuilder/js/tree/menu',
     'Melios_PageBuilder/js/tree/stage-scroll'
-], function ($, $t, events, openEdit, types, Commands, menu, scrollIntoStage) {
+], function ($, ko, $t, events, openEdit, types, Commands, menu, scrollIntoStage) {
     'use strict';
 
     // Distance from the line between two rows where the pointer shows the inserter
     const INSERT_GAP = 4;
     // Pause on that line before the inserter appears, passing over it shows nothing
     const INSERT_DELAY = 150;
+    // Pause on a stage element before its row is highlighted, passing over it shows nothing
+    const STAGE_HOVER_DELAY = 150;
 
     function Tree(pageBuilder, panel) {
         var edited = openEdit.currentEl();
@@ -24,6 +27,9 @@ define([
         this.el = null;
         this.selected = edited?.stageId === pageBuilder.id ? edited.id : null;
         this.hovered = null;
+        this.stageHovered = null;
+        this.stagePointer = null;
+        this.stageHoverTimer = null;
         this.focused = null;
         this.collapsed = new Set();
         this.search = null;
@@ -54,6 +60,13 @@ define([
         events.on('melios:add:after', data => {
             if (data.stageId === pageBuilder.id) {
                 this.scrollStageWhenRendered(data.contentType);
+            }
+        });
+
+        // Element under the pointer in a frame that replaces the stage
+        events.on('melios:stage:hover', data => {
+            if (data.stageId === pageBuilder.id) {
+                this.setStageHovered(data.id);
             }
         });
     }
@@ -124,6 +137,19 @@ define([
             })[0];
 
         ['copy', 'cut', 'paste'].forEach(type => document.addEventListener(type, e => this.onClipboard(e), true));
+
+        // Captured: previews stop the mouseover from bubbling
+        document.addEventListener('mouseover', e => this.onStageMouseOver(e), true);
+        document.addEventListener('mousemove', () => {
+            if (this.stagePointer && this.stagePointer !== this.stageHovered) {
+                this.waitForStageHover();
+            }
+        }, { capture: true, passive: true });
+        document.addEventListener('mouseout', e => {
+            if (!e.relatedTarget) {
+                this.setStagePointer(null);
+            }
+        }, true);
     };
 
     Tree.prototype.mountSearch = function (container) {
@@ -364,16 +390,32 @@ define([
 
     Tree.prototype.updateStates = function () {
         var rows = this.el?.children('.mls-tree-row'),
-            stop = rows && (this.row(this.focused) || this.row(this.selected) || rows[0]);
+            stop = rows && (this.row(this.focused) || this.row(this.selected) || rows[0]),
+            stageHovered = rows?.length ? this.stageHoveredRow() : null;
 
         rows?.each((i, row) => {
             var selected = row.dataset.id === this.selected;
 
             row.classList.toggle('mls-selected', selected);
             row.setAttribute('aria-selected', selected);
-            row.classList.toggle('mls-hovered', row.dataset.id === this.hovered);
+            row.classList.toggle('mls-hovered', row.dataset.id === this.hovered || row === stageHovered);
             row.tabIndex = row === stop ? 0 : -1;
         });
+    };
+
+    // Inside a collapsed parent the element has no row: that parent stands for it. A search ignores collapsing,
+    // the element has no row there because it doesn't match.
+    Tree.prototype.stageHoveredRow = function () {
+        var row = this.row(this.stageHovered),
+            contentType = !row && !this.query && this.stageHovered &&
+                types.find(this.pageBuilder.stage.rootContainer, this.stageHovered);
+
+        while (contentType && !row) {
+            row = this.row(contentType.id);
+            contentType = contentType.parentContentType;
+        }
+
+        return row;
     };
 
     Tree.prototype.row = function (id) {
@@ -628,6 +670,48 @@ define([
         this.hovered = id;
         events.trigger('melios:tree:hover', { stageId: this.pageBuilder.id, id });
         this.updateStates();
+    };
+
+    Tree.prototype.onStageMouseOver = function (e) {
+        var el = e.target.closest?.('.pagebuilder-content-type'),
+            contentType = el && !e.buttons && ko.dataFor(el)?.contentType;
+
+        // A frame outside the stage reports its own elements: melios:stage:hover
+        if (!el && e.target.tagName === 'IFRAME') {
+            return;
+        }
+
+        while (contentType && !contentType.config.form) {
+            contentType = contentType.parentContentType;
+        }
+
+        this.setStagePointer(contentType?.stageId === this.pageBuilder.id ? contentType.id : null);
+    };
+
+    // The row loses its highlight as soon as the pointer leaves the element
+    Tree.prototype.setStagePointer = function (id) {
+        this.stagePointer = id;
+        clearTimeout(this.stageHoverTimer);
+
+        if (id !== this.stageHovered) {
+            this.setStageHovered(null);
+
+            if (id) {
+                this.waitForStageHover();
+            }
+        }
+    };
+
+    Tree.prototype.waitForStageHover = function () {
+        clearTimeout(this.stageHoverTimer);
+        this.stageHoverTimer = setTimeout(() => this.setStageHovered(this.stagePointer), STAGE_HOVER_DELAY);
+    };
+
+    Tree.prototype.setStageHovered = function (id) {
+        if (id !== this.stageHovered) {
+            this.stageHovered = id;
+            this.updateStates();
+        }
     };
 
     Tree.prototype.reveal = function (contentType) {
