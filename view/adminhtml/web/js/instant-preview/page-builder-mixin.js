@@ -64,7 +64,7 @@ define([
             return;
         }
 
-        lastEdit.preview.openEdit();
+        lastEdit.preview.onOptionEdit();
     });
 
     // Update form data when inline editor inside preview stage is used

@@ -26,13 +26,13 @@ define([
 
         if (!$.active) {
             elOpening = null;
-            contentType.preview.openEdit();
+            contentType.preview.onOptionEdit();
         } else if (!waiting) {
             $(document).one('ajaxStop', () => {
                 var target = elOpening;
 
                 elOpening = null;
-                target?.preview.openEdit();
+                target?.preview.onOptionEdit();
             });
         }
     }
