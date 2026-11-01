@@ -34,25 +34,6 @@ define([
         };
     }
 
-    function button(text, type = 'primary') {
-        return { name: 'button-item', data: { button_text: text, button_type: 'pagebuilder-button-' + type } };
-    }
-
-    // Image and text side by side, 2 columns on tablets too
-    function imageText() {
-        var text = [
-                { name: 'text', data: { content: `<h2>${$t('Tell your story')}</h2><p>${$t('Show what you offer next to a picture of it.')}</p>` } },
-                { name: 'buttons', data: { appearance: 'inline' }, children: [button($t('Learn more'))] },
-            ],
-            image = [{ name: 'image' }],
-            group = columns([1, 1], {
-                column: i => i ? { justify_content: 'center' } : { justify_content: 'center', text_align: 'center' },
-                content: i => i ? text : image,
-            });
-
-        return [{ name: 'column-group', data: { ...group.data(), gap: '40', tablet_mode: '2' }, children: group.children() }];
-    }
-
     function tabs(count) {
         return Array.from({ length: count }, (tab, i) => {
             return { name: 'tab-item', data: { tab_name: $t('Tab') + ' ' + (i + 1) } };
@@ -82,49 +63,6 @@ define([
                 icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 44 30" fill="none"><path d="M2.25 0V30" stroke="#a39a92" stroke-width="1.5" stroke-dasharray="3 2"/><path d="M41.75 0V30" stroke="#a39a92" stroke-width="1.5" stroke-dasharray="3 2"/><rect y="8" width="44" height="14" fill="#3d3530"/><path d="M2.25 8V22" stroke="#fff" stroke-opacity=".75" stroke-width="1.5" stroke-dasharray="3 2"/><path d="M41.75 8V22" stroke="#fff" stroke-opacity=".75" stroke-width="1.5" stroke-dasharray="3 2"/></svg>',
                 sortOrder: 30,
                 data: { appearance: 'full-bleed' },
-            },
-            {
-                code: 'hero',
-                label: $t('Hero'),
-                group: $t('Sections'),
-                icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 44 30" fill="none"><rect width="44" height="30" rx="3" fill="#3d3530"/><rect x="11" y="7" width="22" height="4" rx="1" fill="#fff"/><rect x="15" y="14" width="14" height="2" rx="1" fill="#b9b1aa"/><rect x="12" y="19.5" width="9" height="5" rx="2.5" fill="#fff"/><rect x="23.6" y="20.1" width="7.8" height="3.8" rx="1.9" stroke="#fff" stroke-width="1.2"/></svg>',
-                sortOrder: 40,
-                data: { appearance: 'full-width', min_height: '400px', justify_content: 'center', text_align: 'center' },
-                children: [
-                    { name: 'text', data: { content: `<h1>${$t('Your headline goes here')}</h1><p>${$t('Tell visitors what you offer and why it matters.')}</p>` } },
-                    {
-                        name: 'buttons',
-                        data: { appearance: 'inline' },
-                        children: [
-                            button($t('Get started')),
-                            button($t('Learn more'), 'secondary'),
-                        ],
-                    },
-                ],
-            },
-            {
-                code: 'features',
-                label: $t('Features'),
-                group: $t('Sections'),
-                icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 44 30" fill="none"><circle cx="7" cy="8.5" r="3.5" fill="#3d3530"/><rect x="2" y="15" width="10" height="3" rx="1" fill="#3d3530"/><rect x="2" y="20" width="10" height="1.5" fill="#a39a92"/><rect x="2" y="23.5" width="10" height="1.5" fill="#a39a92"/><circle cx="22" cy="8.5" r="3.5" fill="#3d3530"/><rect x="17" y="15" width="10" height="3" rx="1" fill="#3d3530"/><rect x="17" y="20" width="10" height="1.5" fill="#a39a92"/><rect x="17" y="23.5" width="10" height="1.5" fill="#a39a92"/><circle cx="37" cy="8.5" r="3.5" fill="#3d3530"/><rect x="32" y="15" width="10" height="3" rx="1" fill="#3d3530"/><rect x="32" y="20" width="10" height="1.5" fill="#a39a92"/><rect x="32" y="23.5" width="10" height="1.5" fill="#a39a92"/></svg>',
-                sortOrder: 50,
-                data: { appearance: 'contained', text_align: 'center' },
-                children: () => {
-                    var group = columns([1, 1, 1], { content: i => [
-                        { name: 'text', data: { content: `<h3>${$t('Feature %1').replace('%1', i + 1)}</h3><p>${$t('Describe what makes it useful.')}</p>` } },
-                    ] });
-
-                    return [{ name: 'column-group', data: group.data(), children: group.children() }];
-                },
-            },
-            {
-                code: 'image-text',
-                label: $t('Image + text'),
-                group: $t('Sections'),
-                icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 44 30" fill="none"><rect x="1.5" y="2" width="18" height="26" rx="2" fill="#3d3530"/><circle cx="7.5" cy="8.5" r="2.5" fill="#fff"/><rect x="4.5" y="18" width="12" height="5" rx="1" fill="#b9b1aa"/><rect x="24.5" y="5.5" width="16" height="3" rx="1" fill="#3d3530"/><rect x="24.5" y="11" width="18" height="1.5" fill="#a39a92"/><rect x="24.5" y="15" width="14" height="1.5" fill="#a39a92"/><rect x="24.5" y="20.5" width="10" height="4" rx="2" fill="#3d3530"/></svg>',
-                sortOrder: 60,
-                data: { appearance: 'contained' },
-                children: imageText,
             },
         ]);
 
