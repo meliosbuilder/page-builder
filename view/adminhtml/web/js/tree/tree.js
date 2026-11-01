@@ -12,6 +12,8 @@ define([
 
     // Distance from the line between two rows where the pointer shows the inserter
     const INSERT_GAP = 4;
+    // Pause on that line before the inserter appears, passing over it shows nothing
+    const INSERT_DELAY = 150;
 
     function Tree(pageBuilder, panel) {
         var edited = openEdit.currentEl();
@@ -27,6 +29,7 @@ define([
         this.search = null;
         this.inserter = null;
         this.insertAt = null;
+        this.insertTimer = null;
         this.query = '';
         this.signature = null;
         this.renderTimer = null;
@@ -96,7 +99,11 @@ define([
                     this.hover(this.el[0].querySelector(':scope > .mls-tree-row:hover')?.dataset.id);
                 }
             })
-            .on('mouseover', '.mls-tree-row', e => this.hover(e.currentTarget.dataset.id))
+            .on('mouseover', '.mls-tree-row', e => {
+                if (!this.inserterVisible()) {
+                    this.hover(e.currentTarget.dataset.id);
+                }
+            })
             .on('mousemove', e => this.onMouseMove(e))
             .on('mouseleave', () => {
                 this.showInserter(null);
@@ -442,9 +449,21 @@ define([
     };
 
     Tree.prototype.onMouseMove = function (e) {
+        var wasVisible = this.inserterVisible();
+
         if (e.target !== this.inserter) {
             this.showInserter(this.query || e.buttons ? null : this.gapAt(e.clientY));
         }
+
+        if (this.inserterVisible()) {
+            this.hover(null);
+        } else if (wasVisible) {
+            this.hover(e.target.closest('.mls-tree-row')?.dataset.id);
+        }
+    };
+
+    Tree.prototype.inserterVisible = function () {
+        return !!this.inserter?.classList.contains('mls-on');
     };
 
     /**
@@ -496,7 +515,17 @@ define([
             }
         }
 
-        this.inserter?.classList.toggle('mls-on', !!this.insertAt);
+        if (!this.insertAt) {
+            clearTimeout(this.insertTimer);
+            this.insertTimer = null;
+            this.inserter?.classList.remove('mls-on');
+        } else if (!this.insertTimer && !this.inserterVisible()) {
+            this.insertTimer = setTimeout(() => {
+                this.insertTimer = null;
+                this.inserter.classList.add('mls-on');
+                this.hover(null);
+            }, INSERT_DELAY);
+        }
     };
 
     Tree.prototype.openMenu = function (row, at, button) {

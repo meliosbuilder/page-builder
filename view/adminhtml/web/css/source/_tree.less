@@ -429,7 +429,7 @@ body .pagebuilder-stage-wrapper.stage-full-screen {
     &.mls-on {
         visibility: visible;
         opacity: 1;
-        transition: opacity .1s .15s, visibility 0s .15s;
+        transition: opacity .1s;
     }
 
     body.mls-tree-dragging & {
@@ -439,7 +439,7 @@ body .pagebuilder-stage-wrapper.stage-full-screen {
 
 @media (prefers-reduced-motion: reduce) {
     .mls-tree .mls-tree-insert.mls-on {
-        transition: visibility 0s .15s;
+        transition: none;
     }
 }
 
