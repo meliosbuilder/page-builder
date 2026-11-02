@@ -2,46 +2,27 @@ define([
     'jquery',
     'knockout',
     'mage/utils/wrapper',
-], function ($, ko, wrapper) {
+    'Melios_PageBuilder/js/image/default-size',
+], function ($, ko, wrapper, defaultSize) {
     'use strict';
 
     return function (target) {
         target.prototype.onImageChanged = wrapper.wrap(
             target.prototype.onImageChanged,
             function (o, data) {
-                var url = data[0].url,
-                    isVector = url.toLowerCase().endsWith('.svg');
+                var url = data[0].url;
 
                 if (url) {
-                    var img = new Image();
-
-                    img.onload = () => {
-                        var oldWidth = this.dataStore.get('width'),
-                            oldHeight = this.dataStore.get('height'),
-                            newWidth = img.width,
-                            newHeight = img.height,
-                            widthFactor = Math.max(oldWidth, newWidth) / Math.min(oldWidth, newWidth);
-
-                        if (!isVector) {
-                            newWidth /= 2;
-                            newHeight /= 2;
-                        }
-
-                        if (oldWidth &&
-                            oldHeight &&
-                            Math.round(oldWidth / oldHeight) === Math.round(newWidth / newHeight) &&
-                            Math.abs(newWidth - oldWidth) / oldWidth <= 0.3 &&
-                            widthFactor < 2
-                        ) {
+                    defaultSize(url, this.dataStore.get('width'), this.dataStore.get('height')).then(size => {
+                        if (!size) {
                             return;
                         }
 
-                        this.dataStore.set('width', newWidth);
-                        this.dataStore.set('mobile_width', newWidth);
-                        this.dataStore.set('height', newHeight);
-                        this.dataStore.set('mobile_height', newHeight);
-                    };
-                    img.src = url;
+                        this.dataStore.set('width', size.width);
+                        this.dataStore.set('mobile_width', size.width);
+                        this.dataStore.set('height', size.height);
+                        this.dataStore.set('mobile_height', size.height);
+                    });
                 }
 
                 return o(data);
