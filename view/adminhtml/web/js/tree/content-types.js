@@ -103,7 +103,10 @@ define([
                 blank: !doc.body.textContent.trim() && !html.includes('{{') && !doc.querySelector(CONTENT_TAGS),
             };
             doc.querySelectorAll('script, style, template').forEach(el => el.remove());
-            parsed.text = doc.body.textContent.replace(/\{\{[^}]*\}\}/g, ' ').replace(/\s+/g, ' ').trim();
+            parsed.text = doc.body.textContent
+                .replace(/\{\{[^}]*\}\}/g, directive => ` ${widgetName(directive)} `)
+                .replace(/\s+/g, ' ')
+                .trim();
 
             if (texts.size > 500) {
                 texts.clear();
