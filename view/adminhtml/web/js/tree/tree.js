@@ -7,8 +7,9 @@ define([
     'Melios_PageBuilder/js/tree/content-types',
     'Melios_PageBuilder/js/tree/commands',
     'Melios_PageBuilder/js/tree/menu',
-    'Melios_PageBuilder/js/tree/stage-scroll'
-], function ($, ko, $t, events, openEdit, types, Commands, menu, scrollIntoStage) {
+    'Melios_PageBuilder/js/tree/stage-scroll',
+    'Melios_PageBuilder/js/utils/can-use-hotkeys'
+], function ($, ko, $t, events, openEdit, types, Commands, menu, scrollIntoStage, canUseHotkeys) {
     'use strict';
 
     // Distance from the line between two rows where the pointer shows the inserter
@@ -632,9 +633,17 @@ define([
         e.stopPropagation();
     };
 
+    Tree.prototype.hoveredContentType = function () {
+        var row = this.el?.[0].querySelector(':scope > .mls-tree-row:hover');
+
+        return row ? this.rowContentType(row) : null;
+    };
+
+    // The row under the pointer, unless a field is being typed into or a text is selected, or the focused row
     Tree.prototype.onClipboard = function (e) {
         var row = this.el[0].contains(document.activeElement) && document.activeElement.closest('.mls-tree-row'),
-            contentType = row && this.rowContentType(row);
+            hovered = canUseHotkeys(e) && (e.type === 'paste' || !window.getSelection().toString()) && this.hoveredContentType(),
+            contentType = hovered || (row && this.rowContentType(row));
 
         if (contentType && this.commands.clipboard(e, contentType)) {
             e.preventDefault();
