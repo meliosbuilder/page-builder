@@ -495,9 +495,13 @@ body.mls-tree-dragging {
     padding: 4px;
     border-radius: 8px;
     background: #fff;
-    box-shadow: 0 0 0 1px rgba(0, 0, 0, .08), 0 8px 24px rgba(0, 0, 0, .18);
     color: #303030;
     outline: none;
+
+    &,
+    &:focus {
+        box-shadow: 0 0 0 1px rgba(0, 0, 0, .08), 0 8px 24px rgba(0, 0, 0, .18);
+    }
 
     button {
         display: flex;
@@ -516,6 +520,7 @@ body.mls-tree-dragging {
 
         &:focus {
             outline: none;
+            box-shadow: none;
         }
 
         &:hover:not(:disabled),
