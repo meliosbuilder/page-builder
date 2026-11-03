@@ -99,8 +99,9 @@ define([
                     color: #6f665f;
                 }
                 .mls-grid {
-                    display: flex;
-                    flex-wrap: wrap;
+                    display: grid;
+                    /* Tiles give up a few px to keep 6 columns next to a classic scrollbar */
+                    grid-template-columns: repeat(auto-fill, minmax(105px, 1fr));
                     gap: 10px;
                 }
                 .mls-empty {
@@ -125,7 +126,6 @@ define([
                     align-items: center;
                     gap: 9px;
                     box-sizing: border-box;
-                    width: 112px;
                     height: 96px;
                     padding: 17px 6px 0;
                     background: #fff;
