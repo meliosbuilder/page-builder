@@ -44,6 +44,7 @@ define([
             }
 
             return $('<button type="button" role="menuitem">')
+                .addClass('mls-tree-menu-' + entry.id)
                 .toggleClass('mls-danger', !!entry.danger)
                 .prop('disabled', !!entry.disabled)
                 .append($('<span>').text(entry.label))

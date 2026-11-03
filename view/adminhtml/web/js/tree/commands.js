@@ -151,7 +151,8 @@ define([
     Commands.prototype.menu = function (contentType) {
         var addBefore = this.addAction(contentType, 'before'),
             addAfter = this.addAction(contentType),
-            addInside = contentType.getChildren && this.addAction(contentType, 'inside');
+            addInside = contentType.getChildren && this.addAction(contentType, 'inside'),
+            hidden = types.hidden(contentType, this.pageBuilder.viewport());
 
         return [
             { id: 'copy', label: $t('Copy'), action: () => this.copy(contentType) },
@@ -174,8 +175,8 @@ define([
                 action: () => this.duplicate(contentType),
             },
             {
-                id: 'hide',
-                label: types.hidden(contentType, this.pageBuilder.viewport()) ? $t('Show') : $t('Hide'),
+                id: hidden ? 'show' : 'hide',
+                label: hidden ? $t('Show') : $t('Hide'),
                 disabled: !types.option(contentType, 'hideShow'),
                 action: () => this.toggleHidden(contentType),
             },
