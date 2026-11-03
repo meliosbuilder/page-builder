@@ -480,6 +480,7 @@ body.mls-tree-dragging {
     background: #fff;
     box-shadow: 0 0 0 1px rgba(0, 0, 0, .08), 0 8px 24px rgba(0, 0, 0, .18);
     color: #303030;
+    outline: none;
 
     button {
         display: flex;
@@ -501,7 +502,6 @@ body.mls-tree-dragging {
             outline: none;
         }
 
-        // The first item has focus when the menu opens, highlighted only when it's opened with the keyboard
         &:hover:not(:disabled),
         &:focus-visible {
             background: #f1f1f1;

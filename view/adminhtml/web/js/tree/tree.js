@@ -95,7 +95,7 @@ define([
                 if (menu.isOpenFor(button)) {
                     menu.close();
                 } else {
-                    this.openMenu(button.closest('.mls-tree-row'), { x: rect.left, y: rect.bottom + 2 }, button);
+                    this.openMenu(button.closest('.mls-tree-row'), { x: rect.left, y: rect.bottom + 2 }, button, e.detail === 0);
                 }
             })
             .on('click', '.mls-tree-row', e => this.onClick(e))
@@ -571,7 +571,7 @@ define([
         }
     };
 
-    Tree.prototype.openMenu = function (row, at, button) {
+    Tree.prototype.openMenu = function (row, at, button, keyboard) {
         var contentType = this.rowContentType(row);
 
         if (!contentType) {
@@ -585,7 +585,7 @@ define([
             if (row.isConnected) {
                 row.focus({ preventScroll: true });
             }
-        }, button);
+        }, button, keyboard);
     };
 
     Tree.prototype.onKey = function (e) {
@@ -624,7 +624,7 @@ define([
             }
         } else if (key === 'ContextMenu' || (key === 'F10' && e.shiftKey)) {
             rect = row.getBoundingClientRect();
-            this.openMenu(row, { x: rect.left + 24, y: rect.bottom });
+            this.openMenu(row, { x: rect.left + 24, y: rect.bottom }, null, true);
         } else if (!this.commands.onKey(e, contentType)) {
             return;
         }

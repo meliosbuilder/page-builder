@@ -15,7 +15,7 @@ define([
         var all = items(),
             index = all.index(document.activeElement);
 
-        all.eq((index + step + all.length) % all.length).trigger('focus');
+        all.eq(index < 0 && step < 0 ? -1 : (index + step) % all.length).trigger('focus');
     }
 
     function close() {
@@ -34,11 +34,11 @@ define([
         closed?.();
     }
 
-    function open(entries, at, closed, button) {
+    function open(entries, at, closed, button, keyboard) {
         var rect;
 
         close();
-        menu = $('<div class="mls-tree-menu" role="menu">').append(entries.map(entry => {
+        menu = $('<div class="mls-tree-menu" role="menu" tabindex="-1">').append(entries.map(entry => {
             if (entry === '-') {
                 return $('<div class="mls-tree-menu-separator" role="separator">');
             }
@@ -84,7 +84,7 @@ define([
         });
         $(window).on('blur.mlsTreeMenu resize.mlsTreeMenu', close);
 
-        items().first().trigger('focus');
+        (keyboard ? items().first() : menu).trigger('focus');
     }
 
     return {
