@@ -3,13 +3,14 @@ define([
     'knockout',
     'mage/translate',
     'Magento_PageBuilder/js/events',
+    'Melios_PageBuilder/js/utils/add',
     'Melios_PageBuilder/js/utils/open-edit',
     'Melios_PageBuilder/js/tree/content-types',
     'Melios_PageBuilder/js/tree/commands',
     'Melios_PageBuilder/js/tree/menu',
     'Melios_PageBuilder/js/tree/stage-scroll',
     'Melios_PageBuilder/js/utils/can-use-hotkeys'
-], function ($, ko, $t, events, openEdit, types, Commands, menu, scrollIntoStage, canUseHotkeys) {
+], function ($, ko, $t, events, add, openEdit, types, Commands, menu, scrollIntoStage, canUseHotkeys) {
     'use strict';
 
     // Distance from the line between two rows where the pointer shows the inserter
@@ -293,6 +294,17 @@ define([
                 empty.className = 'mls-tree-empty';
                 empty.textContent = this.query ? $t('No matching elements') : $t('No elements yet');
                 this.el[0].replaceChildren(empty);
+
+                // No rows to show the inserter between: its line is under the text, while the pointer is on the panel
+                if (!this.query) {
+                    $('<button type="button" class="mls-tree-insert mls-tree-empty-add" tabindex="-1">')
+                        .attr({ title: $t('Add'), 'aria-label': $t('Add') })
+                        .css({ '--mls-insert-y': empty.offsetTop + empty.offsetHeight + 'px', '--mls-depth': 0 })
+                        .on('click', () => {
+                            add.openSpotlight(this.pageBuilder, add.target(this.pageBuilder.stage.rootContainer, 'inside'));
+                        })
+                        .appendTo(this.el);
+                }
             }
 
             if (focusedIndex !== -1) {
