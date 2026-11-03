@@ -154,7 +154,31 @@ define([
             addInside = contentType.getChildren && this.addAction(contentType, 'inside');
 
         return [
-            { id: 'edit', label: $t('Edit'), action: () => this.edit(contentType) },
+            { id: 'copy', label: $t('Copy'), action: () => this.copy(contentType) },
+            {
+                id: 'cut',
+                label: $t('Cut'),
+                pro: true,
+                action: () => toast.show($t('Cut is available in Page Builder Pro')),
+            },
+            {
+                id: 'paste',
+                label: $t('Paste'),
+                pro: true,
+                action: () => toast.show($t('Paste is available in Page Builder Pro')),
+            },
+            {
+                id: 'duplicate',
+                label: $t('Duplicate'),
+                disabled: !types.option(contentType, 'duplicate'),
+                action: () => this.duplicate(contentType),
+            },
+            {
+                id: 'hide',
+                label: types.hidden(contentType, this.pageBuilder.viewport()) ? $t('Show') : $t('Hide'),
+                disabled: !types.option(contentType, 'hideShow'),
+                action: () => this.toggleHidden(contentType),
+            },
             '-',
             {
                 id: 'add-before',
@@ -175,32 +199,6 @@ define([
                 action: () => addInside.action(),
             }] : [],
             '-',
-            {
-                id: 'duplicate',
-                label: $t('Duplicate'),
-                disabled: !types.option(contentType, 'duplicate'),
-                action: () => this.duplicate(contentType),
-            },
-            { id: 'copy', label: $t('Copy'), action: () => this.copy(contentType) },
-            {
-                id: 'cut',
-                label: $t('Cut'),
-                pro: true,
-                action: () => toast.show($t('Cut is available in Page Builder Pro')),
-            },
-            {
-                id: 'paste',
-                label: $t('Paste'),
-                pro: true,
-                action: () => toast.show($t('Paste is available in Page Builder Pro')),
-            },
-            '-',
-            {
-                id: 'hide',
-                label: types.hidden(contentType, this.pageBuilder.viewport()) ? $t('Show') : $t('Hide'),
-                disabled: !types.option(contentType, 'hideShow'),
-                action: () => this.toggleHidden(contentType),
-            },
             {
                 id: 'delete',
                 label: $t('Delete'),

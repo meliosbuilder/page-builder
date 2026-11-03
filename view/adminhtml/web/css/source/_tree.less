@@ -519,6 +519,11 @@ body.mls-tree-dragging {
 
         &.mls-danger {
             color: #c00;
+
+            &:hover:not(:disabled),
+            &:focus-visible {
+                background: #fdecec;
+            }
         }
     }
 }
