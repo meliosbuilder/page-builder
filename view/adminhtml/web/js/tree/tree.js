@@ -530,10 +530,11 @@ define([
     Tree.prototype.gapAt = function (y) {
         var rows = this.el.children('.mls-tree-row').get(),
             last = rows[rows.length - 1],
+            gap = last ? this.rowGap(last) : 0,
             row,
             top;
 
-        row = rows.find(el => Math.abs(y - el.getBoundingClientRect().top) <= INSERT_GAP);
+        row = rows.find(el => Math.abs(y - el.getBoundingClientRect().top + gap / 2) <= INSERT_GAP);
 
         if (row) {
             return {
@@ -545,7 +546,7 @@ define([
             };
         }
 
-        if (last && Math.abs(y - last.getBoundingClientRect().bottom) <= INSERT_GAP) {
+        if (last && Math.abs(y - last.getBoundingClientRect().bottom - gap / 2) <= INSERT_GAP) {
             top = rows.filter(el => el.getAttribute('aria-level') === '1').pop();
 
             return top ? { row: last, edge: 'bottom', contentType: this.rowContentType(top), where: 'after', depth: 0 } :
@@ -553,6 +554,17 @@ define([
         }
 
         return null;
+    };
+
+    Tree.prototype.rowGap = function (row) {
+        return parseFloat(getComputedStyle(row).marginTop);
+    };
+
+    // Drop line and inserter: in the middle of the gap above or under the row
+    Tree.prototype.lineY = function (row, edge) {
+        var gap = this.rowGap(row);
+
+        return edge === 'top' ? row.offsetTop - gap / 2 : row.offsetTop + row.offsetHeight + gap / 2;
     };
 
     Tree.prototype.showInserter = function (gap) {
@@ -564,8 +576,7 @@ define([
             this.insertAt = action ? { key, action: action.action } : null;
 
             if (action) {
-                this.inserter.style.setProperty('--mls-insert-y',
-                    gap.row.offsetTop + (gap.edge === 'top' ? 0 : gap.row.offsetHeight) + 'px');
+                this.inserter.style.setProperty('--mls-insert-y', this.lineY(gap.row, gap.edge) + 'px');
                 this.inserter.style.setProperty('--mls-depth', gap.depth);
             }
         }

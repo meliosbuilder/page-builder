@@ -22,6 +22,7 @@
     --mls-tree-panel-width: var(--mls-tree-rail-width);
     --mls-tree-padding: 4px var(--mls-tree-item-inset) 40px;
     --mls-tree-item-height: 26px;
+    --mls-tree-item-gap: 3px;
     --mls-tree-item-indent: 12px;
     --mls-tree-item-border-radius: 4px;
     --mls-tree-item-inset: 4px;
@@ -216,11 +217,13 @@ body .pagebuilder-stage-wrapper.stage-full-screen {
 }
 
 .mls-tree-row {
+    position: relative;
     display: flex;
     align-items: center;
     gap: 4px;
     outline: none;
     height: var(--mls-tree-item-height);
+    margin-top: var(--mls-tree-item-gap);
     padding-right: var(--mls-tree-item-inset);
     padding-left: ~"calc(var(--mls-tree-item-inset) + var(--mls-depth) * var(--mls-tree-item-indent))";
     border-radius: var(--mls-tree-item-border-radius);
@@ -228,6 +231,16 @@ body .pagebuilder-stage-wrapper.stage-full-screen {
     white-space: nowrap;
     cursor: pointer;
     user-select: none;
+
+    // The gap above belongs to the row: moving between rows doesn't leave them
+    &::before {
+        content: '';
+        position: absolute;
+        right: 0;
+        bottom: 100%;
+        left: 0;
+        height: var(--mls-tree-item-gap);
+    }
 
     > i {
         display: flex;

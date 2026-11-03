@@ -209,6 +209,7 @@ define([
     Drag.prototype.targetAt = function (x, y) {
         var rows = this.tree.el.children('.mls-tree-row').get(),
             last = rows[rows.length - 1],
+            gap = last ? this.tree.rowGap(last) : 0,
             root = this.tree.pageBuilder.stage.rootContainer,
             row,
             target;
@@ -220,7 +221,7 @@ define([
         row = rows.find(el => {
             var rect = el.getBoundingClientRect();
 
-            return y >= rect.top && y < rect.bottom;
+            return y >= rect.top - gap && y < rect.bottom;
         });
 
         if (row) {
@@ -394,8 +395,7 @@ define([
 
     Drag.prototype.show = function (target) {
         var tree = this.tree.el,
-            row = target?.edge === 'inside' ? target.last : target?.row,
-            y;
+            row = target?.edge === 'inside' ? target.last : target?.row;
 
         tree.children('.mls-drop-inside').removeClass('mls-drop-inside');
         $(target?.edge === 'inside' ? target.row : null).addClass('mls-drop-inside');
@@ -404,8 +404,7 @@ define([
         tree.toggleClass('mls-drop', !!row);
 
         if (row) {
-            y = row.offsetTop + (target.edge === 'top' ? 0 : row.offsetHeight);
-            tree[0].style.setProperty('--mls-drop-y', y + 'px');
+            tree[0].style.setProperty('--mls-drop-y', this.tree.lineY(row, target.edge) + 'px');
             tree[0].style.setProperty('--mls-drop-depth', target.depth);
         }
     };
