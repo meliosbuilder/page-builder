@@ -109,11 +109,6 @@ define([
                 this.focused = e.currentTarget.dataset.id;
                 this.updateStates();
             })
-            .on('focusout', e => {
-                if (!this.el[0].contains(e.relatedTarget) && !$(e.relatedTarget).closest('.mls-tree-menu').length) {
-                    this.hover(this.el[0].querySelector(':scope > .mls-tree-row:hover')?.dataset.id);
-                }
-            })
             .on('mouseover', '.mls-tree-row', e => {
                 if (!this.inserterVisible()) {
                     this.hover(e.currentTarget.dataset.id);
@@ -448,7 +443,6 @@ define([
 
         row.focus({ preventScroll: true });
         this.scrollToRow(row);
-        this.hover(row.dataset.id);
     };
 
     Tree.prototype.setCollapsed = function (id, flag) {
@@ -604,6 +598,7 @@ define([
         row.classList.add('mls-menu-open');
         menu.open(this.commands.menu(contentType), at, () => {
             row.classList.remove('mls-menu-open');
+            this.hover(this.el[0].querySelector(':scope > .mls-tree-row:hover')?.dataset.id);
 
             if (row.isConnected) {
                 row.focus({ preventScroll: true });
