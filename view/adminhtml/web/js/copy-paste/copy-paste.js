@@ -21,6 +21,14 @@ define([
 ) {
     'use strict';
 
+    function hasElementToCopy() {
+        var el = $('.pagebuilder-wysiwyg-overlay._hover').add(
+            $('.pagebuilder-stage-wrapper.stage-full-screen').parent()
+        );
+
+        return !!$('.pagebuilder-content-type-active').length || !!ko.dataFor(el[0])?.pageBuilder;
+    }
+
     async function getElementAndTextToCopy(e) {
         var cmp, el = $('.pagebuilder-content-type-active');
 
@@ -62,7 +70,7 @@ define([
     }
 
     $(document).on('copy', async e => {
-        if (!canUseHotkeys(e) || window.getSelection().toString().length) {
+        if (!canUseHotkeys(e) || window.getSelection().toString().length || !hasElementToCopy()) {
             return;
         }
 
@@ -84,7 +92,7 @@ define([
     });
 
     $(document).on('cut', async e => {
-        if (!canUseHotkeys(e) || window.getSelection().toString().length) {
+        if (!canUseHotkeys(e) || window.getSelection().toString().length || !hasElementToCopy()) {
             return;
         }
 
