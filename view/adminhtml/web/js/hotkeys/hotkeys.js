@@ -96,11 +96,26 @@ define([
     // Confirm page unload when needed
     (() => {
         var lastScroll = new Date(),
-            lastDelta = 0;
+            lastDelta = 0,
+            frameDocs = new WeakSet(),
+            onWheel = (e) => {
+                lastScroll = new Date();
+                lastDelta = e.deltaX;
+            };
 
-        window.addEventListener('wheel', (e) => {
-            lastScroll = new Date();
-            lastDelta = e.deltaX;
+        window.addEventListener('wheel', onWheel, { passive: true });
+
+        // Wheel inside an iframe (TinyMCE in the sidebar form) doesn't reach this window.
+        // Listen on the iframe's document once the pointer gets over it.
+        document.addEventListener('mouseover', (e) => {
+            var doc = e.target.tagName === 'IFRAME' && e.target.contentDocument;
+
+            if (!doc || frameDocs.has(doc)) {
+                return;
+            }
+
+            frameDocs.add(doc);
+            doc.addEventListener('wheel', onWheel, { passive: true });
         }, { passive: true });
 
         window.addEventListener('scroll', e => {
