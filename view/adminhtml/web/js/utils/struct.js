@@ -163,7 +163,7 @@ define([
         /** @return {Promise<Object|null>} the new column, null when there's no room */
         addColumn: async function (data, column, before = false) {
             var edge = list => list.at(before ? 0 : -1),
-                parent, index, utils, width, smallest, shrinkable, splitTimes, newColumn;
+                parent, index, utils, width, smallest, columns, count, shrinkable, splitTimes, newColumn;
 
             if (column.config.name === 'column-group') {
                 column = edge(column.children());
@@ -183,6 +183,24 @@ define([
             utils = parent.preview.getResizeUtils();
             width = utils.getColumnWidth(column);
             smallest = utils.getSmallestColumnWidth();
+            columns = parent.children();
+            count = columns.length + 1;
+
+            // Equal columns that fill the line stay equal: two halves become three thirds (as equal-columns/duplicate-mixin).
+            // Not counts the grid can't divide (5 on a 12 grid)
+            if (utils.getColumnsWidth() === 100
+                && !((utils.getInitialGridSize() || utils.getGridSize()) % count)
+                && columns.every(child => utils.getColumnWidth(child) === width)
+            ) {
+                newColumn = await build(data, parent, index);
+                width = utils.getAcceptedColumnWidth((100 / count).toString());
+
+                if (newColumn) {
+                    parent.children().forEach(child => resize.updateColumnWidth(child, width));
+                }
+
+                return newColumn;
+            }
 
             if ((shrinkable = utils.findBiggerShrinkableColumn(column))) {
                 newColumn = await build(data, parent, index);
