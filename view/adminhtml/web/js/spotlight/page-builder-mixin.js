@@ -298,6 +298,7 @@ define([
                                 label: type.label(),
                                 icon: type.icon(),
                                 group: menu.label(),
+                                groupOrder: this.config.menu_sections[menu.id()]?.sortOrder,
                             };
                         })
                     })));
@@ -342,6 +343,7 @@ define([
                                 label: item.label,
                                 icon: item.icon,
                                 group: this.config.menu_sections[item.menu_section].label,
+                                groupOrder: this.config.menu_sections[item.menu_section].sortOrder,
                             };
                         })),
                     onSelect: (id, event, item) => {

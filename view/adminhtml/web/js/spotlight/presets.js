@@ -34,6 +34,7 @@ define([
             // In a group of its own (Sections), it's named by itself: "Hero", not "Row Hero"
             label: preset?.group ? preset.label : type.label,
             group: preset?.group || type.group || '',
+            groupOrder: preset?.group ? preset.groupOrder : type.groupOrder,
             fallback: fallbacks[type.name] || null,
             popular: popular[id] ?? null,
             note: !preset?.group && preset?.label || '',
@@ -49,6 +50,7 @@ define([
          *     icon: 'Magento_PageBuilder/css/images/content-type/row/appearance/full-width.svg', // or <svg>, or a class
          *     sortOrder: 20,
          *     group: $t('Sections'),    // Spotlight group instead of the element's one, named without the element
+         *     groupOrder: 0,            // its place among the menu sections' sortOrder (Layout 1, Elements 10, Media 20, Add Content 30), last if not given
          *     default: true,            // shown as the element itself, instead of plain "Row"
          *     data: { appearance: 'full-width' },                    // field values, or a function returning them
          *     children: [{ name: 'column', data: {}, children: [] }], // instead of its default ones, or a function
@@ -114,8 +116,8 @@ define([
                 });
             });
 
-            // Groups of their own (Sections) after the elements' ones
-            return list.filter(entry => !entry.preset?.group).concat(list.filter(entry => entry.preset?.group));
+            // Groups in their order (stable: items keep theirs), groups of their own without one after the elements' ones
+            return _.sortBy(list, entry => entry.groupOrder ?? Infinity);
         },
 
         // The preset of the element dragged from Spotlight, for its drop to take
