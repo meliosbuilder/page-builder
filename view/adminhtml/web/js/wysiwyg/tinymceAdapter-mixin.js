@@ -47,6 +47,49 @@ define([
             return settings;
         });
 
+        /**
+         * Magento bugfix:
+         * The admin can load jQuery twice (mage/requirejs/mixins.js loads `deps` again in its own context),
+         * and Knockout may register the textarea's value binding on the other copy. A jQuery trigger reaches
+         * only handlers of its own copy, so the edited text never got to the form. A native event reaches all.
+         */
+        if (typeof target.updateTextArea !== 'function' || typeof target.getTextArea !== 'function') {
+            return target;
+        }
+
+        target.updateTextArea = wrapper.wrap(target.updateTextArea, function (o) {
+            var own = Object.prototype.hasOwnProperty.call(this, 'getTextArea'),
+                getTextArea = this.getTextArea;
+
+            this.getTextArea = function () {
+                var textarea = getTextArea.apply(this, arguments),
+                    trigger = textarea.trigger;
+
+                // Only the adapter's own trigger('change'), anything else stays a jQuery trigger
+                textarea.trigger = function (type) {
+                    if (type !== 'change' || arguments.length > 1) {
+                        return trigger.apply(this, arguments);
+                    }
+
+                    this.each((i, el) => el.dispatchEvent(new Event(type, { bubbles: true })));
+
+                    return this;
+                };
+
+                return textarea;
+            };
+
+            try {
+                return o();
+            } finally {
+                if (own) {
+                    this.getTextArea = getTextArea;
+                } else {
+                    delete this.getTextArea;
+                }
+            }
+        });
+
         return target;
     };
 });
