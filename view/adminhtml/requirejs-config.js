@@ -144,13 +144,21 @@ var config = {
             },
 
             'Magento_PageBuilder/js/content-type/column/preview': {
-                'Melios_PageBuilder/js/column-sort-order/column-preview-mixin': true
+                'Melios_PageBuilder/js/column-sort-order/column-preview-mixin': true,
+                // Duplicating one of equal columns keeps them equal
+                'Melios_PageBuilder/js/equal-columns/duplicate-mixin': true
+            },
+            // Removing one of equal columns keeps the rest equal
+            'Magento_PageBuilder/js/content-type/column-line/preview': {
+                'Melios_PageBuilder/js/equal-columns/remove-mixin': true
             },
 
             // BUGFIXES
             // Fixed incorrectly added 'no-column-line' class when pagebuilder is slowly rendered
             'Magento_PageBuilder/js/content-type/column-group/preview': {
-                'Melios_PageBuilder/js/bugfixes/column-group-preview-mixin': true
+                'Melios_PageBuilder/js/bugfixes/column-group-preview-mixin': true,
+                // Removing one of equal columns keeps the rest equal (old Magento has columns right in the group)
+                'Melios_PageBuilder/js/equal-columns/remove-mixin': true
             },
             // Fixed error when min height is empty, but other mobile values are not
             'Magento_PageBuilder/js/converter/style/min-height': {
