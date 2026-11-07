@@ -81,6 +81,118 @@ define([
                 sortOrder: 30,
                 data: { appearance: 'full-bleed' },
             },
+            {
+                code: 'hero',
+                label: $t('Hero'),
+                group: $t('Sections'),
+                groupOrder: 0,
+                icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 44 30" fill="none"><rect width="44" height="30" rx="2" fill="#e4e1dd"/><rect x="10" y="7" width="24" height="3" rx="1" fill="#3d3530"/><rect x="14" y="13" width="16" height="2" fill="#a39a92"/><rect x="11" y="19" width="10" height="5" rx="2.5" fill="#3d3530"/><rect x="23.75" y="19.75" width="8.5" height="3.5" rx="1.75" stroke="#3d3530" stroke-width="1.5"/></svg>',
+                sortOrder: 100,
+                data: {
+                    appearance: 'full-width',
+                    text_align: 'center',
+                    min_height: '400px',
+                    justify_content: 'center',
+                    background_color: 'rgba(240, 240, 240, 0.43)',
+                    padding: { top: 30, right: 30, bottom: 50, left: 30 },
+                },
+                children: () => [
+                    {
+                        name: 'text',
+                        data: { content: '<h2><strong><span style="font-size: 40px;">' + $t('Add your heading here') + '</span></strong></h2>' },
+                    },
+                    {
+                        name: 'text',
+                        data: { content: '<p><span style="font-size: 16px; color: rgb(114, 114, 114);">' + $t('Add your text here') + '</span></p>' },
+                    },
+                    {
+                        name: 'buttons',
+                        data: {
+                            appearance: 'inline',
+                            margin: { top: 30 },
+                        },
+                        children: [
+                            { name: 'button-item', data: { button_text: $t('Primary'), button_type: 'pagebuilder-button-primary' } },
+                            { name: 'button-item', data: { button_text: $t('Secondary'), button_type: 'pagebuilder-button-secondary' } },
+                        ],
+                    },
+                ],
+            },
+            {
+                code: 'multicolumn',
+                label: $t('Multicolumn'),
+                group: $t('Sections'),
+                groupOrder: 0,
+                icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 44 30" fill="none"><rect x="1" y="9" width="12" height="3" rx="1" fill="#3d3530"/><rect x="1" y="15" width="12" height="2" fill="#a39a92"/><rect x="1" y="19" width="8" height="2" fill="#a39a92"/><rect x="16" y="9" width="12" height="3" rx="1" fill="#3d3530"/><rect x="16" y="15" width="12" height="2" fill="#a39a92"/><rect x="16" y="19" width="8" height="2" fill="#a39a92"/><rect x="31" y="9" width="12" height="3" rx="1" fill="#3d3530"/><rect x="31" y="15" width="12" height="2" fill="#a39a92"/><rect x="31" y="19" width="8" height="2" fill="#a39a92"/></svg>',
+                sortOrder: 110,
+                data: {
+                    appearance: 'full-width',
+                    padding: { top: 20, right: 30, bottom: 20, left: 30 },
+                },
+                children: () => {
+                    var group = columns([1, 1, 1], {
+                        content: () => [
+                            { name: 'text', data: { content: '<p><strong><span style="font-size: 24px;">' + $t('Add heading here') + '</span></strong></p>' } },
+                            { name: 'text', data: { content: '<p>' + $t('Add your text here') + '</p>' } },
+                        ],
+                    });
+
+                    return [{
+                        name: 'column-group',
+                        data: { ...group.data(), text_align: 'center', gap: '20', tablet_mode: 'desktop', mobile_mode: '1' },
+                        children: group.children(),
+                    }];
+                },
+            },
+            {
+                code: 'image-with-text',
+                label: $t('Image with text'),
+                group: $t('Sections'),
+                groupOrder: 0,
+                icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 44 30" fill="none"><rect x="1" y="4" width="20" height="22" rx="1" fill="#3d3530"/><path d="M3 24l6-8 4 5 3-3 4 6z" fill="#a39a92"/><rect x="24" y="9" width="17" height="3" rx="1" fill="#3d3530"/><rect x="24" y="15" width="15" height="2" fill="#a39a92"/><rect x="24" y="20" width="9" height="4" rx="1" fill="#3d3530"/></svg>',
+                sortOrder: 120,
+                data: {
+                    appearance: 'full-width',
+                    padding: 30,
+                },
+                children: () => {
+                    var group = columns([1, 1], {
+                        column: i => i ? { justify_content: 'center' } : { text_align: 'right' },
+                        content: i => i ? [
+                            {
+                                name: 'text',
+                                data: { content: '<h2 style="line-height: 1;"><span style="font-size: 40px;"><strong>' + $t('Tell your story') + '</strong></span></h2>' },
+                            },
+                            {
+                                name: 'text',
+                                data: {
+                                    css_classes: 'text-balance',
+                                    content: '<p><span style="font-size: 16px; color: rgb(85, 85, 85);">' + $t('Pair an image with text to highlight a product, a collection, or your brand.') + '</span></p>',
+                                },
+                            },
+                            {
+                                name: 'buttons',
+                                data: {
+                                    appearance: 'inline',
+                                    margin: { top: 15 },
+                                },
+                                children: [
+                                    { name: 'button-item', data: { button_text: $t('Learn more'), button_type: 'pagebuilder-button-primary' } },
+                                ],
+                            },
+                        ] : [
+                            { name: 'image', data: { appearance: 'full-width' } },
+                        ],
+                    });
+
+                    return [{
+                        name: 'column-group',
+                        data: { ...group.data(), gap: '30', tablet_mode: 'desktop', mobile_mode: '1' },
+                        dataMobile: { gap: '5' },
+                        children: group.children(),
+                    }];
+                },
+            },
         ]);
 
         presets.add('column-group', [

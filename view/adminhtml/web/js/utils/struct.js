@@ -56,11 +56,44 @@ define([
         return child;
     }
 
-    // Preset elements are {name, data, children}, copied ones {config: {name}, states, children}
+    // padding: 30 is all the sides, { top: 15 } only that one
+    function box(value) {
+        return Object.fromEntries(['top', 'right', 'bottom', 'left'].map(side => {
+            return [side, String((_.isObject(value) ? value[side] : value) ?? '')];
+        }));
+    }
+
+    function shorthands(data) {
+        var { margin, padding, ...rest } = data;
+
+        if (margin !== undefined || padding !== undefined) {
+            rest.margins_and_padding = { margin: box(margin), padding: box(padding) };
+        }
+
+        return rest;
+    }
+
+    // Preset field values by viewport: data, and dataMobile (data + the viewport name) for the others. Either a function
+    function states(element) {
+        var main = Config.getConfig('defaultViewport'),
+            result = { [main]: shorthands(_.result(element, 'data') || {}) };
+
+        _.each(Config.getConfig('viewports'), (viewport, name) => {
+            var data = name !== main && _.result(element, 'data' + name[0].toUpperCase() + name.slice(1));
+
+            if (data) {
+                result[name] = shorthands(data);
+            }
+        });
+
+        return result;
+    }
+
+    // Preset elements are {name, data, dataMobile, children}, copied ones {config: {name}, states, children}
     function tree(element) {
         return element.config ? element : {
             config: { name: element.name },
-            states: { [Config.getConfig('defaultViewport')]: element.data || {} },
+            states: states(element),
             children: (element.children || []).map(tree),
         };
     }
@@ -82,8 +115,8 @@ define([
          */
         create: async function (name, parent, index, preset) {
             var target = await place(name, parent, index),
-                data = _.result(preset, 'data') || {},
                 children = _.result(preset, 'children'),
+                data,
                 child;
 
             if (!target) {
@@ -92,18 +125,21 @@ define([
 
             // Built as pasted: its own dropAfter would add the default children (column group: a column line)
             if (children) {
-                child = await build(copy(tree({ name, data, children })), target.parent, target.index);
+                child = await build(copy(tree({ ...preset, name, children })), target.parent, target.index);
                 child.dropped = true;
                 events.trigger('contentType:dropAfter', { id: child.id, contentType: child, preset });
 
                 return child;
             }
 
+            data = copy(states(preset));
             child = await contentTypeFactory(
                 Config.getContentTypeConfig(name),
                 target.parent,
                 target.parent.stageId,
-                copy(data)
+                data[Config.getConfig('defaultViewport')],
+                0,
+                data
             );
             child.dropped = true;
             target.parent.addChild(child, target.index);

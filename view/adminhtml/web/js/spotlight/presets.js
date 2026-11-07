@@ -52,7 +52,8 @@ define([
          *     group: $t('Sections'),    // Spotlight group instead of the element's one, named without the element
          *     groupOrder: 0,            // its place among the menu sections' sortOrder (Layout 1, Elements 10, Media 20, Add Content 30), last if not given
          *     default: true,            // shown as the element itself, instead of plain "Row"
-         *     data: { appearance: 'full-width' },                    // field values, or a function returning them
+         *     data: { appearance: 'full-width' },                    // field values, or a function returning them.
+         *                               // padding/margin: 30 (all sides) or { top: 15 }; for other viewports: dataMobile: { gap: '5' }
          *     children: [{ name: 'column', data: {}, children: [] }], // instead of its default ones, or a function
          * }]);
          */
