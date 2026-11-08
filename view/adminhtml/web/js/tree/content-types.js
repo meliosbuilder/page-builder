@@ -92,6 +92,9 @@ define([
     const CONTENT_TAGS = 'img, svg, picture, video, audio, iframe, object, embed, canvas, form, input, select, '
         + 'textarea, button, hr, script, style, link, template';
 
+    const BLOCK_TAGS = 'address, article, aside, blockquote, br, dd, div, dl, dt, figcaption, figure, footer, '
+        + 'h1, h2, h3, h4, h5, h6, header, hr, li, main, nav, ol, p, pre, section, table, td, th, tr, ul';
+
     function parse(html) {
         var parsed = texts.get(html),
             doc;
@@ -103,6 +106,8 @@ define([
                 blank: !doc.body.textContent.trim() && !html.includes('{{') && !doc.querySelector(CONTENT_TAGS),
             };
             doc.querySelectorAll('script, style, template').forEach(el => el.remove());
+            // "Text</h2><p>Text" → "TextText", so separate them
+            doc.querySelectorAll(BLOCK_TAGS).forEach(el => el.after(' '));
             parsed.text = doc.body.textContent
                 .replace(/\{\{[^}]*\}\}/g, directive => ` ${widgetName(directive)} `)
                 .replace(/\s+/g, ' ')
