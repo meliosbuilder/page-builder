@@ -44,6 +44,24 @@ define([
         return { heading_type: type, heading_text: $t('Add your heading here') };
     }
 
+    function slide(number) {
+        return {
+            name: 'slide',
+            data: {
+                appearance: 'poster',
+                min_height: '400px',
+                padding: { top: 30, bottom: 40, left: 80, right: 80 },
+                background_color: 'rgba(0, 0, 0, 0.05)',
+                content: '<h2 style="line-height: 1;"><span style="font-size: 40px;"><strong>' + $t('Slide') + ' ' + number + '</strong></span></h2>\n' +
+                    '<p style="line-height: 1.5;"><span style="font-size: 16px; color: rgb(98, 98, 98);">' + $t('Add your text here') + '</span></p>',
+                show_button: 'always',
+                button_text: $t('Shop now'),
+                button_type: 'pagebuilder-button-primary',
+                show_overlay: 'never',
+            },
+        };
+    }
+
     function buttons() {
         return [{ name: 'button-item', data: { button_text: $t('Button') } }];
     }
@@ -192,6 +210,31 @@ define([
                         children: group.children(),
                     }];
                 },
+            },
+            {
+                code: 'slideshow',
+                label: $t('Slideshow'),
+                group: $t('Sections'),
+                groupOrder: 0,
+                icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 44 30" fill="none"><rect x="5" y="1" width="34" height="24" rx="1" fill="#e4e1dd"/><rect x="13" y="7" width="18" height="3" rx="1" fill="#3d3530"/><rect x="15" y="12" width="14" height="2" fill="#a39a92"/><rect x="18" y="17" width="8" height="4" rx="1" fill="#3d3530"/><path d="M3 10l-2.5 3L3 16" stroke="#3d3530" stroke-width="1.5"/><path d="M41 10l2.5 3L41 16" stroke="#3d3530" stroke-width="1.5"/><circle cx="19" cy="28" r="1.25" fill="#3d3530"/><circle cx="25" cy="28" r="1.25" fill="#a39a92"/></svg>',
+                sortOrder: 105,
+                data: { appearance: 'full-bleed' },
+                children: () => [
+                    {
+                        name: 'slider',
+                        data: {
+                            text_align: 'center',
+                            css_classes: 'pagebuilder-slider [&_.pagebuilder-slide-button]:mx-auto',
+                            min_height: '400px',
+                            autoplay: 'false',
+                            fade: 'false',
+                            is_infinite: 'true',
+                            show_arrows: 'true',
+                            show_dots: 'true',
+                        },
+                        children: [1, 2].map(slide),
+                    },
+                ],
             },
         ]);
 
