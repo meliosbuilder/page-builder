@@ -43,6 +43,28 @@ define([
         return data;
     }
 
+    // Magento's form provider refreshes every infinite slick on the page on save (meant for the Save button):
+    // seconds per change with a slider on the stage. The Save button still refreshes them.
+    function saveWithoutSlickRefresh(source) {
+        var own = Object.prototype.hasOwnProperty.call(source || {}, '_refreshSlickOnSave'),
+            refresh = source?._refreshSlickOnSave;
+
+        if (typeof source?.save !== 'function') {
+            return;
+        }
+
+        source._refreshSlickOnSave = () => {};
+        try {
+            source.save();
+        } finally {
+            if (own) {
+                source._refreshSlickOnSave = refresh;
+            } else {
+                delete source._refreshSlickOnSave;
+            }
+        }
+    }
+
     function topModal() {
         return $('.modals-wrapper > ._show')
             .sort((a, b) => b.style.zIndex - a.style.zIndex)
@@ -60,7 +82,7 @@ define([
             var topSource = ko.dataFor(topModal().find('[name="appearance"]')[0])?.source;
 
             if (allowUpdateModalSource && topSource?.name === source?.name) {
-                source?.save?.();
+                saveWithoutSlickRefresh(source);
             }
         }, 80),
 
