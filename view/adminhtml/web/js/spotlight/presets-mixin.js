@@ -145,7 +145,7 @@ define([
                 sortOrder: 110,
                 data: {
                     appearance: 'full-width',
-                    padding: { top: 20, right: 30, bottom: 20, left: 30 },
+                    padding: { top: 30, right: 30, bottom: 30, left: 30 },
                 },
                 children: () => {
                     var group = columns([1, 1, 1], {
