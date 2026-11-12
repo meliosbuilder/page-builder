@@ -31,17 +31,19 @@ body.melios-instant-preview {
         right: 0;
     }
     .pagebuilder_modal_form_pagebuilder_modal_form_modal {
-        .tox-hugerte:not(.tox-fullscreen),
-        .tox-tinymce:not(.tox-fullscreen) {
-            min-height: 400px !important;
-        }
         &:not([data-mls-size="lg"]) {
-            .tox-editor-header {
-                overflow-x: auto;
-            }
             .tox .tox-toolbar {
                 flex-wrap: wrap;
-                width: 600px
+            }
+            .tox-menubar,
+            [data-mce-name="fontfamily"] {
+                display: none;
+            }
+            .tox .tox-toolbar__group {
+                padding: 0 3px;
+            }
+            .tox .tox-menubar+.tox-toolbar {
+                padding-bottom: 0;
             }
         }
         .tox.tox-fullscreen .tox-toolbar {
