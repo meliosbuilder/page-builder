@@ -56,4 +56,12 @@
     <type name="Magento\PageBuilder\Model\Config\ContentType\Reader">
         <plugin name="melios_page_builder" type="Melios\PageBuilder\Plugin\ContentTypeReader" />
     </type>
+
+    <!-- Speed up cold-cache UI form reads (PageBuilder config): avoid re-reading the same XML within a request -->
+    <type name="Magento\Ui\Config\Reader">
+        <plugin name="melios_page_builder_memoize" type="Melios\PageBuilder\Plugin\UiConfigReaderMemoize" />
+    </type>
+    <type name="Magento\Ui\Config\Reader\Definition">
+        <plugin name="melios_page_builder_memoize" type="Melios\PageBuilder\Plugin\UiConfigDefinitionReaderMemoize" />
+    </type>
 </config>
