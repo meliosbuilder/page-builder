@@ -31,7 +31,7 @@ define([
 
         if (width > 600) {
             size = 'lg'
-        } else if (width > 430) {
+        } else if (width > 370) {
             size = 'md';
         }
 
