@@ -36,6 +36,7 @@ class UiFormCompactBorder
                 unset($fields[$key]);
             }
             $group['border_width']['config']['placeholder'] = '';
+            $group['border_color']['config']['additionalClasses'] = ['mls-color-swatch' => true];
 
             $fields['border_group'] = [
                 'type' => 'container',
