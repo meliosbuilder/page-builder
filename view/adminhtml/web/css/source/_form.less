@@ -1,0 +1,21 @@
+// Background: show image settings only when an image is set.
+// CSS only, so the values are kept as is. (:has can't be nested, hence the _empty class)
+@mls-no-bg-image: ~':has([data-index="background_image"] .mls-image-picker._empty):has([data-index="mobile_image"] .mls-image-picker._empty)';
+
+[data-index="background"]@{mls-no-bg-image} :is(
+    [data-index="mobile_image"],
+    [data-index="loading_mode"],
+    [data-index="mobile_loading_mode_group"],
+    [data-index="background_size"],
+    [data-index="background_position"],
+    [data-index="background_attachment"],
+    [data-index="background_repeat"]
+) {
+    display: none;
+}
+
+// Parallax works with image background only (see row widget)
+[data-index="background"]@{mls-no-bg-image} ~ [data-index="parallax_background"],
+[data-index="background"]:has([data-index="background_type"] li[name="video"].active) ~ [data-index="parallax_background"] {
+    display: none;
+}
