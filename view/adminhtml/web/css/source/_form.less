@@ -19,3 +19,104 @@
 [data-index="background"]:has([data-index="background_type"] li[name="video"].active) ~ [data-index="parallax_background"] {
     display: none;
 }
+
+// Range: slider + number input (Melios_PageBuilder/form/element/range)
+.mls-range {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    .mls-range-slider {
+        flex: 1;
+        min-width: 0;
+        margin: 0;
+        accent-color: #007bdb;
+        cursor: pointer;
+    }
+    // Empty value = default
+    &._default .mls-range-slider {
+        opacity: .5;
+    }
+
+    .mls-range-number {
+        flex: 0 0 auto;
+        width: 8rem;
+        .admin__control-text {
+            -moz-appearance: textfield;
+            &::-webkit-inner-spin-button,
+            &::-webkit-outer-spin-button {
+                -webkit-appearance: none;
+                margin: 0;
+            }
+        }
+    }
+}
+
+// Border: width | style | color in one row (Plugin/UiFormCompactBorder).
+// Core grouped layout (table, first label in the label column) doesn't fit three controls.
+[data-index="border_group"] > .admin__field-control {
+    display: flex !important;
+    gap: 6px;
+
+    > .admin__field {
+        display: block;
+        width: auto;
+        min-width: 0;
+        margin: 0 !important; // "sm" panel adds margin-top between fields
+        padding: 0 !important;
+
+        // The group label is the row label; keep field labels for screen readers
+        > .admin__field-label {
+            position: absolute !important;
+            width: 1px;
+            height: 1px;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            clip-path: inset(50%);
+        }
+        > .admin__field-control {
+            float: none;
+            width: 100% !important;
+            min-width: 0 !important;
+            margin: 0 !important;
+        }
+    }
+
+    > [data-index="border_width"] {
+        flex: 0 0 7.5rem;
+    }
+
+    // Errors: full row width under the controls, not squeezed into a narrow column
+    position: relative;
+    &:has(.admin__field-error) {
+        margin-bottom: 3.6rem;
+    }
+    .admin__field-error {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+    }
+    // Style: as wide as its longest option
+    > [data-index="border"] {
+        flex: 0 0 auto;
+    }
+    // Swatch only: hex can be typed in the picker panel
+    > [data-index="border_color"] {
+        flex: 0 0 auto;
+        .colorpicker-input {
+            display: none;
+        }
+    }
+    .admin__control-select {
+        width: auto;
+        min-width: 0 !important;
+    }
+    // Keep "px" suffix inside the narrow box
+    .admin__control-addon .admin__control-text {
+        flex: 1 1 auto;
+        width: auto;
+        min-width: 0;
+    }
+}

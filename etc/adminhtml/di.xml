@@ -4,6 +4,8 @@
     <!-- Unset image width/height duplicates  -->
     <type name="Magento\Framework\View\Layout\Generator\Structure">
         <plugin name="melios_page_builder" type="Melios\PageBuilder\Plugin\UiLayoutGenerator" />
+        <!-- Compact border fields: width | style | color in one row, radius as range -->
+        <plugin name="melios_page_builder_compact_border" type="Melios\PageBuilder\Plugin\UiFormCompactBorder" />
     </type>
 
     <!-- Magento < 2.4.7 -->
