@@ -1,0 +1,72 @@
+<!--
+    Compact image uploader: the preview (or placeholder) is the button that opens the menu.
+    Core upload controls are kept (visually hidden), so uppy, media gallery
+    and drag-and-drop work as in core. Menu items just click them.
+-->
+<div class="admin__field" visible="visible" css="$data.additionalClasses">
+    <label class="admin__field-label" if="$data.label" attr="for: uid">
+        <span translate="label" attr="'data-config-scope': $data.scopeLabel"></span>
+    </label>
+
+    <div class="admin__field-control" css="'_with-tooltip': $data.tooltip">
+        <div class="file-uploader image-uploader mls-image-picker" data-role="drop-zone" css="_loading: isLoading">
+            <div class="file-uploader-area">
+                <input type="file" afterRender="onElementRender" attr="id: uid, name: inputName, multiple: isMultipleFiles" disable="disabled" />
+                <label class="file-uploader-button" attr="for: uid" translate="'Upload'"></label>
+                <label data-bind="event: {change: addFileFromMediaGallery, click: openMediaBrowserDialog}"
+                       class="file-uploader-button"
+                       attr="id: mediaGalleryUid"
+                       data-force_static_path="1"
+                       translate="'Select from Gallery'"></label>
+            </div>
+
+            <!-- tabindex: Safari doesn't focus clicked buttons, focusout needs a focused element -->
+            <div class="mls-image-picker-wrapper" tabindex="-1" event="focusout: mlsOnFocusout, keydown: mlsOnKeydown">
+                <button type="button"
+                        class="mls-image-picker-trigger"
+                        disable="disabled"
+                        click="mlsToggleMenu"
+                        attr="title: mlsGetTitle(), 'aria-haspopup': 'menu', 'aria-expanded': String(mlsMenuOpened())">
+                    <each args="data: value, as: '$file'">
+                        <img event="load: $parent.onPreviewLoad.bind($parent)"
+                             attr="src: $parent.getFilePreview($file), alt: $file.name">
+                        <span class="mls-image-picker-overlay" translate="'Change'"></span>
+                    </each>
+                    <span class="mls-image-picker-empty" if="!hasData()" translate="'Add image'"></span>
+                    <span class="file-uploader-spinner"></span>
+                </button>
+
+                <button type="button"
+                        class="mls-image-picker-edit"
+                        if="mlsCanEdit()"
+                        disable="disabled"
+                        click="mlsEditImage"
+                        attr="title: $t('Edit image'), 'aria-label': $t('Edit image')"></button>
+
+                <div class="mls-options-dropdown mls-image-picker-menu" role="menu" css="shown: mlsMenuOpened" click="mlsCloseMenu">
+                    <button type="button" role="menuitem" class="mls-icon-upload" click="mlsUpload" translate="'Upload'"></button>
+                    <button type="button" role="menuitem" class="mls-icon-gallery" click="mlsSelectFromGallery" translate="'Select from Gallery'"></button>
+                    <button type="button" role="menuitem" class="mls-icon-remove" if="hasData()" click="clear" translate="'Remove'"></button>
+                </div>
+            </div>
+
+            <each args="data: value, as: '$file'">
+                <div class="mls-image-picker-meta">
+                    <span class="mls-image-picker-name" text="$file.name"></span>
+                    <span if="$file.previewWidth" text="'· ' + $file.previewWidth + '×' + $file.previewHeight"></span>
+                    <span if="$file.size" text="'· ' + $parent.formatSize($file.size)"></span>
+                </div>
+            </each>
+
+            <render args="tooltipTpl" if="$data.tooltip"></render>
+            <render args="fallbackResetTpl" if="$data.showFallbackReset && $data.isDifferedFromDefault"></render>
+
+            <div class="admin__field-note" if="$data.notice" attr="id: noticeId">
+                <span text="notice"></span>
+            </div>
+
+            <label class="admin__field-error" if="error" attr="for: uid" text="error"></label>
+        </div>
+        <render args="$data.service.template" if="$data.hasService()"></render>
+    </div>
+</div>
