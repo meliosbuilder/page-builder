@@ -249,22 +249,34 @@ body.melios-instant-preview {
             padding: 1.4rem 2.8rem 1.4rem 0;
         }
 
+        .admin__fieldset > .admin__field.admin__field-wide[class] > .admin__field-control {
+            clear: none;
+            float: left;
+        }
+        .admin__fieldset > .admin__field.admin__field-wide[class]:not(.admin__field-option) > .admin__field-label {
+            float: left;
+            margin-top: 0;
+            margin-bottom: 0;
+            text-align: right;
+            line-height: 2.9rem;
+        }
+
         // &:where([data-mls-size="sm"],[data-mls-size="md"]) {
             .admin__fieldset {
                 > .admin__field {
                     > .admin__field-label {
-                        width: ~"calc(100% * 0.3 - 10px)";
+                        width: ~"calc(100% * 0.3 - 10px)" !important;
                         margin-left: 20px;
                     }
                     > .admin__field-control {
-                        width: ~"calc(100% * 0.65 - 10px)";
+                        width: ~"calc(100% * 0.65 - 10px)" !important;
                         margin-left: 12px;
                     }
                     .admin__field-control .admin__control-select,
                     &.admin__field-medium > .admin__field-control {
                         min-width: 8rem;
                     }
-                    &.admin__field-wide[class] > .admin__field-control {
+                    &.admin__field-wide[class]:not([data-index="appearance"]) > .admin__field-control {
                         width: auto;
                         margin-left: 30px;
                     }
@@ -272,7 +284,7 @@ body.melios-instant-preview {
             }
             [class*="admin__control-grouped"] > .admin__field:first-child > .admin__field-label,
             .admin__control-fields > .admin__field:first-child > .admin__field-label {
-                width: ~"calc(100% * 0.3 - 10px)";
+                width: ~"calc(100% * 0.3 - 10px)" !important;
                 margin-left: 20px;
             }
 
@@ -288,11 +300,11 @@ body.melios-instant-preview {
             .admin__fieldset {
                 > .admin__field {
                     > .admin__field-label {
-                        width: ~"calc(100% * 0.2 - 10px)";
+                        width: ~"calc(100% * 0.2 - 10px)" !important;
                         margin-left: 20px;
                     }
                     > .admin__field-control {
-                        width: ~"calc(100% * 0.75 - 10px)";
+                        width: ~"calc(100% * 0.75 - 10px)" !important;
                         margin-left: 20px;
                     }
                     &.admin__field-small > .admin__field-control {
@@ -308,14 +320,14 @@ body.melios-instant-preview {
                             }
                         }
                     }
-                    &.admin__field-wide[class] > .admin__field-control {
+                    &.admin__field-wide[class]:not([data-index="appearance"]) > .admin__field-control {
                         width: auto;
                     }
                 }
             }
             [class*="admin__control-grouped"] > .admin__field:first-child > .admin__field-label,
             .admin__control-fields > .admin__field:first-child > .admin__field-label {
-                width: ~"calc(100% * 0.2 - 10px)";
+                width: ~"calc(100% * 0.2 - 10px)" !important;
                 margin-left: 20px;
             }
         }
@@ -323,8 +335,8 @@ body.melios-instant-preview {
         .required > .admin__field-label span::after,
         ._required > .admin__field-label span::after {
             font-size: 11px;
-            margin-left: -1px;
-            margin-top: -2px;
+            margin-left: 0px;
+            margin-top: -1px;
         }
 
         [class*="admin__control-grouped"] > .admin__field.admin__field-x-small > .admin__field-control,
@@ -387,36 +399,32 @@ body.melios-instant-preview {
                     }
                 }
             }
-            &-small {
-                width: auto;
-                height: auto;
-                min-width: 50px;
-                gap: 3px;
-                img {
-                    width: 10px;
-                    margin-right: 0;
-                }
-            }
-            &-large {
-                min-height: 50px;
-                width: 80px;
+            // Icon-only small options keep a small icon
+            &-small img {
+                width: 10px;
+                margin-right: 0;
             }
 
-            // Small text options (Top | Center | Bottom): pill track, text only
-            ol:has(> li.admin__field-visual-select-small) {
+            // Pill track: small text options (Top | Center | Bottom) and Appearance, text only
+            ol:has(> li.admin__field-visual-select-small, > li.admin__field-visual-select-large) {
                 display: inline-flex;
                 flex-wrap: wrap;
-                gap: 2px;
+                // Content width, so the track doesn't come out a few px short and wrap early
+                width: max-content;
                 max-width: 100%;
                 box-sizing: border-box;
+                gap: 2px;
                 padding: 2px;
                 background: #ececea;
                 border-radius: 10px;
 
-                li.admin__field-visual-select-small {
+                > li {
+                    width: auto;
+                    height: auto;
+                    min-width: 0;
+                    min-height: 0;
                     margin: 0;
                     padding: 5px 12px;
-                    min-width: 0;
                     border: 0;
                     border-radius: 8px;
                     background: transparent;
@@ -436,12 +444,29 @@ body.melios-instant-preview {
                         background: #fff;
                         color: #1a1a1a;
                         box-shadow: 0 0.5px 1px rgba(0, 0, 0, 0.14),
-                                    0 0 0 0.5px rgba(0, 0, 0, 0.08)
+                                    0 0 0 0.5px rgba(0, 0, 0, 0.08);
                     }
-                    // hide icons
-                    &:has(span:not(:empty)) img {
-                        display: none;
+                    // Icons and previews repeat the text
+                    &:has(span:not(:empty)) {
+                        img,
+                        br,
+                        .admin__field-visual-select-spacer {
+                            display: none;
+                        }
                     }
+                }
+            }
+
+            // Notice under the options ("Full width appearance will work..."): a muted note, not a banner
+            > .message.message-notice {
+                margin: 6px 0 0;
+                padding: 0;
+                border: 0;
+                background: none;
+                font-size: 1.2rem;
+                color: #6f6f6f;
+                &::before {
+                    display: none;
                 }
             }
         }
@@ -629,4 +654,8 @@ body.melios-instant-preview.theme-m137 {
             max-width: ~"calc(100% - 50px)";
         }
     }
+}
+
+body:not(.melios-instant-preview) .admin__field[data-index="appearance"] > .admin__field-label {
+    display: none;
 }

@@ -12,4 +12,17 @@
             </argument>
         </field>
     </fieldset>
+    <fieldset name="appearance_fieldset">
+        <!-- Placeholder instead of the long note -->
+        <field name="min_height">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="notice" xsi:type="null"/>
+                </item>
+            </argument>
+            <settings>
+                <placeholder translate="true">auto · 50px, calc(50% + 50px)</placeholder>
+            </settings>
+        </field>
+    </fieldset>
 </form>

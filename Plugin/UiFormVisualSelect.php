@@ -6,7 +6,7 @@ use Magento\Framework\View\Element\UiComponentInterface;
 use Magento\Framework\View\Layout\Generator\Structure;
 
 /**
- * Page Builder forms: small text visual selects (Top | Center | Bottom)
+ * Page Builder forms: visual selects with text options (Top | Center | Bottom, Appearance)
  * render as pills, plus a dropdown that replaces them in a narrow panel
  * when there are more than 3 options.
  */
@@ -35,13 +35,17 @@ class UiFormVisualSelect
     private function process(array $node): array
     {
         foreach ($node['children'] ?? [] as $key => $child) {
-            if ($this->isSmallTextSelect($child['config'] ?? [])) {
+            if ($this->isTextSelect($child['config'] ?? [])) {
                 $child['config']['elementTmpl'] = self::TEMPLATE;
                 if (count($child['config']['options']) > self::MAX_PILLS) {
                     $child['config']['additionalClasses'] = $this->addClass(
                         $child['config']['additionalClasses'] ?? [],
                         'mls-visual-select-many'
                     );
+                }
+                // Row label like other fields: instant preview only, the classic form has the fieldset title
+                if ($key === 'appearance' && empty($child['config']['label'])) {
+                    $child['config']['label'] = (string) __('Appearance');
                 }
             }
 
@@ -51,14 +55,16 @@ class UiFormVisualSelect
         return $node;
     }
 
-    private function isSmallTextSelect(array $config): bool
+    private function isTextSelect(array $config): bool
     {
         if (($config['elementTmpl'] ?? '') !== self::CORE_TEMPLATE || empty($config['options'])) {
             return false;
         }
 
         foreach ($config['options'] as $option) {
-            if (($option['size'] ?? '') !== 'small' || (string) ($option['title'] ?? '') === '') {
+            if (!in_array($option['size'] ?? '', ['small', 'large'], true)
+                || (string) ($option['title'] ?? '') === ''
+            ) {
                 return false;
             }
         }

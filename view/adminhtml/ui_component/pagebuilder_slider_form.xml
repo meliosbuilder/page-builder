@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <fieldset name="appearance_fieldset">
+        <!-- Placeholder instead of the long note -->
+        <field name="min_height">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="notice" xsi:type="null"/>
+                </item>
+            </argument>
+            <settings>
+                <placeholder translate="true">auto · 50px, calc(50% + 50px)</placeholder>
+            </settings>
+        </field>
+    </fieldset>
+</form>
