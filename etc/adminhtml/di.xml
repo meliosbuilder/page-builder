@@ -6,6 +6,8 @@
         <plugin name="melios_page_builder" type="Melios\PageBuilder\Plugin\UiLayoutGenerator" />
         <!-- Compact border fields: width | style | color in one row, radius as range -->
         <plugin name="melios_page_builder_compact_border" type="Melios\PageBuilder\Plugin\UiFormCompactBorder" />
+        <!-- Small text visual selects: pills, dropdown in a narrow panel when more than 3 options -->
+        <plugin name="melios_page_builder_visual_select" type="Melios\PageBuilder\Plugin\UiFormVisualSelect" />
     </type>
 
     <!-- Magento < 2.4.7 -->

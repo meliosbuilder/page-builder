@@ -128,3 +128,17 @@
         min-width: 0 !important;
     }
 }
+
+// Small text visual select (Plugin/UiFormVisualSelect): pills by default,
+// a dropdown instead of them in a narrow panel when there are more than 3 options
+.mls-visual-select .mls-visual-select-dropdown {
+    display: none;
+}
+[data-mls-size="sm"] .mls-visual-select-many .mls-visual-select {
+    ol {
+        display: none !important;
+    }
+    .mls-visual-select-dropdown {
+        display: block;
+    }
+}

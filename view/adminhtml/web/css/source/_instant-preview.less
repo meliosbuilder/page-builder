@@ -158,76 +158,98 @@ body.melios-instant-preview {
             padding-bottom: 2.5rem;
         }
 
-        &[data-mls-size="sm"] {
-            .admin__fieldset-wrapper-content .admin__fieldset {
-                padding-top: 0.5rem;
-                padding-bottom: 1rem;
-            }
+        // &[data-mls-size="sm"] {
+        //     .admin__fieldset-wrapper-content .admin__fieldset {
+        //         padding-top: 0.5rem;
+        //         padding-bottom: 1rem;
+        //     }
 
-            .admin__fieldset {
-                > .admin__field {
-                    margin-left: 0;
-                    margin-bottom: 1.2rem;
-                    display: flex;
-                    flex-direction: column;
-                    gap: 0px;
-                    > .admin__field-label,
-                    > .admin__field-control {
-                        width: auto;
-                        margin-left: 0;
-                        text-align: left;
-                    }
-                    .admin__field-control .admin__control-select {
-                        min-width: 8rem;
-                    }
-                    &.admin__field-small > .admin__field-control {
-                        width: 15rem;
-                        min-width: 15rem;
-                        .admin__field-tooltip-content {
-                            right: auto;
-                            left: -10.5rem;
-                            &::before,
-                            &::after {
-                                right: auto;
-                                left: 10rem;
-                            }
-                        }
-                    }
-                    &.admin__field-medium > .admin__field-control {
-                        width: 25rem;
-                        min-width: 25rem;
-                    }
-                }
-            }
-            .admin__field + .admin__field {
-                margin-top: 1.2rem;
-            }
+        //     .admin__fieldset {
+        //         > .admin__field {
+        //             margin-left: 0;
+        //             margin-bottom: 1.2rem;
+        //             display: flex;
+        //             flex-direction: column;
+        //             gap: 0px;
+        //             > .admin__field-label,
+        //             > .admin__field-control {
+        //                 width: auto;
+        //                 margin-left: 0;
+        //                 text-align: left;
+        //             }
+        //             .admin__field-control .admin__control-select {
+        //                 min-width: 8rem;
+        //             }
+        //             &.admin__field-small > .admin__field-control {
+        //                 width: 15rem;
+        //                 min-width: 15rem;
+        //                 .admin__field-tooltip-content {
+        //                     right: auto;
+        //                     left: -10.5rem;
+        //                     &::before,
+        //                     &::after {
+        //                         right: auto;
+        //                         left: 10rem;
+        //                     }
+        //                 }
+        //             }
+        //             &.admin__field-medium > .admin__field-control {
+        //                 width: 25rem;
+        //                 min-width: 25rem;
+        //             }
+        //         }
+        //     }
+        //     .admin__field + .admin__field {
+        //         margin-top: 1.2rem;
+        //     }
 
-            [class*='admin__control-grouped'] > .admin__field:first-child > .admin__field-label,
-            .admin__control-fields > .admin__field:first-child > .admin__field-label {
-                width: auto;
-                margin-left: 0;
-            }
+        //     [class*='admin__control-grouped'] > .admin__field:first-child > .admin__field-label,
+        //     .admin__control-fields > .admin__field:first-child > .admin__field-label {
+        //         width: auto;
+        //         margin-left: 0;
+        //     }
 
-            // Help
-            .abs-admin__field-tooltip-content,
-            .admin__field-tooltip .admin__field-tooltip-content {
-                width: ~"calc(var(--mls-slideout-width) - 35px)";
-                max-width: 200px;
-            }
+        //     // Help
+        //     .abs-admin__field-tooltip-content,
+        //     .admin__field-tooltip .admin__field-tooltip-content {
+        //         width: ~"calc(var(--mls-slideout-width) - 35px)";
+        //         max-width: 200px;
+        //     }
 
-            // Buttons above the html field
-            .buttons-set {
-                display: flex;
-                flex-wrap: wrap;
-                gap: 5px;
-                button {
-                    margin: 0;
-                }
-            }
+        //     // Buttons above the html field
+        //     .buttons-set {
+        //         display: flex;
+        //         flex-wrap: wrap;
+        //         gap: 5px;
+        //         button {
+        //             margin: 0;
+        //         }
+        //     }
+        // }
+
+        .admin__field:not(.admin__field-option) > .admin__field-label {
+            line-height: 2.9rem;
+        }
+        .admin__field:not(.admin__field-option) > .admin__field-label,
+        .admin__control-text, .admin__control-select, .admin__control-multiselect, .admin__control-file-label:before, .admin__control-textarea, .admin__control-addon [class*='admin__control-'][class] ~ [class*='admin__addon-']:last-child:before, .selectmenu, [class*='adminhtml-giftwrapping-'] .field-base_price .admin__control-addon [class*='admin__control-'][class] ~ .addafter:last-child:before, .ui-datepicker .ui-datepicker-title select {
+            font-size: 1.3rem;
+            font-weight: normal;
+        }
+        .admin__control-text, .admin__control-select, .admin__control-multiselect, .admin__control-file-label:before, .admin__control-textarea, .admin__control-addon [class*='admin__control-'][class] ~ [class*='admin__addon-']:last-child:before, .selectmenu, [class*='adminhtml-giftwrapping-'] .field-base_price .admin__control-addon [class*='admin__control-'][class] ~ .addafter:last-child:before, .ui-datepicker .ui-datepicker-title select {
+            padding-left: .7rem;
+        }
+        .admin__field:not(.admin__field-option) > .admin__field-label span {
+            line-height: 1.3;
+        }
+        .admin__fieldset > .admin__field {
+            margin-bottom: 1.8rem;
+        }
+        .fieldset-wrapper .admin__collapsible-title {
+            font-size: 1.5rem;
+            padding: 1.4rem 2.8rem 1.4rem 0;
         }
 
-        &[data-mls-size="md"] {
+        // &:where([data-mls-size="sm"],[data-mls-size="md"]) {
             .admin__fieldset {
                 > .admin__field {
                     > .admin__field-label {
@@ -236,7 +258,7 @@ body.melios-instant-preview {
                     }
                     > .admin__field-control {
                         width: ~"calc(100% * 0.65 - 10px)";
-                        margin-left: 16px;
+                        margin-left: 12px;
                     }
                     .admin__field-control .admin__control-select,
                     &.admin__field-medium > .admin__field-control {
@@ -260,7 +282,7 @@ body.melios-instant-preview {
                 width: ~"calc(var(--mls-slideout-width) - 35px)";
                 max-width: 350px;
             }
-        }
+        // }
 
         &[data-mls-size="lg"] {
             .admin__fieldset {
@@ -300,7 +322,9 @@ body.melios-instant-preview {
 
         .required > .admin__field-label span::after,
         ._required > .admin__field-label span::after {
-            margin-left: 3px;
+            font-size: 11px;
+            margin-left: -1px;
+            margin-top: -2px;
         }
 
         [class*="admin__control-grouped"] > .admin__field.admin__field-x-small > .admin__field-control,
@@ -376,6 +400,49 @@ body.melios-instant-preview {
             &-large {
                 min-height: 50px;
                 width: 80px;
+            }
+
+            // Small text options (Top | Center | Bottom): pill track, text only
+            ol:has(> li.admin__field-visual-select-small) {
+                display: inline-flex;
+                flex-wrap: wrap;
+                gap: 2px;
+                max-width: 100%;
+                box-sizing: border-box;
+                padding: 2px;
+                background: #ececea;
+                border-radius: 10px;
+
+                li.admin__field-visual-select-small {
+                    margin: 0;
+                    padding: 5px 12px;
+                    min-width: 0;
+                    border: 0;
+                    border-radius: 8px;
+                    background: transparent;
+                    color: #555;
+                    font-size: 13px;
+                    line-height: 18px;
+                    white-space: nowrap;
+                    &:hover {
+                        color: #1a1a1a;
+                    }
+                    &:focus-visible {
+                        outline: 2px solid #007bdb;
+                        outline-offset: 0;
+                    }
+                    &.active {
+                        outline: 0;
+                        background: #fff;
+                        color: #1a1a1a;
+                        box-shadow: 0 0.5px 1px rgba(0, 0, 0, 0.14),
+                                    0 0 0 0.5px rgba(0, 0, 0, 0.08)
+                    }
+                    // hide icons
+                    &:has(span:not(:empty)) img {
+                        display: none;
+                    }
+                }
             }
         }
 

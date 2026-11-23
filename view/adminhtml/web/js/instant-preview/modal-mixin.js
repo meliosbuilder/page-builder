@@ -31,7 +31,7 @@ define([
 
         if (width > 600) {
             size = 'lg'
-        } else if (width > 370) {
+        } else if (width > 400) {
             size = 'md';
         }
 
@@ -50,7 +50,7 @@ define([
 
                 slideout.css('position', slideout.css('position')).resizable({
                     autoHide: true,
-                    minWidth: 330,
+                    minWidth: 350,
                     maxWidth: 800,
                     handles: 'w',
                     ghost: true,
