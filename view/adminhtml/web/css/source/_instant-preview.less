@@ -1,5 +1,7 @@
 :root {
     --mls-slideout-width: 350px;
+    --mls-label-width: 30%;
+    --mls-label-gap: 12px;
 }
 
 .pagebuilder_modal_form_pagebuilder_modal_form_modal {
@@ -118,7 +120,10 @@ body.melios-instant-preview {
             font-weight: 600;
         }
         .modal-content {
-            padding: 0 15px;
+            padding: 0 10px;
+        }
+        .admin__fieldset > .admin__field {
+            margin-left: -10px;
         }
 
         .melios-toolbar {
@@ -247,6 +252,9 @@ body.melios-instant-preview {
         .fieldset-wrapper .admin__collapsible-title {
             font-size: 1.5rem;
             padding: 1.4rem 2.8rem 1.4rem 0;
+            &::before {
+                top: 1.6rem;
+            }
         }
 
         .admin__fieldset > .admin__field.admin__field-wide[class] > .admin__field-control {
@@ -265,27 +273,26 @@ body.melios-instant-preview {
             .admin__fieldset {
                 > .admin__field {
                     > .admin__field-label {
-                        width: ~"calc(100% * 0.3 - 10px)" !important;
-                        margin-left: 20px;
+                        width: ~"calc(var(--mls-label-width) - var(--mls-label-gap))" !important;
+                        margin-left: 0;
                     }
                     > .admin__field-control {
-                        width: ~"calc(100% * 0.65 - 10px)" !important;
-                        margin-left: 12px;
+                        width: ~"calc(100% - var(--mls-label-width))" !important;
+                        margin-left: var(--mls-label-gap);
                     }
                     .admin__field-control .admin__control-select,
                     &.admin__field-medium > .admin__field-control {
                         min-width: 8rem;
                     }
                     &.admin__field-wide[class]:not([data-index="appearance"]) > .admin__field-control {
-                        width: auto;
-                        margin-left: 30px;
+                        width: auto !important;
                     }
                 }
             }
             [class*="admin__control-grouped"] > .admin__field:first-child > .admin__field-label,
             .admin__control-fields > .admin__field:first-child > .admin__field-label {
-                width: ~"calc(100% * 0.3 - 10px)" !important;
-                margin-left: 20px;
+                width: ~"calc(var(--mls-label-width) - var(--mls-label-gap))" !important;
+                margin-left: 0;
             }
 
             // Help
@@ -299,14 +306,6 @@ body.melios-instant-preview {
         &[data-mls-size="lg"] {
             .admin__fieldset {
                 > .admin__field {
-                    > .admin__field-label {
-                        width: ~"calc(100% * 0.2 - 10px)" !important;
-                        margin-left: 20px;
-                    }
-                    > .admin__field-control {
-                        width: ~"calc(100% * 0.75 - 10px)" !important;
-                        margin-left: 20px;
-                    }
                     &.admin__field-small > .admin__field-control {
                         width: 15rem;
                         min-width: 15rem;
@@ -320,15 +319,7 @@ body.melios-instant-preview {
                             }
                         }
                     }
-                    &.admin__field-wide[class]:not([data-index="appearance"]) > .admin__field-control {
-                        width: auto;
-                    }
                 }
-            }
-            [class*="admin__control-grouped"] > .admin__field:first-child > .admin__field-label,
-            .admin__control-fields > .admin__field:first-child > .admin__field-label {
-                width: ~"calc(100% * 0.2 - 10px)" !important;
-                margin-left: 20px;
             }
         }
 
