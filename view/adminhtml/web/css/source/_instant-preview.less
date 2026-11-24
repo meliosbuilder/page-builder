@@ -1,6 +1,6 @@
 :root {
     --mls-slideout-width: 350px;
-    --mls-label-width: 30%;
+    --mls-label-width: ~"min(120px, 30%)";
     --mls-label-gap: 12px;
 }
 
@@ -123,7 +123,7 @@ body.melios-instant-preview {
             padding: 0 10px;
         }
         .admin__fieldset > .admin__field {
-            margin-left: -10px;
+            margin-left: 0px;
         }
 
         .melios-toolbar {
@@ -265,8 +265,11 @@ body.melios-instant-preview {
             float: left;
             margin-top: 0;
             margin-bottom: 0;
-            text-align: right;
             line-height: 2.9rem;
+        }
+
+        .admin__field-label {
+            text-align: left;
         }
 
         // &:where([data-mls-size="sm"],[data-mls-size="md"]) {
@@ -286,6 +289,17 @@ body.melios-instant-preview {
                     }
                     &.admin__field-wide[class]:not([data-index="appearance"]) > .admin__field-control {
                         width: auto !important;
+                    }
+
+                    &:has(.admin__control-wysiwig) {
+                        .admin__field-label {
+                            width: auto !important;
+                            float: none;
+                        }
+                        .admin__field-control {
+                            margin: 0;
+                            width: 100% !important;
+                        }
                     }
                 }
             }
@@ -447,18 +461,18 @@ body.melios-instant-preview {
                     }
                 }
             }
+        }
 
-            // Notice under the options ("Full width appearance will work..."): a muted note, not a banner
-            > .message.message-notice {
-                margin: 6px 0 0;
-                padding: 0;
-                border: 0;
-                background: none;
-                font-size: 1.2rem;
-                color: #6f6f6f;
-                &::before {
-                    display: none;
-                }
+        .admin__field-note,
+        .message.message-notice {
+            margin: 6px 0 0;
+            padding: 0;
+            border: 0;
+            background: none;
+            font-size: 1.2rem;
+            color: #6f6f6f;
+            &::before {
+                display: none;
             }
         }
 

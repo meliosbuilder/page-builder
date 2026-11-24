@@ -8,13 +8,16 @@ use Magento\Framework\View\Layout\Generator\Structure;
 /**
  * Page Builder forms: visual selects with text options (Top | Center | Bottom, Appearance)
  * render as pills, plus a dropdown that replaces them in a narrow panel
- * when there are more than 3 options.
+ * when the options' text is too long to fit.
  */
 class UiFormVisualSelect
 {
     private const CORE_TEMPLATE = 'Magento_PageBuilder/form/element/visual-select';
     private const TEMPLATE = 'Melios_PageBuilder/form/element/visual-select';
-    private const MAX_PILLS = 3;
+    // Narrow panel fits about this many characters of pills (text + padding)
+    private const MAX_PILLS_CHARS = 36;
+    // Pill padding and gap, in characters
+    private const OPTION_EXTRA_CHARS = 4;
 
     public function afterGenerate(
         Structure $subject,
@@ -37,7 +40,7 @@ class UiFormVisualSelect
         foreach ($node['children'] ?? [] as $key => $child) {
             if ($this->isTextSelect($child['config'] ?? [])) {
                 $child['config']['elementTmpl'] = self::TEMPLATE;
-                if (count($child['config']['options']) > self::MAX_PILLS) {
+                if ($this->estimateWidth($child['config']['options']) > self::MAX_PILLS_CHARS) {
                     $child['config']['additionalClasses'] = $this->addClass(
                         $child['config']['additionalClasses'] ?? [],
                         'mls-visual-select-many'
@@ -70,6 +73,19 @@ class UiFormVisualSelect
         }
 
         return true;
+    }
+
+    /**
+     * Width of the pills in characters. Titles are already translated, so it works for any locale.
+     */
+    private function estimateWidth(array $options): int
+    {
+        $width = 0;
+        foreach ($options as $option) {
+            $width += mb_strlen((string) $option['title']) + self::OPTION_EXTRA_CHARS;
+        }
+
+        return $width;
     }
 
     private function addClass($classes, string $class)
