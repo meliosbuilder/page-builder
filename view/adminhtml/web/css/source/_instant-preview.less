@@ -122,9 +122,6 @@ body.melios-instant-preview {
         .modal-content {
             padding: 0 10px;
         }
-        .admin__fieldset > .admin__field {
-            margin-left: 0px;
-        }
 
         .melios-toolbar {
             display: flex;
@@ -158,7 +155,13 @@ body.melios-instant-preview {
             }
         }
 
+        .fieldset-wrapper-title {
+            padding: 0;
+        }
         .admin__fieldset-wrapper-content .admin__fieldset {
+            padding-top: 1rem;
+        }
+        .fieldset-wrapper-title + .admin__fieldset-wrapper-content .admin__fieldset {
             padding-top: 0.5rem;
             padding-bottom: 2.5rem;
         }
@@ -257,7 +260,7 @@ body.melios-instant-preview {
             }
         }
 
-        .admin__fieldset > .admin__field.admin__field-wide[class] > .admin__field-control {
+        .admin__fieldset > .admin__field.admin__field-wide[class] > .admin__field-label + .admin__field-control {
             clear: none;
             float: left;
         }
@@ -275,20 +278,29 @@ body.melios-instant-preview {
         // &:where([data-mls-size="sm"],[data-mls-size="md"]) {
             .admin__fieldset {
                 > .admin__field {
+                    margin-left: 0px;
                     > .admin__field-label {
                         width: ~"calc(var(--mls-label-width) - var(--mls-label-gap))" !important;
                         margin-left: 0;
+                        + .admin__field-control {
+                            width: ~"calc(100% - var(--mls-label-width))" !important;
+                            margin-left: var(--mls-label-gap);
+                        }
                     }
                     > .admin__field-control {
-                        width: ~"calc(100% - var(--mls-label-width))" !important;
-                        margin-left: var(--mls-label-gap);
+                        margin-left: 0px;
                     }
                     .admin__field-control .admin__control-select,
                     &.admin__field-medium > .admin__field-control {
                         min-width: 8rem;
                     }
-                    &.admin__field-wide[class]:not([data-index="appearance"]) > .admin__field-control {
-                        width: auto !important;
+                    > .admin__field-control,
+                    &.admin__field-small > .admin__field-control,
+                    &.admin__field-medium > .admin__field-control {
+                        max-width: 34rem;
+                    }
+                    &.admin__field-wide > .admin__field-control {
+                        max-width: none;
                     }
 
                     &:has(.admin__control-wysiwig) {
@@ -321,7 +333,6 @@ body.melios-instant-preview {
             .admin__fieldset {
                 > .admin__field {
                     &.admin__field-small > .admin__field-control {
-                        width: 15rem;
                         min-width: 15rem;
                         .admin__field-tooltip-content {
                             right: auto;
