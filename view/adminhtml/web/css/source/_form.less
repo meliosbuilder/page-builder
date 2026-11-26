@@ -128,11 +128,11 @@
 }
 
 // Small text visual select (Plugin/UiFormVisualSelect): pills by default,
-// a dropdown instead of them in a narrow panel when there are more than 3 options
+// a dropdown instead of them in a narrow panel when their text is too long to fit
 .mls-visual-select .mls-visual-select-dropdown {
     display: none;
 }
-[data-mls-size="sm"] .mls-visual-select-many .mls-visual-select {
+[data-mls-size="sm"] .mls-visual-select.mls-visual-select-many {
     ol {
         display: none !important;
     }

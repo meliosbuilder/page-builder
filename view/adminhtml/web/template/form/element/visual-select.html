@@ -1,9 +1,9 @@
-<!--
-    Visual select with text options (Plugin/UiFormVisualSelect): pills (core markup)
-    and a dropdown bound to the same value. CSS shows the dropdown instead of
-    the pills in a narrow panel when there are more than 3 options.
--->
-<div class="admin__field admin__field-visual-select mls-visual-select">
+<div class="admin__field admin__field-visual-select mls-visual-select"
+     data-bind="css: {
+        'mls-visual-select-many': options().reduce(function (width, option) {
+            return width + String(option.title).length + 4;
+        }, 0) > 36
+     }">
     <input type="text"
            ko-value="value"
            ko-disabled="disabled"
