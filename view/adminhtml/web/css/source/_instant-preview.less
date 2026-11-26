@@ -239,12 +239,16 @@ body.melios-instant-preview {
             line-height: 2.9rem;
         }
         .admin__field:not(.admin__field-option) > .admin__field-label,
-        .admin__control-text, .admin__control-select, .admin__control-multiselect, .admin__control-file-label:before, .admin__control-textarea, .admin__control-addon [class*='admin__control-'][class] ~ [class*='admin__addon-']:last-child:before, .selectmenu, [class*='adminhtml-giftwrapping-'] .field-base_price .admin__control-addon [class*='admin__control-'][class] ~ .addafter:last-child:before, .ui-datepicker .ui-datepicker-title select {
+        .admin__control-text, .admin__control-select, .admin__control-multiselect, .admin__control-file-label:before, .admin__control-textarea, .admin__control-addon [class*='admin__control-'][class] ~ [class*='admin__addon-']:last-child, .selectmenu, .ui-datepicker .ui-datepicker-title select {
             font-size: 1.3rem;
             font-weight: normal;
         }
-        .admin__control-text, .admin__control-select, .admin__control-multiselect, .admin__control-file-label:before, .admin__control-textarea, .admin__control-addon [class*='admin__control-'][class] ~ [class*='admin__addon-']:last-child:before, .selectmenu, [class*='adminhtml-giftwrapping-'] .field-base_price .admin__control-addon [class*='admin__control-'][class] ~ .addafter:last-child:before, .ui-datepicker .ui-datepicker-title select {
+        .admin__control-text, .admin__control-select, .admin__control-multiselect, .admin__control-file-label:before, .admin__control-textarea, .selectmenu, .ui-datepicker .ui-datepicker-title select {
             padding-left: .7rem;
+        }
+        .admin__control-addon [class*='admin__control-'][class] ~ [class*='admin__addon-']:last-child {
+            padding-left: .7rem;
+            padding-right: .7rem;
         }
         .admin__field:not(.admin__field-option) > .admin__field-label span {
             line-height: 1.3;
@@ -275,6 +279,12 @@ body.melios-instant-preview {
             text-align: left;
         }
 
+        [class*='admin__control-grouped'] > .admin__field:first-child > .admin__field-label,
+        .admin__control-fields > .admin__field:first-child > .admin__field-label {
+            width: ~"calc(var(--mls-label-width) - var(--mls-label-gap))" !important;
+            margin-left: 0;
+        }
+
         // &:where([data-mls-size="sm"],[data-mls-size="md"]) {
             .admin__fieldset {
                 > .admin__field {
@@ -292,7 +302,8 @@ body.melios-instant-preview {
                     }
                     .admin__field-control .admin__control-select,
                     &.admin__field-medium > .admin__field-control {
-                        min-width: 8rem;
+                        min-width: 7rem;
+                        width: 100%;
                     }
                     > .admin__field-control,
                     &.admin__field-small > .admin__field-control,
@@ -359,7 +370,10 @@ body.melios-instant-preview {
         [class*="admin__control-grouped"] > .admin__field.admin__field-small > .admin__field-control,
         [class*="admin__control-grouped"] > .admin__field.admin__field-medium > .admin__field-control {
             width: 100%;
-            min-width: 8rem;
+            min-width: 6rem;
+            input {
+                min-width: 4rem;
+            }
         }
         [class*="admin__control-grouped"] > .admin__field.admin__field-default,
         [class*="admin__control-grouped"] > .admin__field.admin__field-x-small,
