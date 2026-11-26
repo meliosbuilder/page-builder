@@ -40,6 +40,11 @@ class UiFormVisualSelect
         foreach ($node['children'] ?? [] as $key => $child) {
             if ($this->isTextSelect($child['config'] ?? [])) {
                 $child['config']['elementTmpl'] = self::TEMPLATE;
+                // Options defined inline in xml have no size (core source model defaults to 'small')
+                foreach ($child['config']['options'] as &$option) {
+                    $option['size'] ??= 'small';
+                }
+                unset($option);
                 if ($this->estimateWidth($child['config']['options']) > self::MAX_PILLS_CHARS) {
                     $child['config']['additionalClasses'] = $this->addClass(
                         $child['config']['additionalClasses'] ?? [],
@@ -65,9 +70,7 @@ class UiFormVisualSelect
         }
 
         foreach ($config['options'] as $option) {
-            if (!in_array($option['size'] ?? '', ['small', 'large'], true)
-                || (string) ($option['title'] ?? '') === ''
-            ) {
+            if ((string) ($option['title'] ?? '') === '') {
                 return false;
             }
         }

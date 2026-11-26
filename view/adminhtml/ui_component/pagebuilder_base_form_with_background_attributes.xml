@@ -2,9 +2,6 @@
 <form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
       xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
     <fieldset name="background">
-        <!-- Compact image picker: preview is the button -->
-        <field name="background_image" template="Melios_PageBuilder/form/element/uploader/image-picker"/>
-        <field name="mobile_image" template="Melios_PageBuilder/form/element/uploader/image-picker"/>
         <field name="background_position" formElement="select">
             <formElements>
                 <select>
