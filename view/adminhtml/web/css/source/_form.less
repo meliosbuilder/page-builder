@@ -83,7 +83,8 @@
         }
     }
 
-    > [data-index="border_width"] {
+    // Width (first field)
+    > .admin__field:first-child {
         flex: 0 0 7.5rem;
     }
 
@@ -98,11 +99,8 @@
         left: 0;
         right: 0;
     }
-    // Style: as wide as its longest option
-    > [data-index="border"] {
-        flex: 0 0 auto;
-    }
-    > [data-index="border_color"] {
+    // Style: as wide as its longest option; color: swatch
+    > .admin__field:not(:first-child) {
         flex: 0 0 auto;
     }
     .admin__control-select {

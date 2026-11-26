@@ -158,82 +158,45 @@ body.melios-instant-preview {
         .fieldset-wrapper-title {
             padding: 0;
         }
+        // Fieldset spacing. Untitled fieldsets (content is the first child) have no padding,
+        // so consecutive ones are one field gap apart; titled ones keep 2rem above the next divider.
         .admin__fieldset-wrapper-content .admin__fieldset {
-            padding-top: 1rem;
+            padding-top: 0;
+            padding-bottom: 0;
         }
         .fieldset-wrapper-title + .admin__fieldset-wrapper-content .admin__fieldset {
             padding-top: 0.5rem;
-            padding-bottom: 2.5rem;
+            padding-bottom: 2rem;
         }
-
-        // &[data-mls-size="sm"] {
-        //     .admin__fieldset-wrapper-content .admin__fieldset {
-        //         padding-top: 0.5rem;
-        //         padding-bottom: 1rem;
-        //     }
-
-        //     .admin__fieldset {
-        //         > .admin__field {
-        //             margin-left: 0;
-        //             margin-bottom: 1.2rem;
-        //             display: flex;
-        //             flex-direction: column;
-        //             gap: 0px;
-        //             > .admin__field-label,
-        //             > .admin__field-control {
-        //                 width: auto;
-        //                 margin-left: 0;
-        //                 text-align: left;
-        //             }
-        //             .admin__field-control .admin__control-select {
-        //                 min-width: 8rem;
-        //             }
-        //             &.admin__field-small > .admin__field-control {
-        //                 width: 15rem;
-        //                 min-width: 15rem;
-        //                 .admin__field-tooltip-content {
-        //                     right: auto;
-        //                     left: -10.5rem;
-        //                     &::before,
-        //                     &::after {
-        //                         right: auto;
-        //                         left: 10rem;
-        //                     }
-        //                 }
-        //             }
-        //             &.admin__field-medium > .admin__field-control {
-        //                 width: 25rem;
-        //                 min-width: 25rem;
-        //             }
-        //         }
-        //     }
-        //     .admin__field + .admin__field {
-        //         margin-top: 1.2rem;
-        //     }
-
-        //     [class*='admin__control-grouped'] > .admin__field:first-child > .admin__field-label,
-        //     .admin__control-fields > .admin__field:first-child > .admin__field-label {
-        //         width: auto;
-        //         margin-left: 0;
-        //     }
-
-        //     // Help
-        //     .abs-admin__field-tooltip-content,
-        //     .admin__field-tooltip .admin__field-tooltip-content {
-        //         width: ~"calc(var(--mls-slideout-width) - 35px)";
-        //         max-width: 200px;
-        //     }
-
-        //     // Buttons above the html field
-        //     .buttons-set {
-        //         display: flex;
-        //         flex-wrap: wrap;
-        //         gap: 5px;
-        //         button {
-        //             margin: 0;
-        //         }
-        //     }
-        // }
+        // Untitled after titled
+        .fieldset-wrapper:has(> .fieldset-wrapper-title) + .fieldset-wrapper > .admin__fieldset-wrapper-content:first-child > .admin__fieldset {
+            padding-top: 1rem;
+        }
+        // Untitled before titled
+        .fieldset-wrapper:has(> .admin__fieldset-wrapper-content:first-child):has(+ .fieldset-wrapper > .fieldset-wrapper-title) > .admin__fieldset-wrapper-content > .admin__fieldset {
+            padding-bottom: 2rem;
+        }
+        // Top of the form; a title has its own padding. The first fieldset may be hidden (single appearance).
+        .entry-edit.form-inline {
+            padding-top: 1rem;
+        }
+        .entry-edit.form-inline > .fieldset-wrapper:first-child:has(> .fieldset-wrapper-title),
+        .entry-edit.form-inline > .fieldset-wrapper[style*="display: none"]:first-child + .fieldset-wrapper:has(> .fieldset-wrapper-title) {
+            margin-top: -1rem;
+        }
+        // Divider above every titled fieldset except the first visible one
+        .fieldset-wrapper {
+            border-bottom: 0;
+        }
+        .fieldset-wrapper:not([style*="display: none"]) ~ .fieldset-wrapper:has(> .fieldset-wrapper-title) {
+            border-top: 1px solid @color-gray80;
+        }
+        .admin__field[style*="display: none"] + .admin__field {
+            margin-top: 0;
+        }
+        .admin__page-nav-item-messages {
+            display: none;
+        }
 
         .admin__field:not(.admin__field-option) > .admin__field-label {
             line-height: 2.9rem;
