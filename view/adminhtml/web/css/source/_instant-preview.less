@@ -285,6 +285,7 @@ body.melios-instant-preview {
                         .admin__field-control {
                             margin: 0;
                             width: 100% !important;
+                            max-width: none;
                         }
                     }
                 }
@@ -403,8 +404,8 @@ body.melios-instant-preview {
                 display: inline-flex;
                 flex-wrap: wrap;
                 // Content width, so the track doesn't come out a few px short and wrap early
-                width: max-content;
-                max-width: 100%;
+                // width: max-content;
+                width: 100%;
                 box-sizing: border-box;
                 gap: 2px;
                 padding: 2px;
@@ -412,12 +413,13 @@ body.melios-instant-preview {
                 border-radius: 10px;
 
                 > li {
+                    flex-grow: 1;
                     width: auto;
                     height: auto;
                     min-width: 0;
                     min-height: 0;
                     margin: 0;
-                    padding: 5px 12px;
+                    padding: 5px 8px;
                     border: 0;
                     border-radius: 8px;
                     background: transparent;
@@ -427,6 +429,7 @@ body.melios-instant-preview {
                     white-space: nowrap;
                     &:hover {
                         color: #1a1a1a;
+                        background: rgba(255,255,255,.5);
                     }
                     &:focus-visible {
                         outline: 2px solid #007bdb;
