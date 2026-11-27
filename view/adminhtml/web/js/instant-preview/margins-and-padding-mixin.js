@@ -63,8 +63,12 @@ define([
 
     return function (target) {
         return target.extend({
-            defaults: {
-                elementTmpl: 'Melios_PageBuilder/form/element/margins-and-padding'
+            // Whole field template (two Magento field rows), set after config: forms set "template" to ui/form/field
+            initConfig: function () {
+                this._super();
+                this.template = 'Melios_PageBuilder/form/element/margins-and-padding';
+
+                return this;
             },
 
             initObservable: function () {

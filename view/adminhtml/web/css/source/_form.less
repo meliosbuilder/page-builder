@@ -141,31 +141,47 @@
     }
 }
 
-// Margins and padding: All / V·H / Sides per group (Melios_PageBuilder/form/element/margins-and-padding)
+// Margins and padding: one Magento field row per group (Melios_PageBuilder/form/element/margins-and-padding).
+// Same grey as Magento's px suffix (Border, Radius)
+.mls-spacing-unit {
+    color: #858585;
+    font-weight: normal;
+}
+// Control: line 1 holds the All input with the mode toggle at its end and the mobile icon after it.
+// V·H and Sides: the toggle stays on line 1, inputs move to line 2.
 .mls-spacing {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    max-width: 36rem;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-rows: minmax(32px, auto); // input height, also when line 1 holds the toggle only
+    row-gap: 6px;
+    align-items: center;
 
-    .mls-spacing-head {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        margin-bottom: 6px;
+    > .admin__field-tooltip {
+        grid-area: 1 / 2;
     }
-    .mls-spacing-label {
-        flex: 1;
-        font-size: 13px;
-        color: #1a1a1a;
+    > .admin__field-error {
+        grid-column: 1 / -1;
     }
+    .mls-spacing-inputs {
+        grid-area: 2 / 1;
+        &[data-mode="all"] {
+            grid-area: 1 / 1;
+            .mls-spacing-cell {
+                padding-right: 130px; // room for the mode toggle
+            }
+        }
+    }
+
     .mls-spacing-modes {
         .mls-pill-track(button);
-        flex: none;
+        grid-area: 1 / 1;
+        justify-self: end;
+        margin-right: 3px; // inside the All input border, same spot in every mode
+        z-index: 1;
         flex-wrap: nowrap;
         width: auto;
         > button {
-            padding: 2px 8px;
+            padding: 2px 6px;
             font-size: 12px;
         }
     }
@@ -206,6 +222,7 @@
         align-items: center;
         justify-content: center;
         width: 28px;
+        margin-right: -1px;
         height: 100%;
         color: #4a4a4a;
         cursor: ew-resize;
@@ -231,10 +248,6 @@
             box-shadow: none;
         }
     }
-}
-// Margin and Padding group labels say it all
-.admin__field:has(> .admin__field-control > .mls-spacing) > .admin__field-label {
-    display: none;
 }
 body._mls-scrubbing,
 body._mls-scrubbing * {
