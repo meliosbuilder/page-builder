@@ -2,7 +2,7 @@
     Margins and padding: one Magento field row per group (label + control), laid out like any other field.
     Each group switches between All / V / H / Sides inputs.
     Drag to change a value: the left edge of the input in All, the icons in V / H, an edge (or the centre
-    for all sides) of the Sides box. Double click on it resets. Arrows step 1 (Shift: 10).
+    for all sides) of the Sides box. Double click on it clears the value. Arrows step 1 (Shift: 10).
     CSS shorthand ("10px 15px") fills the sides: pasted at once, typed when typing stops, on Enter or blur.
 -->
 <!-- ko foreach: spacingGroups -->
@@ -30,7 +30,7 @@
                 <!-- ko foreach: inputs -->
                 <span class="mls-spacing-band" aria-hidden="true" data-bind="attr: {'data-side': side, title: scrubTitle}, event: {pointerdown: scrub, dblclick: reset}"></span>
                 <!-- /ko -->
-                <span class="mls-spacing-center" aria-hidden="true" data-bind="text: label, attr: {title: scrubTitle}, event: {pointerdown: scrubAll, dblclick: resetAll}"></span>
+                <span class="mls-spacing-center" aria-hidden="true" data-bind="attr: {title: scrubTitle}, event: {pointerdown: scrubAll, dblclick: resetAll}"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h18"/><path d="m7 8-4 4 4 4"/><path d="m17 8 4 4-4 4"/></svg></span>
             <!-- /ko -->
             <!-- ko foreach: inputs -->
             <div class="mls-spacing-cell" data-bind="css: {_invalid: invalid}, attr: {'data-side': side}">

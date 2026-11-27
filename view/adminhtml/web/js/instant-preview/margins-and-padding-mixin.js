@@ -134,6 +134,13 @@ define([
 
                 const canNudgeAll = list => list.every(v => v === '' || NUMBER.test(v));
 
+                // Double click on a drag handle: back to default (empty), like the range slider
+                const unset = sides => {
+                    if (!this.disabled()) {
+                        write(sides, sides.map(() => ''));
+                    }
+                };
+
                 // Horizontal drag from a handle: right increases, 1 per 2px (Shift: 10)
                 const drag = (event, apply) => {
                     const handle = event.currentTarget;
@@ -263,7 +270,7 @@ define([
                         ariaLabel: `${label} ${sideLabel}`,
                         // V / H and Sides inputs are narrow: a dash says "not set"
                         placeholder: key === 'all' ? placeholder : '–',
-                        scrubTitle: $t('Drag to change, double-click to reset'),
+                        scrubTitle: $t('Drag to change, double-click to clear'),
                         invalid: ko.pureComputed(() => !isValid(value())),
 
                         // Pasted shorthand splits at once, focus goes to the last input
@@ -331,11 +338,7 @@ define([
                         },
 
                         // Double click on the drag handle: back to default
-                        reset: () => {
-                            if (!this.disabled()) {
-                                write(sides, sides.map(() => ''));
-                            }
-                        },
+                        reset: () => unset(sides),
 
                         // V / H icon, Sides box edge
                         scrub: (data, event) => {
@@ -356,13 +359,9 @@ define([
                     label: label,
                     modesLabel: $t('%1 input mode').replace('%1', label),
                     sidesLabel: $t('%1 per side').replace('%1', label),
-                    scrubTitle: $t('Drag to change, double-click to reset'),
+                    scrubTitle: $t('Drag to change, double-click to clear'),
                     scrubAll: scrubAll,
-                    resetAll: () => {
-                        if (!this.disabled()) {
-                            set(['', '', '', '']);
-                        }
-                    },
+                    resetAll: () => unset([0, 1, 2, 3]),
                     disabled: this.disabled,
                     mode: mode,
                     values: values,

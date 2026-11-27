@@ -233,8 +233,8 @@
         }
         // Sides: a box, each input on its edge (cells come last in the DOM: Tab goes top, right, bottom, left)
         &[data-mode="sides"] {
-            grid-template-columns: 60px minmax(0, 1fr) 60px;
-            grid-template-rows: 32px 26px 32px;
+            grid-template-columns: 56px minmax(0, 1fr) 56px;
+            grid-template-rows: 28px 24px 28px;
             gap: 0;
             border: 1px dashed #b5b5b2;
             border-radius: 4px;
@@ -245,8 +245,8 @@
                 z-index: 1; // above the edge bands
                 justify-self: center;
                 align-self: center;
-                width: 52px;
-                height: 24px;
+                width: 48px;
+                height: 22px;
                 border-color: #d4d4d2;
                 border-radius: 3px;
                 background: #fff;
@@ -311,27 +311,18 @@
     // Centre: drags all four sides
     .mls-spacing-center {
         grid-area: 2 / 2;
-        // Compact, not the whole cell: room between it and the side inputs
+        // A muted drag arrow (the row label already names the group), room around it for the side inputs
         justify-self: center;
         align-self: center;
         display: flex;
         align-items: center;
         justify-content: center;
-        min-width: 0;
-        max-width: 100%;
+        width: 24px;
         height: 22px;
-        padding: 0 12px;
-        box-sizing: border-box;
-        overflow: hidden;
-        border: 1px solid #d4d4d2;
-        border-radius: 3px;
-        background: #fff;
-        color: #767676;
-        font-size: 10px;
-        font-weight: 700;
-        letter-spacing: .08em;
-        text-transform: uppercase;
-        white-space: nowrap;
+        color: #8a8a8a;
+        &:hover {
+            color: #303030;
+        }
     }
     .mls-spacing-band,
     .mls-spacing-center {
