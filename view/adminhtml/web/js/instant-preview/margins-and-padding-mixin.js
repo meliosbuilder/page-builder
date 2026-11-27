@@ -124,6 +124,15 @@ define([
                 };
                 const set = list => write([0, 1, 2, 3], list);
                 const mode = ko.observable('all');
+                // Values before switching to fewer inputs, see setMode
+                let stash = null;
+                const collapse = ([t, r, b, l], to) => {
+                    if (to === 'all') {
+                        return [t, t, t, t];
+                    }
+
+                    return to === 'axis' ? [t, r, t, r] : [t, r, b, l];
+                };
                 const min = type === 'padding' ? 0 : -999;
                 const isValid = v => v === '' || NUMBER.test(v) || (type === 'margin' && v === 'auto');
                 const placeholder = this.placeholder;
@@ -342,15 +351,18 @@ define([
                     ],
                     inputs: ko.pureComputed(() => MODE_INPUTS[mode()].map(key => inputs[key])),
 
-                    // Fewer inputs keep the first value of what they merge
+                    // Fewer inputs keep the first value of what they merge. The values before that are kept,
+                    // so switching back restores them, until the values change (typing, drag, undo...)
                     setMode: ({ id }) => {
-                        const [t, r] = values();
-
-                        if (id === 'all') {
-                            set([t, t, t, t]);
-                        } else if (id === 'axis' && mode() === 'sides') {
-                            set([t, r, t, r]);
+                        if (stash && !_.isEqual(values(), collapse(stash, mode()))) {
+                            stash = null;
                         }
+
+                        const base = stash || values();
+                        const keep = stash || (MODES.indexOf(id) < MODES.indexOf(mode()) ? values() : null);
+
+                        set(collapse(base, id));
+                        stash = keep;
                         mode(id);
                     },
 
