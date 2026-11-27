@@ -139,6 +139,10 @@ var config = {
             'Magento_PageBuilder/js/property/style-property-reader': {
                 'Melios_PageBuilder/js/content-type/style-property-reader-mixin': true,
             },
+            // Allow "auto" margin (margins and padding field)
+            'Magento_PageBuilder/js/converter/style/margins': {
+                'Melios_PageBuilder/js/content-type/margins-converter-mixin': true,
+            },
             'Magento_PageBuilder/js/utils/string': {
                 'Melios_PageBuilder/js/content-type/string-utils-mixin': true,
             },

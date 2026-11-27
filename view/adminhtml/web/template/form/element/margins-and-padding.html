@@ -1,0 +1,34 @@
+<!--
+    Margins and padding: each group switches between All / V·H / Sides inputs.
+    Drag the side icon to change a value, arrows step 1 (Shift: 10).
+    CSS shorthand ("10px 15px") fills the sides: pasted at once, typed when typing stops, on Enter or blur.
+-->
+<div class="admin__field-design-options mls-spacing">
+    <input type="text" ko-value="value" attr="id: uid, name: inputName">
+
+    <!-- ko foreach: spacingGroups -->
+    <div class="mls-spacing-group">
+        <div class="mls-spacing-head">
+            <span class="mls-spacing-label" data-bind="text: label"></span>
+            <div class="mls-spacing-modes" role="group" data-bind="attr: {'aria-label': modesLabel}, foreach: modes">
+                <button type="button" data-bind="
+                    text: label,
+                    css: {active: $parent.mode() === id},
+                    attr: {'aria-pressed': $parent.mode() === id ? 'true' : 'false'},
+                    click: $parent.setMode,
+                    disable: $parent.disabled"></button>
+            </div>
+        </div>
+        <div class="mls-spacing-inputs" data-bind="attr: {'data-mode': mode}, foreach: inputs">
+            <div class="mls-spacing-cell" data-bind="css: {_invalid: invalid}">
+                <span class="mls-spacing-grip" aria-hidden="true" data-bind="html: icon, attr: {title: scrubTitle}, event: {pointerdown: scrub}"></span>
+                <input type="text" class="admin__control-text mls-spacing-input" data-bind="
+                    textInput: value,
+                    event: {input: input, keydown: keydown, paste: paste, blur: blur},
+                    attr: {'aria-label': ariaLabel, placeholder: placeholder},
+                    disable: $parent.disabled">
+            </div>
+        </div>
+    </div>
+    <!-- /ko -->
+</div>

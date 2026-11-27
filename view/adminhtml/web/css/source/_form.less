@@ -140,3 +140,103 @@
         display: block;
     }
 }
+
+// Margins and padding: All / V·H / Sides per group (Melios_PageBuilder/form/element/margins-and-padding)
+.mls-spacing {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-width: 36rem;
+
+    .mls-spacing-head {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 6px;
+    }
+    .mls-spacing-label {
+        flex: 1;
+        font-size: 13px;
+        color: #1a1a1a;
+    }
+    .mls-spacing-modes {
+        .mls-pill-track(button);
+        flex: none;
+        flex-wrap: nowrap;
+        width: auto;
+        > button {
+            padding: 2px 8px;
+            font-size: 12px;
+        }
+    }
+
+    .mls-spacing-inputs {
+        display: grid;
+        gap: 6px;
+        &[data-mode="axis"] {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+        &[data-mode="sides"] {
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+        }
+    }
+    .mls-spacing-cell {
+        display: flex;
+        align-items: center;
+        min-width: 0;
+        height: 32px;
+        box-sizing: border-box;
+        border: 1px solid #adadad;
+        border-radius: 1px;
+        background: #fff;
+        &:hover {
+            border-color: #878787;
+        }
+        // Same as Magento admin__control-text:focus
+        &:focus-within {
+            border-color: #007bdb;
+        }
+        &._invalid {
+            border-color: #e22626;
+        }
+    }
+    .mls-spacing-grip {
+        flex: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 28px;
+        height: 100%;
+        color: #4a4a4a;
+        cursor: ew-resize;
+        user-select: none;
+        touch-action: none;
+        &:hover {
+            color: #1a1a1a;
+        }
+    }
+    // Reset admin text input, the cell draws the border
+    input.mls-spacing-input {
+        flex: 1;
+        width: 100%;
+        min-width: 0;
+        height: 100%;
+        padding: 0 6px 0 0 !important; // over the sidebar's .admin__control-text padding-left
+        border: 0;
+        background: transparent;
+        box-shadow: none;
+        font-size: 13px;
+        font-variant-numeric: tabular-nums;
+        &:focus {
+            box-shadow: none;
+        }
+    }
+}
+// Margin and Padding group labels say it all
+.admin__field:has(> .admin__field-control > .mls-spacing) > .admin__field-label {
+    display: none;
+}
+body._mls-scrubbing,
+body._mls-scrubbing * {
+    cursor: ew-resize !important;
+}

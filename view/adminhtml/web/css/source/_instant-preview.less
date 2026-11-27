@@ -279,7 +279,8 @@ body.melios-instant-preview {
                         max-width: none;
                     }
 
-                    &:has(.admin__control-wysiwig) {
+                    // Full width: margins and padding need it for 4 inputs in a row
+                    &:has(.admin__control-wysiwig, .mls-spacing) {
                         .admin__field-label {
                             width: auto !important;
                             float: none;
@@ -403,54 +404,14 @@ body.melios-instant-preview {
 
             // Pill track: small text options (Top | Center | Bottom) and Appearance, text only
             ol:has(> li.admin__field-visual-select-small, > li.admin__field-visual-select-large) {
-                display: inline-flex;
-                flex-wrap: wrap;
-                // Content width, so the track doesn't come out a few px short and wrap early
-                // width: max-content;
-                width: 100%;
-                box-sizing: border-box;
-                gap: 2px;
-                padding: 2px;
-                background: #ececea;
-                border-radius: 6px;
+                .mls-pill-track();
 
-                > li {
-                    flex-grow: 1;
-                    width: auto;
-                    height: auto;
-                    min-width: 0;
-                    min-height: 0;
-                    margin: 0;
-                    padding: 5px 8px;
-                    border: 0;
-                    border-radius: 4px;
-                    background: transparent;
-                    color: #555;
-                    font-size: 13px;
-                    line-height: 18px;
-                    white-space: nowrap;
-                    &:hover {
-                        color: #1a1a1a;
-                        background: rgba(255,255,255,.5);
-                    }
-                    &:focus-visible {
-                        outline: 2px solid #007bdb;
-                        outline-offset: 0;
-                    }
-                    &.active {
-                        outline: 0;
-                        background: #fff;
-                        color: #1a1a1a;
-                        box-shadow: 0 0.5px 1px rgba(0, 0, 0, 0.14),
-                                    0 0 0 0.5px rgba(0, 0, 0, 0.08);
-                    }
-                    // Icons and previews repeat the text
-                    &:has(span:not(:empty)) {
-                        img,
-                        br,
-                        .admin__field-visual-select-spacer {
-                            display: none;
-                        }
+                // Icons and previews repeat the text
+                > li:has(span:not(:empty)) {
+                    img,
+                    br,
+                    .admin__field-visual-select-spacer {
+                        display: none;
                     }
                 }
             }
@@ -525,63 +486,6 @@ body.melios-instant-preview {
         }
         .colorpicker-input {
             width: ~"calc(100% - 42px) !important";
-        }
-
-        // Margins and padding
-        &[data-mls-size="lg"] {
-            .admin__fieldset > .admin__field > .admin__field-control:has(.layout-onion) {
-                width: ~"calc(100% * 0.7 - 10px)";
-            }
-        }
-        .admin__field-control:has(> .admin__field-design-options .layout-onion) {
-            display: flex;
-        }
-        .admin__field-design-options .layout-onion {
-            width: auto;
-            height: auto;
-            .label {
-                position: static;
-                margin: 5px;
-            }
-            input[type="text"] {
-                position: static;
-                transform: none;
-                margin: 5px;
-                padding: 5px;
-                width: ~"calc(100% - 5px)";
-                max-width: 80px;
-            }
-            .layout-onion-layer {
-                width: auto;
-                height: auto;
-                display: grid;
-                grid-template-columns: repeat(5, 1fr);
-                grid-template-rows:    repeat(5, 1fr);
-                grid-template-areas:
-                    ".      .       top     .           ."
-                    ".      center  center  center      ."
-                    "left   center  center  center  right"
-                    ".      center  center  center      ."
-                    ".      .       bottom  .           .";
-                align-items: center;
-                justify-items: center;
-
-                > .label { align-self: start; justify-self: start; }
-                > .layout-onion-top { grid-area: top; }
-                > .layout-onion-right { grid-area: right; }
-                > .layout-onion-bottom { grid-area: bottom; }
-                > .layout-onion-left { grid-area: left; }
-                > .layout-border { grid-area: center; }
-            }
-            .layout-border {
-                position: static;
-                width: auto;
-                grid-template-columns: subgrid;
-                grid-template-rows: subgrid;
-                &::after {
-                    display: none;
-                }
-            }
         }
 
         // Mobile view
