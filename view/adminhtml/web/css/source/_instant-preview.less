@@ -155,6 +155,23 @@ body.melios-instant-preview {
             }
         }
 
+        // Top of the form; a title has its own padding. The first fieldset may be hidden (single appearance).
+        .entry-edit.form-inline {
+            padding-top: 1rem;
+        }
+        .entry-edit.form-inline > .fieldset-wrapper:first-child:has(> .fieldset-wrapper-title),
+        .entry-edit.form-inline > .fieldset-wrapper[style*="display: none"]:first-child + .fieldset-wrapper:has(> .fieldset-wrapper-title) {
+            margin-top: -1rem;
+        }
+
+        // Divider above every titled fieldset except the first visible one
+        .fieldset-wrapper {
+            border-bottom: 0;
+        }
+        .fieldset-wrapper:not([style*="display: none"]) ~ .fieldset-wrapper:has(> .fieldset-wrapper-title) {
+            border-top: 1px solid @color-gray80;
+        }
+
         .fieldset-wrapper-title {
             padding: 0;
         }
@@ -176,26 +193,11 @@ body.melios-instant-preview {
         .fieldset-wrapper:has(> .admin__fieldset-wrapper-content:first-child):has(+ .fieldset-wrapper > .fieldset-wrapper-title) > .admin__fieldset-wrapper-content > .admin__fieldset {
             padding-bottom: 2rem;
         }
-        // Top of the form; a title has its own padding. The first fieldset may be hidden (single appearance).
-        .entry-edit.form-inline {
-            padding-top: 1rem;
-        }
-        .entry-edit.form-inline > .fieldset-wrapper:first-child:has(> .fieldset-wrapper-title),
-        .entry-edit.form-inline > .fieldset-wrapper[style*="display: none"]:first-child + .fieldset-wrapper:has(> .fieldset-wrapper-title) {
-            margin-top: -1rem;
-        }
-        // Divider above every titled fieldset except the first visible one
-        .fieldset-wrapper {
-            border-bottom: 0;
-        }
-        .fieldset-wrapper:not([style*="display: none"]) ~ .fieldset-wrapper:has(> .fieldset-wrapper-title) {
-            border-top: 1px solid @color-gray80;
+        .admin__page-nav-item-messages {
+            display: none;
         }
         .admin__field[style*="display: none"] + .admin__field {
             margin-top: 0;
-        }
-        .admin__page-nav-item-messages {
-            display: none;
         }
 
         .admin__field:not(.admin__field-option) > .admin__field-label {
