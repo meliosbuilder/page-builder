@@ -25,28 +25,13 @@ define([
         sides: ['top', 'right', 'bottom', 'left']
     };
 
-    // Faint square, edited sides bold. crispEdges snaps to device pixels: grid cells sit at
-    // fractional x, and screens may scale (125%), so a pixel-aligned drawing alone still blurs.
-    // Each side is a filled bar (1px faint or 2px bold), never both on one side:
-    // overlapping bars snap to different device pixels and the faint one peeks out.
-    const bar = (side, size) => [
-        `<rect x="1" y="1" width="14" height="${size}"/>`,
-        `<rect x="${15 - size}" y="1" width="${size}" height="14"/>`,
-        `<rect x="1" y="${15 - size}" width="14" height="${size}"/>`,
-        `<rect x="1" y="1" width="${size}" height="14"/>`
-    ][side];
-    // One icon unit = whole device pixels, else on scaled screens (125%) equal bars round to 1 or 2px.
-    // ponytail: measured once, an icon dragged to a monitor with another scale keeps the old size
-    const dpr = globalThis.devicePixelRatio || 1;
-    const ICON_SIZE = +(16 * Math.max(1, Math.floor(dpr)) / dpr).toFixed(3);
-
-    function icon(sides) {
-        const faint = [0, 1, 2, 3].filter(i => !sides.includes(i)).map(i => bar(i, 1)).join('');
-        const bold = sides.map(i => bar(i, 2)).join('');
-
-        return `<svg width="${ICON_SIZE}" height="${ICON_SIZE}" viewBox="0 0 16 16" shape-rendering="crispEdges" fill="currentColor">` +
-            `<g opacity=".4">${faint}</g>${bold}</svg>`;
-    }
+    // Drag handles of the V / H inputs. All has no icon (the label drags), Sides uses the box edges.
+    const arrow = path => '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" ' +
+        'stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' + path + '</svg>';
+    const ICONS = {
+        vertical: arrow('<path d="M12 3v18"/><path d="m8 7 4-4 4 4"/><path d="m8 17 4 4 4-4"/>'),
+        horizontal: arrow('<path d="M3 12h18"/><path d="m7 8-4 4 4 4"/><path d="m17 8 4 4-4 4"/>')
+    };
 
     // Magento stores plain numbers (px): "10px" => "10", " Auto " => "auto"
     function clean(value) {
@@ -147,6 +132,39 @@ define([
                     return String(Math.min(999, Math.max(min, number)));
                 };
 
+                const canNudgeAll = list => list.every(v => v === '' || NUMBER.test(v));
+
+                // Horizontal drag from a handle: right increases, 1 per 2px (Shift: 10)
+                const drag = (event, apply) => {
+                    const handle = event.currentTarget;
+                    const x = event.clientX;
+                    const move = e => apply(Math.round((e.clientX - x) / 2) * (e.shiftKey ? 10 : 1));
+                    // Captured pointer keeps sending events (and the release) outside the window
+                    const stop = () => {
+                        handle.removeEventListener('pointermove', move);
+                        handle.removeEventListener('lostpointercapture', stop);
+                        document.body.classList.remove('_mls-scrubbing');
+                    };
+
+                    handle.setPointerCapture(event.pointerId);
+                    handle.addEventListener('pointermove', move);
+                    handle.addEventListener('lostpointercapture', stop);
+                    document.body.classList.add('_mls-scrubbing');
+
+                    return false;
+                };
+
+                // All sides at once: the centre of the Sides box
+                const scrubAll = (data, event) => {
+                    const start = values();
+
+                    if (this.disabled() || !canNudgeAll(start)) {
+                        return true;
+                    }
+
+                    return drag(event, delta => set(start.map(v => nudge(v, delta))));
+                };
+
                 const grow = to => {
                     if (MODES.indexOf(to) > MODES.indexOf(mode())) {
                         mode(to);
@@ -164,8 +182,8 @@ define([
 
                 // Returns the index of the input to focus.
                 // All, or top in Sides: CSS shorthand, "10px 15px" => top/bottom 10, left/right 15.
-                // V·H, two values: the input's own sides, "10 20" in V => top 10, bottom 20; "5 8" in H => left 5, right 8.
-                // V·H, more values: CSS shorthand.
+                // V / H, two values: the input's own sides, "10 20" in V => top 10, bottom 20; "5 8" in H => left 5, right 8.
+                // V / H, more values: CSS shorthand.
                 // Later side in Sides: values go on side by side from it, "15 9" in right => right 15, bottom 9.
                 const split = (text, key) => {
                     const parts = text.trim().split(/\s+/).map(clean);
@@ -239,11 +257,13 @@ define([
                     };
 
                     return {
+                        side: key,
                         value: value,
-                        icon: icon(sides),
+                        icon: ICONS[key] || '',
                         ariaLabel: `${label} ${sideLabel}`,
-                        placeholder: key === 'all' ? placeholder : '',
-                        scrubTitle: $t('Drag to change'),
+                        // V / H and Sides inputs are narrow: a dash says "not set"
+                        placeholder: key === 'all' ? placeholder : '–',
+                        scrubTitle: $t('Drag to change, double-click to reset'),
                         invalid: ko.pureComputed(() => !isValid(value())),
 
                         // Pasted shorthand splits at once, focus goes to the last input
@@ -310,28 +330,22 @@ define([
                             return false;
                         },
 
+                        // Double click on the drag handle: back to default
+                        reset: () => {
+                            if (!this.disabled()) {
+                                write(sides, sides.map(() => ''));
+                            }
+                        },
+
+                        // V / H icon, Sides box edge
                         scrub: (data, event) => {
                             if (this.disabled() || !canNudge()) {
                                 return true;
                             }
 
-                            const grip = event.currentTarget;
                             const start = value();
-                            const x = event.clientX;
-                            const move = e => value(nudge(start, Math.round((e.clientX - x) / 2) * (e.shiftKey ? 10 : 1)));
-                            // Captured pointer keeps sending events (and the release) outside the window
-                            const stop = () => {
-                                grip.removeEventListener('pointermove', move);
-                                grip.removeEventListener('lostpointercapture', stop);
-                                document.body.classList.remove('_mls-scrubbing');
-                            };
 
-                            grip.setPointerCapture(event.pointerId);
-                            grip.addEventListener('pointermove', move);
-                            grip.addEventListener('lostpointercapture', stop);
-                            document.body.classList.add('_mls-scrubbing');
-
-                            return false;
+                            return drag(event, delta => value(nudge(start, delta)));
                         }
                     };
                 };
@@ -341,12 +355,20 @@ define([
                 return {
                     label: label,
                     modesLabel: $t('%1 input mode').replace('%1', label),
+                    sidesLabel: $t('%1 per side').replace('%1', label),
+                    scrubTitle: $t('Drag to change, double-click to reset'),
+                    scrubAll: scrubAll,
+                    resetAll: () => {
+                        if (!this.disabled()) {
+                            set(['', '', '', '']);
+                        }
+                    },
                     disabled: this.disabled,
                     mode: mode,
                     values: values,
                     modes: [
                         { id: 'all', label: $t('All') },
-                        { id: 'axis', label: 'V · H' },
+                        { id: 'axis', label: 'V / H' },
                         { id: 'sides', label: $t('Sides') }
                     ],
                     inputs: ko.pureComputed(() => MODE_INPUTS[mode()].map(key => inputs[key])),
