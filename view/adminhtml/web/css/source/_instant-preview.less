@@ -225,7 +225,8 @@ body.melios-instant-preview {
             font-size: 1.5rem;
             padding: 1.4rem 2.8rem 1.4rem 0;
             &::before {
-                top: 1.6rem;
+                top: 16px;
+                right: 5px;
             }
         }
 
@@ -494,7 +495,15 @@ body.melios-instant-preview {
         .admin__fieldset .admin__field.admin__field-min-height-mobile .admin__field-control._with-tooltip .admin__field-tooltip,
         .admin__fieldset .admin__field.admin__field-min-height-mobile-with-notice .admin__field-control._with-tooltip .admin__field-tooltip,
         .admin__field-mobile-breakpoint-notice .admin__field-control._with-tooltip .admin__field-tooltip {
-            margin-left: 10px;
+            margin-left: 5px;
+        }
+        .admin__field-control._with-tooltip > .admin__control-addon,
+        .admin__field-control._with-tooltip > .admin__field-option,
+        .admin__field-control._with-tooltip > .admin__control-select,
+        .admin__field-control._with-tooltip > .admin__control-text,
+        .admin__field-control._with-tooltip > .admin__control-textarea,
+        .admin__field-control._with-tooltip > .ui-datepicker .ui-datepicker-title select {
+            max-width: ~"calc(100% - 25px)";
         }
 
         // Add location button
@@ -530,7 +539,11 @@ body.melios-instant-preview {
             .admin__fieldset > .admin__field:not(.admin__field-mobile-breakpoint-notice, .admin__field-min-height-mobile-with-notice, .admin__field-min-height-mobile) {
                 display: none;
             }
-            .fieldset-wrapper:not(:has(.admin__field-mobile-breakpoint-notice, .admin__field-min-height-mobile-with-notice, .admin__field-min-height-mobile)) {
+            .fieldset-wrapper:not(:has(.admin__field-mobile-breakpoint-notice, .admin__field-min-height-mobile-with-notice, .admin__field-min-height-mobile)),
+            // Background's mobile fields are image-only: hidden in video mode or with no image (see _form.less),
+            // leaving the fieldset empty
+            .fieldset-wrapper[data-index="background"]:has([data-index="background_type"] li[name="video"].active),
+            .fieldset-wrapper[data-index="background"]@{mls-no-bg-image} { // see _form.less
                 display: none;
             }
             .entry-edit:has(.admin__field):not(:has(.admin__field-mobile-breakpoint-notice, .admin__field-min-height-mobile-with-notice, .admin__field-min-height-mobile)) {

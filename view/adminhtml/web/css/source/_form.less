@@ -149,6 +149,9 @@
 }
 // Control: line 1 holds the All input with the mode toggle at its end and the mobile icon after it.
 // V / H: both inputs on line 1 too, in one frame with the toggle. Sides: the box goes to line 2.
+.admin__field-mobile-breakpoint-notice:has(.mls-spacing) {
+    margin-top: 2rem; // space for .admin__field-tooltip above field
+}
 .mls-spacing {
     display: grid;
     grid-template-columns: minmax(0, 1fr) auto;
@@ -158,6 +161,9 @@
 
     > .admin__field-tooltip {
         grid-area: 1 / 2;
+        position: absolute;
+        top: -30px;
+        right: 8px;
     }
     > .admin__field-error {
         grid-column: 1 / -1;
