@@ -1,0 +1,385 @@
+// Background: show image settings only when an image is set.
+// CSS only, so the values are kept as is. (:has can't be nested, hence the _empty class)
+@mls-no-bg-image: ~':has([data-index="background_image"] .mls-image-picker._empty):has([data-index="mobile_image"] .mls-image-picker._empty)';
+
+[data-index="background"]@{mls-no-bg-image} :is(
+    [data-index="mobile_image"],
+    [data-index="loading_mode"],
+    [data-index="mobile_loading_mode_group"],
+    [data-index="background_size"],
+    [data-index="background_position"],
+    [data-index="background_attachment"],
+    [data-index="background_repeat"]
+) {
+    display: none;
+}
+
+// Parallax works with image background only (see row widget)
+[data-index="background"]@{mls-no-bg-image} ~ [data-index="parallax_background"],
+[data-index="background"]:has([data-index="background_type"] li[name="video"].active) ~ [data-index="parallax_background"] {
+    display: none;
+}
+
+// Range: slider + number input (Melios_PageBuilder/form/element/range)
+.mls-range {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    .mls-range-slider {
+        flex: 1;
+        min-width: 0;
+        margin: 0;
+        accent-color: #007bdb;
+        cursor: pointer;
+    }
+    // Empty value = default
+    &._default .mls-range-slider {
+        opacity: .5;
+    }
+
+    .mls-range-number {
+        flex: 0 0 auto;
+        width: 8rem;
+        .admin__control-text {
+            -moz-appearance: textfield;
+            &::-webkit-inner-spin-button,
+            &::-webkit-outer-spin-button {
+                -webkit-appearance: none;
+                margin: 0;
+            }
+        }
+    }
+}
+
+// Border: width | style | color in one row (Plugin/UiFormCompactBorder).
+// Core grouped layout (table, first label in the label column) doesn't fit three controls.
+[data-index="border_group"] > .admin__field-control {
+    display: flex !important;
+    gap: 6px;
+
+    > .admin__field {
+        display: block;
+        width: auto;
+        min-width: 0;
+        margin: 0 !important; // "sm" panel adds margin-top between fields
+        padding: 0 !important;
+
+        // The group label is the row label; keep field labels for screen readers
+        > .admin__field-label {
+            position: absolute !important;
+            width: 1px;
+            height: 1px;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            clip-path: inset(50%);
+        }
+        > .admin__field-control {
+            float: none;
+            width: 100% !important;
+            min-width: 0 !important;
+            margin: 0 !important;
+        }
+    }
+
+    // Width (first field)
+    > .admin__field:first-child {
+        flex: 0 0 7.5rem;
+    }
+
+    // Errors: full row width under the controls, not squeezed into a narrow column
+    position: relative;
+    &:has(.admin__field-error) {
+        margin-bottom: 3.6rem;
+    }
+    .admin__field-error {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+    }
+    // Style: as wide as its longest option; color: swatch
+    > .admin__field:not(:first-child) {
+        flex: 0 0 auto;
+    }
+    .admin__control-select {
+        width: auto;
+        min-width: 0 !important;
+    }
+    // Keep "px" suffix inside the narrow box
+    .admin__control-addon .admin__control-text {
+        flex: 1 1 auto;
+        width: auto;
+        min-width: 0;
+    }
+}
+
+// Color picker as a swatch only (use with colorPickerMode "full": hex can be typed in the picker panel).
+// Usage: <additionalClasses><class name="mls-color-swatch">true</class></additionalClasses>
+.admin__field.mls-color-swatch {
+    .colorpicker-input {
+        display: none;
+    }
+    > .admin__field-control {
+        width: auto !important;
+        min-width: 0 !important;
+    }
+}
+
+// Small text visual select (Plugin/UiFormVisualSelect): pills by default,
+// a dropdown instead of them in a narrow panel when their text is too long to fit
+.mls-visual-select .mls-visual-select-dropdown {
+    display: none;
+}
+[data-mls-size="sm"] .mls-visual-select.mls-visual-select-many {
+    ol {
+        display: none !important;
+    }
+    .mls-visual-select-dropdown {
+        display: block;
+    }
+}
+
+// Margins and padding: one Magento field row per group (Melios_PageBuilder/form/element/margins-and-padding).
+// Same grey as Magento's px suffix (Border, Radius)
+.mls-spacing-unit {
+    color: #858585;
+    font-weight: normal;
+}
+// Control: line 1 holds the All input with the mode toggle at its end and the mobile icon after it.
+// V / H: both inputs on line 1 too, in one frame with the toggle. Sides: the box goes to line 2.
+.admin__field-mobile-breakpoint-notice:has(.mls-spacing) {
+    margin-top: 2rem; // space for .admin__field-tooltip above field
+}
+.mls-spacing {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-rows: minmax(32px, auto); // input height, also when line 1 holds the toggle only
+    row-gap: 6px;
+    align-items: center;
+
+    > .admin__field-tooltip {
+        grid-area: 1 / 2;
+        position: absolute;
+        top: -30px;
+        right: 8px;
+    }
+    > .admin__field-error {
+        grid-column: 1 / -1;
+    }
+    .mls-spacing-inputs {
+        grid-area: 2 / 1;
+        &[data-mode="all"] {
+            grid-area: 1 / 1;
+            .mls-spacing-cell {
+                padding-right: 130px; // room for the mode toggle
+            }
+            // No icon: the left edge of the input is the drag handle
+            input.mls-spacing-input {
+                padding-left: 0 !important;
+            }
+        }
+    }
+
+    .mls-spacing-modes {
+        .mls-pill-track(button);
+        grid-area: 1 / 1;
+        justify-self: end;
+        margin-right: 3px; // inside the All input border, same spot in every mode
+        z-index: 1;
+        flex-wrap: nowrap;
+        width: auto;
+        > button {
+            padding: 2px 6px;
+            font-size: 12px;
+        }
+    }
+
+    .mls-spacing-inputs {
+        display: grid;
+        gap: 6px;
+        // One frame like All: two borderless inputs split by a line, the toggle at the end
+        &[data-mode="axis"] {
+            grid-area: 1 / 1;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 0;
+            height: 32px;
+            box-sizing: border-box;
+            padding-right: 120px; // room for the mode toggle
+            border: 1px solid #adadad;
+            border-radius: 1px;
+            background: #fff;
+            &:hover {
+                border-color: #878787;
+            }
+            &:focus-within {
+                border-color: #007bdb;
+            }
+            .mls-spacing-grip {
+                width: 24px;
+            }
+            input.mls-spacing-input {
+                padding-right: 2px !important;
+            }
+            .mls-spacing-cell {
+                height: 30px;
+                border: 0;
+                background: transparent;
+                &._invalid {
+                    box-shadow: inset 0 0 0 1px #e22626;
+                }
+                + .mls-spacing-cell {
+                    box-shadow: inset 1px 0 #e0e0e0;
+                    &._invalid {
+                        box-shadow: inset 0 0 0 1px #e22626;
+                    }
+                }
+            }
+        }
+        // Sides: a box, each input on its edge (cells come last in the DOM: Tab goes top, right, bottom, left)
+        &[data-mode="sides"] {
+            grid-template-columns: 56px minmax(0, 1fr) 56px;
+            grid-template-rows: 28px 24px 28px;
+            gap: 0;
+            border: 1px dashed #b5b5b2;
+            border-radius: 4px;
+            background: #f7f7f5;
+
+            .mls-spacing-cell {
+                position: relative;
+                z-index: 1; // above the edge bands
+                justify-self: center;
+                align-self: center;
+                width: 48px;
+                height: 22px;
+                border-color: #d4d4d2;
+                border-radius: 3px;
+                background: #fff;
+                &:hover {
+                    border-color: #878787;
+                }
+                &:focus-within {
+                    border-color: #007bdb;
+                }
+                &._invalid {
+                    border-color: #e22626;
+                }
+            }
+            input.mls-spacing-input {
+                padding: 0 !important;
+                text-align: center;
+            }
+        }
+    }
+    .mls-spacing-cell {
+        display: flex;
+        align-items: center;
+        min-width: 0;
+        height: 32px;
+        box-sizing: border-box;
+        border: 1px solid #adadad;
+        border-radius: 1px;
+        background: #fff;
+        &:hover {
+            border-color: #878787;
+        }
+        // Same as Magento admin__control-text:focus
+        &:focus-within {
+            border-color: #007bdb;
+        }
+        &._invalid {
+            border-color: #e22626;
+        }
+    }
+    [data-side="top"] {
+        grid-area: 1 / 2;
+    }
+    [data-side="right"] {
+        grid-area: 2 / 3;
+    }
+    [data-side="bottom"] {
+        grid-area: 3 / 2;
+    }
+    [data-side="left"] {
+        grid-area: 2 / 1;
+    }
+    // Edge band: drags its side. Top and bottom span the whole width.
+    .mls-spacing-band {
+        border-radius: 3px;
+        &[data-side="top"] {
+            grid-area: 1 / 1 / 2 / 4;
+        }
+        &[data-side="bottom"] {
+            grid-area: 3 / 1 / 4 / 4;
+        }
+    }
+    // Centre: drags all four sides
+    .mls-spacing-center {
+        grid-area: 2 / 2;
+        // A muted drag arrow (the row label already names the group), room around it for the side inputs
+        justify-self: center;
+        align-self: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 24px;
+        height: 22px;
+        color: #8a8a8a;
+        &:hover {
+            color: #303030;
+        }
+    }
+    .mls-spacing-band,
+    .mls-spacing-center {
+        cursor: ew-resize;
+        user-select: none;
+        touch-action: none;
+    }
+
+    // All: the left edge of the input drags (wide enough to grab, invisible until hover shows the cursor)
+    .mls-spacing-edge {
+        flex: none;
+        align-self: stretch;
+        width: 10px;
+        cursor: ew-resize;
+        user-select: none;
+        touch-action: none;
+    }
+    .mls-spacing-grip {
+        flex: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 28px;
+        margin-right: -1px;
+        height: 100%;
+        color: #4a4a4a;
+        cursor: ew-resize;
+        user-select: none;
+        touch-action: none;
+        &:hover {
+            color: #1a1a1a;
+        }
+    }
+    // Reset admin text input, the cell draws the border
+    input.mls-spacing-input {
+        flex: 1;
+        width: 100%;
+        min-width: 0;
+        height: 100%;
+        padding: 0 6px 0 0 !important; // over the sidebar's .admin__control-text padding-left
+        border: 0;
+        background: transparent;
+        box-shadow: none;
+        font-size: 13px;
+        font-variant-numeric: tabular-nums;
+        &:focus {
+            box-shadow: none;
+        }
+    }
+}
+body._mls-scrubbing,
+body._mls-scrubbing * {
+    cursor: ew-resize !important;
+}

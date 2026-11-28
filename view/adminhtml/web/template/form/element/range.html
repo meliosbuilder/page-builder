@@ -1,0 +1,27 @@
+<!--
+    Range slider + number input. Config: min, max, step, unit.
+    Double click on slider resets to the default value.
+    With Melios_PageBuilder/js/form/element/range component, empty value keeps slider at min.
+-->
+<div class="mls-range" data-bind="css: {_default: value() === '' || value() == null}">
+    <input type="range"
+           class="mls-range-slider"
+           data-bind="
+               value: $data.rangeValue || value,
+               valueUpdate: 'input',
+               disable: disabled,
+               attr: {min: $data.min, max: $data.max, step: $data.step, 'aria-label': label},
+               event: {dblclick: function () { value($data.default !== undefined ? $data.default : ''); }}"/>
+    <div class="admin__control-addon mls-range-number">
+        <input type="number"
+               class="admin__control-text"
+               data-bind="
+                   value: value,
+                   valueUpdate: 'input',
+                   disable: disabled,
+                   attr: {id: uid, name: inputName, min: $data.min, max: $data.max, step: $data.step, placeholder: $data.placeholder}"/>
+        <label class="admin__addon-suffix" data-bind="if: $data.unit, attr: {for: uid}">
+            <span data-bind="text: $data.unit"></span>
+        </label>
+    </div>
+</div>

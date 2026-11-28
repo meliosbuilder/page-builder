@@ -29,9 +29,9 @@ define([
 
         width = parseFloat(width);
 
-        if (width > 600) {
-            size = 'lg'
-        } else if (width > 430) {
+        if (width > 599) {
+            size = 'lg';
+        } else if (width > 404) {
             size = 'md';
         }
 
@@ -50,8 +50,8 @@ define([
 
                 slideout.css('position', slideout.css('position')).resizable({
                     autoHide: true,
-                    minWidth: 330,
-                    maxWidth: 800,
+                    minWidth: 350,
+                    maxWidth: 500,
                     handles: 'w',
                     ghost: true,
                     resize: function (event, ui) {

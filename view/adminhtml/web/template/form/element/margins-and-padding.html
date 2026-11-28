@@ -1,0 +1,63 @@
+<!--
+    Margins and padding: one Magento field row per group (label + control), laid out like any other field.
+    Each group switches between All / V / H / Sides inputs.
+    Drag to change a value: the left edge of the input in All, the icons in V / H, an edge (or the centre
+    for all sides) of the Sides box. Double click on it clears the value. Arrows step 1 (Shift: 10).
+    CSS shorthand ("10px 15px") fills the sides: pasted at once, typed when typing stops, on Enter or blur.
+-->
+<!-- ko foreach: spacingGroups -->
+<div class="admin__field admin__field-medium"
+     data-bind="visible: $parent.visible, css: $parent.additionalClasses, attr: {'data-index': $parent.index}">
+    <div class="admin__field-label">
+        <label><span data-bind="text: label"></span><span class="mls-spacing-unit">, px</span></label>
+    </div>
+    <div class="admin__field-control mls-spacing" data-bind="css: {'_with-tooltip': $parent.tooltip}">
+        <div class="mls-spacing-modes" role="group" data-bind="attr: {'aria-label': modesLabel}, foreach: modes">
+            <button type="button" tabindex="-1" data-bind="
+                text: label,
+                css: {active: $parent.mode() === id},
+                attr: {'aria-pressed': $parent.mode() === id ? 'true' : 'false'},
+                click: $parent.setMode,
+                disable: $parent.disabled"></button>
+        </div>
+        <!-- Sides: the inputs sit on the edges of a box. Edge bands drag their side, the centre all four. -->
+        <div class="mls-spacing-inputs" data-bind="attr: {
+            'data-mode': mode,
+            role: mode() === 'sides' ? 'group' : null,
+            'aria-label': mode() === 'sides' ? sidesLabel : null
+        }">
+            <!-- ko if: mode() === 'sides' -->
+                <!-- ko foreach: inputs -->
+                <span class="mls-spacing-band" aria-hidden="true" data-bind="attr: {'data-side': side, title: scrubTitle}, event: {pointerdown: scrub, dblclick: reset}"></span>
+                <!-- /ko -->
+                <span class="mls-spacing-center" aria-hidden="true" data-bind="attr: {title: scrubTitle}, event: {pointerdown: scrubAll, dblclick: resetAll}"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h18"/><path d="m7 8-4 4 4 4"/><path d="m17 8 4 4-4 4"/></svg></span>
+            <!-- /ko -->
+            <!-- ko foreach: inputs -->
+            <div class="mls-spacing-cell" data-bind="css: {_invalid: invalid}, attr: {'data-side': side}">
+                <!-- ko if: $parent.mode() === 'all' -->
+                <span class="mls-spacing-edge" aria-hidden="true" data-bind="attr: {title: scrubTitle}, event: {pointerdown: scrub, dblclick: reset}"></span>
+                <!-- /ko -->
+                <!-- ko if: $parent.mode() === 'axis' -->
+                <span class="mls-spacing-grip" aria-hidden="true" data-bind="html: icon, attr: {title: scrubTitle}, event: {pointerdown: scrub, dblclick: reset}"></span>
+                <!-- /ko -->
+                <input type="text" class="admin__control-text mls-spacing-input" data-bind="
+                    textInput: value,
+                    event: {input: input, keydown: keydown, paste: paste, blur: blur},
+                    attr: {'aria-label': ariaLabel, placeholder: placeholder},
+                    disable: $parent.disabled">
+            </div>
+            <!-- /ko -->
+        </div>
+
+        <!-- ko with: $parent -->
+            <!-- ko if: $parentContext.$index() === 0 -->
+                <input type="text" hidden ko-value="value" attr="id: uid, name: inputName">
+                <render args="tooltipTpl" if="$data.tooltip"></render>
+            <!-- /ko -->
+            <!-- ko if: $parentContext.$index() === spacingGroups.length - 1 -->
+                <label class="admin__field-error" if="error" attr="for: uid" text="error"></label>
+            <!-- /ko -->
+        <!-- /ko -->
+    </div>
+</div>
+<!-- /ko -->
