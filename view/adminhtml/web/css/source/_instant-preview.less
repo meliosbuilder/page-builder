@@ -356,6 +356,14 @@ body.melios-instant-preview {
         // Tooltips
         .admin__field-tooltip {
             align-self: flex-start;
+            float: right;
+            max-width: 20px;
+            .admin__field-tooltip-action:before {
+                font-size: 1.9rem;
+            }
+            .admin__field-tooltip-content {
+                right: 0;
+            }
         }
         .admin__field-tooltip .admin__field-tooltip-content {
             left: auto;
@@ -528,7 +536,8 @@ body.melios-instant-preview {
     }
 }
 
-// Hide non-mobile fields on mobile view
+// Mobile view: all fields stay editable; shared (all devices) fields are dimmed
+@mls-mobile-fields: ~'.admin__field-mobile-breakpoint-notice, .admin__field-min-height-mobile-with-notice, .admin__field-min-height-mobile';
 body.melios-instant-preview {
     &:has(.page-builder-viewport.desktop-switcher:enabled) {
         .pagebuilder_modal_form_pagebuilder_modal_form_modal {
@@ -536,22 +545,13 @@ body.melios-instant-preview {
                 float: left;
                 max-width: ~"calc(100% - 45px)";
             }
-            .admin__fieldset > .admin__field:not(.admin__field-mobile-breakpoint-notice, .admin__field-min-height-mobile-with-notice, .admin__field-min-height-mobile) {
-                display: none;
-            }
-            .fieldset-wrapper:not(:has(.admin__field-mobile-breakpoint-notice, .admin__field-min-height-mobile-with-notice, .admin__field-min-height-mobile)),
-            // Background's mobile fields are image-only: hidden in video mode or with no image (see _form.less),
-            // leaving the fieldset empty
-            .fieldset-wrapper[data-index="background"]:has([data-index="background_type"] li[name="video"].active),
-            .fieldset-wrapper[data-index="background"]@{mls-no-bg-image} { // see _form.less
-                display: none;
-            }
-            .entry-edit:has(.admin__field):not(:has(.admin__field-mobile-breakpoint-notice, .admin__field-min-height-mobile-with-notice, .admin__field-min-height-mobile)) {
-                &::before {
-                    display: block;
-                    content: "This element doesn't provide mobile settings";
-                    text-align: center;
-                    margin: 30px 0;
+            .admin__fieldset > .admin__field:not(@{mls-mobile-fields}):not(:has(@{mls-mobile-fields})) {
+                opacity: .6;
+                transition: opacity .15s ease-out;
+
+                &:hover,
+                &:focus-within {
+                    opacity: 1;
                 }
             }
         }
